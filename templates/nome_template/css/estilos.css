@@ -1,0 +1,258 @@
+@charset "utf-8";
+/* Resetando Elementos */
+html { overflow: -moz-scrollbars-vertical; }
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, font, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	outline: 0;
+	font-size: 100%;
+	vertical-align: baseline;
+	background: transparent;
+}
+body { line-height: 1; }
+ol, ul { list-style: none; }
+blockquote, q { quotes: none; }
+:focus { outline: 0; }
+ins { text-decoration: none; }
+del { text-decoration: line-through; }
+table { border-collapse: collapse; border-spacing: 0; }
+
+/* Elementos */
+
+body {
+	font-family: verdana;
+	font-size: 12px;
+	color: #333;
+}
+
+a { text-decoration: none; color: #1E4785; }
+a:hover { text-decoration: underline; color: #e80; }
+
+
+#conteiner {
+	width: 770px;
+	margin: 0 auto 5px auto;
+}
+
+h1 {
+	font-size: 3em;
+	padding-top: 30px;
+}
+
+h2 {
+	border-bottom: 1px solid #E80;
+	color: #E80;
+	margin: 10px 0 10px 0;
+	padding: 3px 0;
+	font-size: 16px;
+}
+
+h3 {
+	margin: 10px 0;
+	font-size: 14px;
+}
+
+.submenu {
+	margin-bottom: 4px;
+}
+
+.submenu li {
+	display: inline;
+	margin-right: 5px;
+}
+
+fieldset {
+	border: 1px solid #ccc;
+	background-color: #eee;
+	padding: 10px;
+}
+
+fieldset textarea {
+	width: 99%;	
+}
+
+fieldset p {
+	padding: 5px 0;
+}
+
+fieldset p input, fieldset p textarea {
+	border: 1px solid #666;
+	padding: 2px;
+}
+
+fieldset p.submit {
+	border-top: 1px solid #333;
+}
+
+fieldset p.submit input {
+	cursor: pointer;
+}
+
+fieldset label {
+	display: block;
+	font-weight: bold;
+	line-height: 17px;
+}
+
+fieldset span {
+	display: block;
+	color: #333;
+	font-style: italic;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table tr th {
+	font-weight: bold;
+	text-align: left;
+	padding: 3px;
+}
+
+table tr.hover td {
+	background-color: #E1EFF6;
+}
+
+table tr td, table tr th {
+	padding: 3px;
+	border-bottom: 1px solid #efefef;
+	vertical-align: middle;
+}
+
+#lang {
+	float: right;
+	margin-top: 5px;
+}
+
+#lang li {
+	display: inline;
+	margin-right: 10px;
+}
+
+.hidetxt {
+	overflow: hidden;
+	text-indent: -1000px;
+}
+
+#mensagem {
+	margin: 10px 20px;
+	padding: 15px;
+}
+
+#mensagem.erro {
+	background-color: #fcc;
+	border: 1px solid #f55;
+}
+
+#mensagem.ok {
+	background-color: #ffc;
+	border: 1px solid #ff5;
+}
+
+#mensagem p {
+	padding: 5px;
+	font-weight: bold;
+}
+
+#mensagem li {
+	list-style: circle inside;
+	padding-left: 20px;
+	line-height: 17px;
+}
+
+#rodape {
+	text-align: center;
+	background-color: #eee;
+	padding: 10px;
+	border-top: 1px solid #aaa;
+	margin-top: 5px;
+}
+
+.hide {
+	display: none;
+}
+
+/* DIALOG SKIN */
+
+/* This file skins dialog */
+
+.flora .ui-dialog,
+.flora.ui-dialog {
+	background-color: #eee;
+}
+
+.flora .ui-dialog .ui-dialog-titlebar,
+.flora.ui-dialog .ui-dialog-titlebar {
+	border-bottom: 1px solid #d8d2aa;
+	background: #f90;
+}
+
+.flora .ui-dialog.ui-draggable .ui-dialog-titlebar,
+.flora.ui-dialog.ui-draggable .ui-dialog-titlebar {
+	cursor: move;
+}
+
+.flora .ui-dialog .ui-dialog-titlebar-close,
+.flora.ui-dialog .ui-dialog-titlebar-close {
+	width: 16px;
+	height: 16px;
+	background: url(i/dialog-titlebar-close.png) no-repeat;
+	position:absolute;
+	top: 6px;
+	right: 7px;
+	cursor: default;
+}
+
+.flora .ui-dialog .ui-dialog-titlebar-close span,
+.flora.ui-dialog .ui-dialog-titlebar-close span {
+	display: none;
+}
+
+.flora .ui-dialog .ui-dialog-titlebar-close-hover,
+.flora.ui-dialog .ui-dialog-titlebar-close-hover {
+	background: url(i/dialog-titlebar-close-hover.png) no-repeat;
+	cursor: pointer;
+}
+
+.flora .ui-dialog .ui-dialog-title,
+.flora.ui-dialog .ui-dialog-title {
+	line-height: 28px;
+	font-size: 16px;
+	margin-left: 5px;
+	color: white;
+	font-weight: bold;
+	position: relative;
+	top: 2px;
+	left: 7px;
+}
+
+.flora .ui-dialog .ui-dialog-content,
+.flora.ui-dialog .ui-dialog-content {
+	margin: 1.2em;
+}
+
+.flora .ui-dialog .ui-dialog-buttonpane,
+.flora.ui-dialog .ui-dialog-buttonpane {
+	position: absolute;
+	bottom: 8px;
+	right: 12px;
+	width: 100%;
+	text-align: right;
+}
+
+.flora .ui-dialog .ui-dialog-buttonpane button,
+.flora.ui-dialog .ui-dialog-buttonpane button {
+	margin: 6px;
+	cursor: pointer;
+}
