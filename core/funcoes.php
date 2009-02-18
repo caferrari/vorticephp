@@ -79,6 +79,28 @@ function reset_keys(&$arr){
 }
 
 /**
+* Convert sala-de-imprensa to SalaDeImprensa
+* @param	$str		string
+* @return	string
+*/
+function camelize($str="") {
+    return str_replace(" ", "", ucwords(str_replace(array("_", "-"), " ", $str)));
+}
+
+/**
+* Convert the first char to lower case
+* @param	$str		string
+* @return	string
+*/
+if (!function_exists("lcfirst")){
+	function lcfirst($str="") {
+		if ($str=='') return '';
+		$str{0} = strtolower($str{0});
+    	return $str;
+	}
+}
+
+/**
 * Translate a phrase using I18n class
 * @param	mixed
 * @return	string

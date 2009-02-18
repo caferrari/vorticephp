@@ -459,11 +459,13 @@ class Template{
 		}
 		
 		$c = $controller;
-		$controller = ucfirst($controller)."Controller";
-				
+		$controller = camelize($controller)."Controller";
+		
+
 		if (class_exists($controller))
 		{
 			$obj = new $controller();
+			$action = lcfirst(camelize($action));
 			if (method_exists($obj, $action)) $obj->$action();
 			else throw (new ActionNotFoundException("$controller:$action"));
 		}

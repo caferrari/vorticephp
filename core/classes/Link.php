@@ -237,10 +237,9 @@ class Link{
 		define ("module", $module);
 		define ("controller", $controller);
 		define ("action", $action);
-				
+		
 		if (isset($q->pars))
 			if (is_object($q->pars) || is_array($q->pars)) foreach ($q->pars as $k => $p) $_PAR[$k] = $p;
-		
 	}
 	
 	/**
