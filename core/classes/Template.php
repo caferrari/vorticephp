@@ -461,7 +461,6 @@ class Template{
 		$c = $controller;
 		$controller = camelize($controller)."Controller";
 		
-
 		if (class_exists($controller))
 		{
 			$obj = new $controller();
