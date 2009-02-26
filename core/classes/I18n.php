@@ -77,8 +77,14 @@ class I18n{
 	*/
 	public function get_lang(){
 		if (!isset($_SERVER["HTTP_ACCEPT_LANGUAGE"])) return array(default_lang);
-		preg_match_all("/([a-z\-]{2,})+,?;?/", $_SERVER["HTTP_ACCEPT_LANGUAGE"], $langs);
-		return $langs[1];
+		preg_match_all("/([a-z\-]{2,})+,?;?/", strtolower($_SERVER["HTTP_ACCEPT_LANGUAGE"]), $langs);
+		$langs = $langs[1];
+		
+		foreach ($langs as $l)
+			if (ereg("([a-z]{2})-[a-z]{2}", $l, $mat))
+				$langs[] = $mat[1];
+				
+		return $langs;
 	}
 
 	/**
@@ -89,21 +95,19 @@ class I18n{
 	*/
 	function start($module = '_base'){
 		if (!defined("default_lang")) throw (new ConstantNotFoundException("Please make a constant called 'default_lang' on the file app/config.php"));
-		
+
 		$av_lang = self::load_lang(rootfisico . "app/i18n", "_base");
 
 		if (count($av_lang) > 1){
 			$langs = $av_lang;		
 			if (is_array(self::get_lang()) && is_array($av_lang))
-				$langs = array_intersect(self::get_lang(), $av_lang);
+				$langs = array_unique(array_intersect(self::get_lang(), $av_lang));
 			if (count($langs) > 0){
 				$tmp = array_shift($langs);
 				if ($tmp!=default_lang && Session::get("defined_lang")==''){
 					Session::set("defined_lang", $tmp);
 					header("Location: " . rootvirtual . "$tmp/" . uri , true, 301) and exit();
 				}
-			}else{
-				header("Location: " . rootvirtual . uri, true, 301) and exit();
 			}
 		}
 
