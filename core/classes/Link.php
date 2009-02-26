@@ -97,7 +97,7 @@ class Link{
 	* @static
 	*/
 	static function criaLink($pagina='', $parametros=''){
-		if (!ereg("^([a-z]+\+)?([a-z]+)(:[a-z]+)?$", $pagina)){
+		if (!ereg("^([a-z\-]+\+)?([a-z\-]+)(:[a-z\-]+)?$", $pagina)){
 			$tmp = rootvirtual;
 			if (request_lang != default_lang) return rootvirtual . request_lang . "/$pagina";
 			else return rootvirtual . "$pagina";
