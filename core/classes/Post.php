@@ -77,13 +77,14 @@ class Post
 			self::$tipo = Session::get('form_tipo');
 		}
 		
+		foreach ($_POST as $k => $v) self::setVal($k, $v);
+		
 		Session::del('form_erros');
 		Session::del("form_val");
 		Session::del('form_tipo');
 		Session::del('form_mensagem');
 		Session::set("form_val", serialize($_POST));
 	}
-
 	
 	/**
 	* Return the message type
