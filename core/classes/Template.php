@@ -382,12 +382,15 @@ class Template{
 				$json = Json::getInstance();
 				return ($json->render());
 			}
-			return $meio;
+			self::$rendermode = "content";
 		}elseif (!self::$semtemplate){
 			include rootfisico . "templates/{$pasta}/template.php";
 			self::setVar("csstags", self::geraCss());
 			self::setVar("jstags", self::geraJs());
 		}
+		
+		I18n::translate($meio);
+		
 		self::$conteudo = ob_get_clean();
 		self::$conteudo = str_replace("<!--conteudo-->", $meio, self::$conteudo);	
 		self::setVar("rootsite", self::$rootsite);		
