@@ -57,7 +57,7 @@ function p($v){
 * @return	void
 */
 function redirect($destino="", $delay=0){
-	if (!ereg("^/", $destino)) $destino = "/$destino";
+	//if (!ereg("^/", $destino) && !ereg("^http://", $destino)) $destino = "/$destino";
 	if (ajax){
 		$json = Json::getInstance();
 		$json->addPacote(array("redirect", $destino, $delay));
