@@ -27,6 +27,9 @@
 	<meta name="doc-rights" content="Private" />
 	<link rel="shortcut icon" href="<?= rootvirtual . "/img/favicon.gif" ?>">
 	<!--csstags-->
+	<script>
+		var rootvirtual = '<?= rootvirtual ?>';
+	</script>
 	<!--jstags-->
 </head>
 <body>
@@ -40,8 +43,6 @@
 	</div>
 	<div id="conteudo">
 		<!--menu-->
-		<h2><!--area--></h2>
-		<span class="desc"><!--desc--></span>
 		<!--mensagem-->
 		<!--conteudo-->
 	</div>

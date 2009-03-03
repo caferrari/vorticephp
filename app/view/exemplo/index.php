@@ -10,7 +10,8 @@
  * @subpackage View
  */
 ?>
-
+<h2>Itens</h2>
+<span class="desc"><!--desc--></span>
 <ul class="submenu">
 	<li>[<a href="<?= new Link("exemplo:adicionar") ?>">{{Adicionar novo Item}}</a>]</li>
 </ul>

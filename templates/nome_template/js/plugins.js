@@ -33,7 +33,7 @@ $.fn.autoHover = function(item){
 
 /* Dialogo de Confirmação */
 $.fn.confirmDialog = function (okFunc){
-	$(this).click(
+	$(this).live('click', 
 		function (index, obj){
 			var a = $(this);
 			var mensagem = a.attr("title");

@@ -17,7 +17,6 @@ class ExemploController {
 	* @return	void
 	*/
 	public function index(){
-		Template::setVar('area', 'Itens');
 		DAO::add(ExemploDAO::getList());
 	}
 	
@@ -43,10 +42,6 @@ class ExemploController {
 			else
 				Post::setErros("Ocorreram os seguintes erros:", $erros);
 		}
-		else
-		{
-			Template::setVar('area', 'Adicionar Item');
-		}	
 	}
 	
 	/**
@@ -56,7 +51,6 @@ class ExemploController {
 	* @return	void
 	*/
 	public function alterar(){
-		Template::setVar('area', 'Alterar');
 		$id = p("id");
 		if (post)
 		{

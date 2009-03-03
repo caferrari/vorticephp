@@ -10,6 +10,7 @@
  * @subpackage View
  */
 ?>
+<h2>Página Inicial</h2>
 <ul id="menu-principal">
 	<li><a class="lnk1" href="<?= new Link("exemplo") ?>" title="{{Exemplo}}">{{Exemplo}}</a></li>
 </ul>

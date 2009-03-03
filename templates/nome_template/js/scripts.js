@@ -12,11 +12,14 @@ $(document).ready(function() {
 		}
 	);
 	
-	$("#conteudo a:not(.confirm)").live("click", function(){
-		$("#conteudo").load($(this).attr("href"));
+	window.setTimeout("$('#mensagem').fadeOut(\"slow\")", 10000);
+	
+	$("#conteudo a").live("click", function(){
+		var href = $(this).attr("href");
+		$("#conteudo").load(href);
+		window.location.hash = href.replace(rootvirtual, '');
 		return false;
 	});
-	
-	window.setTimeout("$('#mensagem').fadeOut(\"slow\")", 10000);
+	if (window.location.hash != '') $("#conteudo").load((rootvirtual + window.location.hash).replace("#", ""));
 });
 
