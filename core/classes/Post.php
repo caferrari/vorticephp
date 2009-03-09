@@ -123,9 +123,9 @@ class Post
 	*
 	* @return	void
 	*/
-	public function load($obj)
+	public function load($obj, $prefix='')
 	{
-		if (is_object($obj)) foreach (get_object_vars($obj) as $c => $v) self::setVal($c, $v);
+		if (is_object($obj)) foreach (get_object_vars($obj) as $c => $v) self::setVal(@$prefix[$c] . $c, $v);
 	}
 	
 	/**
