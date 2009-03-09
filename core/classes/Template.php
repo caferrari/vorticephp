@@ -256,6 +256,7 @@ class Template{
 		self::$view = $nome;
 	}
 	
+	
 	function loadCssDir($dir){
 		$tmp = array();
 		if (is_dir($dir)){
@@ -305,6 +306,21 @@ class Template{
 	function makeJs(){
 		return self::geraJs();
 	}
+	
+	/*
+	public function loadHelper($name){
+		$files = array(
+			rootfisico . "app/helper/{$name}.php",
+			rootfisico . "core/helper/{$name}.php"
+		);
+		foreach ($files as $f)
+			if (file_exists($f)){
+				require_once($f); 
+				return;
+			}
+		throw new Exception("Helper not found: $name");
+	}
+	*/
 	
 	/**
 	* Read and make all Link for the template scripts
@@ -402,7 +418,7 @@ class Template{
 		
 		if (self::$clean){
 			self::$conteudo = ereg_replace("[[:space:]]{1,}", " ", self::$conteudo);
-			self::$conteudo = ereg_replace("[ ]</", "</", self::$conteudo);
+			self::$conteudo = ereg_replace("[ ]+</", "</", self::$conteudo);
 			//$template = ereg_replace("> <", "><", $template);
 		}
 		

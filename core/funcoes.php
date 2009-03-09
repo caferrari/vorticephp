@@ -25,7 +25,9 @@ function __autoload($class)
 	    "core/classes/exceptions",
 	    "app/classes/",
 	    "app/model/",
-	    "app/controller/"
+	    "app/controller/",
+		"app/helper/",
+		"core/helper/"
     );
     
 	if (defined("module")){

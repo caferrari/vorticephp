@@ -160,7 +160,7 @@ class Post
 					$tmp .= "<p>" . self::$mensagem . "</p>";
 					$tmp .= "<ul>";
 					foreach (self::$erros as $erro)
-						$tmp .= "<li>$erro</li>";
+						$tmp .= is_array($erro) ? "<li>{$erro[1]}" : "<li>$erro</li>";
 					$tmp .= "</ul>";
 					$tmp .= "</div>";
 				break;
@@ -181,7 +181,7 @@ class Post
 		if ($erros=='') $erros = array();
 		if (!is_array($erros)) throw (new ArrayRequiredException($erros));
 		
-		foreach($erros as $k => $v) $erros[$k] = e($v);
+		foreach($erros as $k => $v) is_array($erros[$k]) ? $erros[$k][1] = e($v[1]) : $erros[$k] = e($v);
 		$mensagem = e($mensagem);
 		
 		if (ajax){
