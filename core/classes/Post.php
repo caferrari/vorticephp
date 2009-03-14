@@ -64,7 +64,7 @@ class Post
 		global $_PAR;
 		if (!is_array($_PAR)) $_PAR = array();
 		foreach (array_merge($_POST, $_GET, $_PAR) as $k => $v)
-			if (ereg("^id", $k) && !is_numeric($v)) throw new IntegerRequiredException("it can be a SQL injection try!");
+			if (ereg("^id", $k) && ($v !='' && !is_numeric($v))) throw new IntegerRequiredException("it can be a SQL injection try!");
 		
 		self::$form = array();
 		

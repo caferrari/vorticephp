@@ -13,5 +13,7 @@ define ("default_controller", "index");
 define ("default_action", "index");
 define ("default_lang", "pt-br");
 
+//define ("rootvirtual", "/vortice/");
+
 define ("tpl_title", "Titulo do sistema");
 ?>
