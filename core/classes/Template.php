@@ -286,7 +286,7 @@ class Template{
 			return implode("\r\n\t", $tmp["mobile"]);
 		}
 		sort($tmp["screen"]);
-		return implode("\r\n\t", array_merge($tmp["screen"], $tmp["print"], $tmp["mobile"]));
+		return implode("\r\n\t", array_merge($tmp["screen"], $tmp["print"]));
 	}
 	
 	/**
