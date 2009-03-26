@@ -394,7 +394,10 @@ class Template{
 			}
 			self::$rendermode = "content";
 		}elseif (!self::$semtemplate){
-			include rootfisico . "templates/{$pasta}/template.php";
+			if (mobile && file_exists(rootfisico . "templates/{$pasta}/mobile.php"))
+				include rootfisico . "templates/{$pasta}/mobile.php";
+			else 
+				include rootfisico . "templates/{$pasta}/template.php";
 			self::setVar("csstags", self::geraCss());
 			self::setVar("jstags", self::geraJs());
 		}
