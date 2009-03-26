@@ -32,12 +32,19 @@ class Core{
 
 		define ("ajax", isset($_SERVER["HTTP_X_REQUESTED_WITH"]));
 		define ("post", $_SERVER["REQUEST_METHOD"] == "POST");
+		define ("mobile", is_mobile());
+		define ("bot", is_bot());
 
 		require_once rootfisico . "app/config.php";
+		if (!defined("default_controller")) define ("default_controller", "index");
+		if (!defined("default_action")) 	define ("default_action", "index");
+		if (!defined("default_lang")) 		define ("default_lang", "pt-br");
+		if (!defined("tpl_title")) 			define ("tpl_title", md5(__FILE__));
+		
 		require_once rootfisico . "app/funcoes.php";
 
-		if (!defined("rootvirtual"))  define ("rootvirtual", ereg_replace("/+", "/", str_replace($_SERVER["DOCUMENT_ROOT"], "/", rootfisico)));
-		if (!defined("default_lang")) define("default_lang", "pt-br");
+		if (!defined("rootvirtual")) 	define ("rootvirtual", str_replace($_SERVER["DOCUMENT_ROOT"], "/", rootfisico));
+		if (!defined("default_lang")) 	define("default_lang", "pt-br");
 		Link::translate_uri();
 
 		if (file_exists(rootfisico . "app/route.php")) include rootfisico . "app/route.php";

@@ -13,7 +13,8 @@ $(document).ready(function() {
 	);
 	
 	window.setTimeout("$('#mensagem').fadeOut(\"slow\")", 10000);
-	
+
+	/*
 	$("#conteudo a").live("click", function(){
 		var href = $(this).attr("href");
 		$("#conteudo").load(href);
@@ -21,5 +22,6 @@ $(document).ready(function() {
 		return false;
 	});
 	if (window.location.hash != '') $("#conteudo").load((rootvirtual + window.location.hash).replace("#", ""));
+	*/
 });
 

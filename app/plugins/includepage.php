@@ -1,4 +1,4 @@
-<?
+<?php
 /* 
  * Copyright (c) 2008, Carlos André Ferrari <[carlos@]ferrari.eti.br>; Luan Almeida <[luan@]luan.eti.br>
  * All rights reserved. 
@@ -44,4 +44,3 @@ class Includepage extends Template{
 	*/
 	public function __toString(){ return "{$this->match}"; }
 }
-?>

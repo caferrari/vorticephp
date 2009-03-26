@@ -239,12 +239,12 @@ class Template{
 	* get the requested view
 	* @return	string
 	*/
-	public function getView(){
+	public function getView($prefix=''){
 		if (strstr(self::$view, ":") !== false){
 			list($c, $v) = explode(":", self::$view);
-			return "$c/$v";
+			return "$c/{$prefix}{$v}";
 		}
-		return controller . "/" . self::$view;
+		return controller . "/{$prefix}" . self::$view;
 	}
 	
 	/**
@@ -256,28 +256,37 @@ class Template{
 		self::$view = $nome;
 	}
 	
-	
+
+	/**
+	* Load the CSS files inside a dir
+	* @param	string	$dir	path
+	* @return	string
+	*/	
 	function loadCssDir($dir){
-		$tmp = array();
+		$tmp = array("mobile" => array(), "screen" => array(), "print" => array());
 		if (is_dir($dir)){
 			if ($handle = opendir($dir)) {
 				while (false !== ($file = readdir($handle))) {
 					$nome = explode(".", $file);
-					if (count($nome) == 2 && $nome[1] == 'css'){
-						if (strstr($nome[0], "print"))
-							$tmp[] = "<link href=\"" . rootvirtual . "$dir/$file\" rel=\"stylesheet\" media=\"print\" />";
+					if (count($nome) > 1 && $nome[count($nome)-1] == 'css'){
+						if (strstr($nome[0], "mobile"))
+							$tmp["mobile"][] = "<link href=\"" . rootvirtual . "$dir/$file\" rel=\"stylesheet\" media=\"all\" />";
 						else
-							if (strstr($nome[0], "alt_"))
-								$tmp[] = "<link href=\"" . rootvirtual . "$dir/$file\" rel=\"alternative stylesheet\" media=\"screen\" />";
+							if (strstr($nome[0], "print"))
+								$tmp["print"][] = "<link href=\"" . rootvirtual . "$dir/$file\" rel=\"stylesheet\" media=\"print\" />";
 							else
-								$tmp[] = "<link href=\"" . rootvirtual . "$dir/$file\" rel=\"stylesheet\" media=\"screen\" />";
+								$tmp["screen"][] = "<link href=\"" . rootvirtual . "$dir/$file\" rel=\"stylesheet\" media=\"screen\" />";
 					}
 				}
 				closedir($handle);
 			}
 		}
-		sort($tmp);
-		return implode("\r\n\t", $tmp);
+		if (mobile && count($tmp["mobile"]) > 0){
+			sort($tmp["mobile"]);
+			return implode("\r\n\t", $tmp["mobile"]);
+		}
+		sort($tmp["screen"]);
+		return implode("\r\n\t", array_merge($tmp["screen"], $tmp["print"], $tmp["mobile"]));
 	}
 	
 	/**
@@ -306,21 +315,6 @@ class Template{
 	function makeJs(){
 		return self::geraJs();
 	}
-	
-	/*
-	public function loadHelper($name){
-		$files = array(
-			rootfisico . "app/helper/{$name}.php",
-			rootfisico . "core/helper/{$name}.php"
-		);
-		foreach ($files as $f)
-			if (file_exists($f)){
-				require_once($f); 
-				return;
-			}
-		throw new Exception("Helper not found: $name");
-	}
-	*/
 	
 	/**
 	* Read and make all Link for the template scripts
@@ -490,9 +484,19 @@ class Template{
 		else throw (new ControllerNotFoundException($controller));
 		
 		ob_start();
-		$view = $view ? "$c/$view" : self::getView();
-		if (file_exists(rootfisico . "app/view/$view.php"))
-			include rootfisico . "app/view/$view.php";
-		return ob_get_clean();
+		
+		if (mobile){
+			$v = $view ? "$c/mobile.$view" : self::getView("mobile.");
+			if (file_exists(rootfisico . "app/view/$v.php")){
+				include rootfisico . "app/view/$v.php";
+				return ob_get_clean();
+			}
+		}
+		
+		$v = $view ? "$c/$view" : self::getView();
+		if (file_exists(rootfisico . "app/view/$v.php")){
+			include rootfisico . "app/view/$v.php";
+			return ob_get_clean();
+		}
 	}
 }
