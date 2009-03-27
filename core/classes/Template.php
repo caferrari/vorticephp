@@ -109,7 +109,7 @@ class Template{
 	* Start the template engine
 	* @return	void
 	*/
-	public function start(){
+	public static function start(){
 		if (!self::$iniciado){ 
 			self::$iniciado = true;
 			self::$titulo = tpl_title;
@@ -138,7 +138,7 @@ class Template{
 	* Alias to semTemplate Method
 	* @return	void
 	*/
-	public function noTemplate(){
+	public static function noTemplate(){
 		self::semTemplate();
 	}
 	
@@ -155,7 +155,7 @@ class Template{
 	* @param	string	$titulo	System title
 	* @return	void
 	*/
-	public function setTitle($titulo){
+	public static function setTitle($titulo){
 		self::setTitulo($titulo);
 	}
 	
@@ -173,7 +173,7 @@ class Template{
 	* @param	string	$mode	new render mode
 	* @return	void
 	*/
-	public function setRenderMode($mode){
+	public static function setRenderMode($mode){
 		self::$rendermode = $mode;
 	}
 
@@ -182,7 +182,7 @@ class Template{
 	* @param	string	$nome	template name
 	* @return	void
 	*/
-	public function addTemplate($nome){
+	public static function addTemplate($nome){
 		if (!file_exists(rootfisico . "templates/$nome/template.php")) throw(new TemplateNotFoundException($nome));
 		self::$templates[$nome] = $nome;
 		if (self::$tpl == '') self::$tpl = $nome;
@@ -193,7 +193,7 @@ class Template{
 	* @param	bool	$op		Clear the whitespaces before send to the browser?
 	* @return	void
 	*/
-	public function setClean($op = true){
+	public static function setClean($op = true){
 		self::$clean = $op;
 	}
 	
@@ -203,7 +203,7 @@ class Template{
 	* @param	string	$valor	value
 	* @return	void
 	*/
-	public function setVar($nome, $valor){
+	public static function setVar($nome, $valor){
 		self::$vars[$nome] = e($valor);
 	}
 	
@@ -212,7 +212,7 @@ class Template{
 	* @param	string	$nome	template name
 	* @return	void
 	*/
-	public function setTemplate($nome){
+	public static function setTemplate($nome){
 		if (!isset(self::$templates[$nome])) throw (new TemplateNotLoadedException($nome));
 		self::$tpl = $nome;
 	}
@@ -222,7 +222,7 @@ class Template{
 	* @param	string	$nome	controller name
 	* @return	void
 	*/
-	public function setController($nome){
+	public static function setController($nome){
 		self::$controller = $nome;
 	}
 	
@@ -231,7 +231,7 @@ class Template{
 	* @param	string	$nome	action name
 	* @return	void
 	*/
-	public function setAction($action){
+	public static function setAction($action){
 		self::$action = $action;
 	}
 	
@@ -239,7 +239,7 @@ class Template{
 	* get the requested view
 	* @return	string
 	*/
-	public function getView($prefix=''){
+	public static function getView($prefix=''){
 		if (strstr(self::$view, ":") !== false){
 			list($c, $v) = explode(":", self::$view);
 			return "$c/{$prefix}{$v}";
@@ -252,7 +252,7 @@ class Template{
 	* @param	string	$nome	view name
 	* @return	void
 	*/
-	public function setView($nome){
+	public static function setView($nome){
 		self::$view = $nome;
 	}
 	
@@ -262,7 +262,7 @@ class Template{
 	* @param	string	$dir	path
 	* @return	string
 	*/	
-	function loadCssDir($dir){
+	protected function loadCssDir($dir){
 		$tmp = array("mobile" => array(), "screen" => array(), "print" => array());
 		if (is_dir($dir)){
 			if ($handle = opendir($dir)) {
@@ -293,7 +293,7 @@ class Template{
 	* Alias for geraCss method
 	* @return	void
 	*/
-	function makeCss(){
+	protected function makeCss(){
 		return self::geraCss();
 	}
 	
@@ -301,7 +301,7 @@ class Template{
 	* Read and make all Link for the template css's
 	* @return	void
 	*/
-	function geraCss(){
+	protected function geraCss(){
 		$pasta = self::$tpl;
 		$tmp = self::loadCssDir("css");
 		$tmp .= self::loadCssDir("templates/$pasta/css");
@@ -312,7 +312,7 @@ class Template{
 	* Alias for geraJs method
 	* @return	void
 	*/
-	function makeJs(){
+	protected function makeJs(){
 		return self::geraJs();
 	}
 	
@@ -320,7 +320,7 @@ class Template{
 	* Read and make all Link for the template scripts
 	* @return	void
 	*/
-	function geraJs(){
+	protected function geraJs(){
 		$pasta = self::$tpl;
 		$tmp = array();
 		if (is_dir(rootfisico . "js"))
@@ -378,7 +378,7 @@ class Template{
 	* Execute everything and render the response
 	* @return	string
 	*/
-	public function render(){
+	public static function render(){
 		$meio = Template::executar(false, action, controller, module);
 
 		if (!self::$tpl)  throw(new NoTemplatesLoadedException());
@@ -452,7 +452,7 @@ class Template{
 	* @param	string	$module
 	* @return	string
 	*/
-	public function execute($view, $action, $controller, $module=false){
+	public static function execute($view, $action, $controller, $module=false){
 		return self::executar($view, $action, $controller, $module);
 	}
 	

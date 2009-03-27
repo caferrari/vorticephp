@@ -75,7 +75,7 @@ class I18n{
 	* @return	void
 	* @access	private
 	*/
-	public function get_lang(){
+	public static function get_lang(){
 		if (!isset($_SERVER["HTTP_ACCEPT_LANGUAGE"])) return array(default_lang);
 		preg_match_all("/([a-z\-]{2,})+,?;?/", strtolower($_SERVER["HTTP_ACCEPT_LANGUAGE"]), $langs);
 		$langs = $langs[1];
@@ -93,7 +93,7 @@ class I18n{
 	* @param	string	$module	app module name
 	* @return	void
 	*/
-	function start($module = '_base'){
+	public static function start($module = '_base'){
 		if (!defined("default_lang")) throw (new ConstantNotFoundException("Please make a constant called 'default_lang' on the file app/config.php"));
 
 		$av_lang = self::load_lang(rootfisico . "app/i18n", "_base");
@@ -132,7 +132,7 @@ class I18n{
 	* @param	mixed	$v,...	values to put into $s string
 	* @return	string
 	*/
-	public function e() {
+	public static function e() {
 		$args = func_get_args();
 		if (count($args)>0 && is_array($args[0])) $args = $args[0];
 		
@@ -152,7 +152,7 @@ class I18n{
 	* @param	string	$content	string to look for phrases
 	* @return	string
 	*/
-	public function translate(&$content){
+	public static function translate(&$content){
 		preg_match_all("|\{{([^\}]+)\}}|", $content, $mat,PREG_SET_ORDER);
 		foreach($mat as $mat)
 			$content = str_replace($mat[0], self::e($mat[1]), $content);

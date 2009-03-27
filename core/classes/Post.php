@@ -58,13 +58,13 @@ class Post
 	*
 	* @return	void
 	*/
-	public function start(){
+	public static function start(){
 		define ("POST_ERRO", 0);
 		define ("POST_OK", 1);
 		global $_PAR;
 		if (!is_array($_PAR)) $_PAR = array();
 		foreach (array_merge($_POST, $_GET, $_PAR) as $k => $v)
-			if (ereg("^id", $k) && ($v !='' && !is_numeric($v))) throw new IntegerRequiredException("it can be a SQL injection try!");
+			if (ereg("^id", $k) && !is_numeric($v)) throw new IntegerRequiredException("it can be a SQL injection try!");
 		
 		self::$form = array();
 		
@@ -95,7 +95,7 @@ class Post
 	*
 	* @return	int
 	*/
-	public function getTipo(){
+	public static function getTipo(){
 		return self::$tipo;
 	}
 
@@ -104,7 +104,7 @@ class Post
 	*
 	* @return	array
 	*/
-	public function getErros(){
+	public static function getErros(){
 		return self::$erros;
 	}
 	
@@ -114,7 +114,7 @@ class Post
 	* @param	string	$c		Form field name
 	* @return	string
 	*/
-	public function getVal($c){
+	public static function getVal($c){
 		if (isset(self::$form[$c])) return self::$form[$c];
 	}
 	
@@ -123,7 +123,7 @@ class Post
 	*
 	* @return	void
 	*/
-	public function load($obj, $prefix='')
+	public static function load($obj, $prefix='')
 	{
 		if (is_object($obj)) foreach (get_object_vars($obj) as $c => $v) self::setVal(@$prefix[$c] . $c, $v);
 	}
@@ -135,7 +135,7 @@ class Post
 	* @param	string	$v		Form field value
 	* @return	void
 	*/
-	public function setVal($c,$v)
+	public static function setVal($c,$v)
 	{
 		self::$form[$c] = $v;
 	}
@@ -145,7 +145,7 @@ class Post
 	*
 	* @return	string
 	*/
-	public function renderMsg(){
+	public static function renderMsg(){
 		$tmp = '';
 		switch (self::$tipo){
 			case POST_OK:
@@ -177,7 +177,7 @@ class Post
 	* @param	array	$erros		Errors array
 	* @return	void
 	*/
-	public function setErros($mensagem, $erros=''){
+	public static function setErros($mensagem, $erros=''){
 		if ($erros=='') $erros = array();
 		if (!is_array($erros)) throw (new ArrayRequiredException($erros));
 		
@@ -205,7 +205,7 @@ class Post
 	* @param	string	$redirec	Redirect URL encoded with Link class
 	* @return	void
 	*/
-	public function setSucesso($mensagem, $redirect=false){
+	public static function setSucesso($mensagem, $redirect=false){
 		$mensagem = e($mensagem);
 	
 		if (ajax){
@@ -226,7 +226,7 @@ class Post
 	* @param	string	$class 		Optional class name, if not given the atual controller will be used as class
 	* @return	object (DTO)
 	*/
-	public function &makeObject($class=''){
+	public static function &makeObject($class=''){
 		if ($class == '') $class = ucfirst(controller);
 		if (class_exists($class)){
 			$obj = new $class;

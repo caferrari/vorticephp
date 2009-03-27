@@ -50,7 +50,7 @@ class DTO
 	*
 	* @return	void
 	*/
-	public function escape(){
+	public static function escape(){
 		if(function_exists("get_magic_quotes_gpc") && get_magic_quotes_gpc()) return;
 		foreach (get_object_vars($this) as $p) $this->$p = addslashes($this->$p);
 	}
@@ -60,7 +60,7 @@ class DTO
 	*
 	* @return	void
 	*/
-	public function unescape(){
+	public static function unescape(){
 		foreach (get_object_vars($this) as $p) $this->$p = stripslashes($this->$p);
 	}
 	

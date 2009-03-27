@@ -29,7 +29,7 @@ class Route{
 	* @return	string
 	* @static
 	*/
-	public function add($er, $ac, $pars=''){
+	public static function add($er, $ac, $pars=''){
 		self::$routes[] = array("er" => $er, "ac" => $ac, "pars" => $pars);
 	}
 	
@@ -39,7 +39,7 @@ class Route{
 	* @return	string
 	* @static
 	*/
-	public function exec(){
+	public static function exec(){
 		foreach (self::$routes as $r){
 			if (ereg($r['er'], uri, $match)){
 				$p = $r['pars'];
