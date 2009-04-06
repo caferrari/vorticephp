@@ -61,7 +61,7 @@ class Json{
 	* @param	string	$mensagem	Status message
 	* @return	bool
 	*/
-	public static function set($status, $mensagem=""){
+	public function set($status, $mensagem=""){
 		$this->getInstance();
 		$this->json["status"] = $status;
 		if ($mensagem!="") $this->json["mensagem"] = $mensagem;
@@ -75,7 +75,7 @@ class Json{
 	* @param	mixed	$values		Package values
 	* @return	void
 	*/
-	public static function addDAO($name, $values){
+	public function addDAO($name, $values){
 		$this->json["pacotes"][$name] = $values;
 	}
 	
@@ -85,7 +85,7 @@ class Json{
 	* @param	mixed	$pct		Package
 	* @return	void
 	*/
-	public static function addPacote($pct){
+	public function addPacote($pct){
 		$this->json["pacotes"][] = $pct;
 	}
 	
@@ -94,7 +94,7 @@ class Json{
 	*
 	* @return	string
 	*/
-	public static function render(){
+	public function render(){
 		foreach (DAO::getAll() as $k => $p) $this->addDAO($k, $p);
 		return json_encode($this->json);
 	}

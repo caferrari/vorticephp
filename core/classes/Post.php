@@ -64,7 +64,7 @@ class Post
 		global $_PAR;
 		if (!is_array($_PAR)) $_PAR = array();
 		foreach (array_merge($_POST, $_GET, $_PAR) as $k => $v)
-			if (ereg("^id", $k) && !is_numeric($v)) throw new IntegerRequiredException("it can be a SQL injection try!");
+			if ($v!='' && ereg("^id", $k) && !is_numeric($v)) throw new IntegerRequiredException("it can be a SQL injection try!");
 		
 		self::$form = array();
 		
@@ -125,7 +125,7 @@ class Post
 	*/
 	public static function load($obj, $prefix='')
 	{
-		if (is_object($obj)) foreach (get_object_vars($obj) as $c => $v) self::setVal(@$prefix[$c] . $c, $v);
+		if (is_object($obj)) foreach (get_object_vars($obj) as $c => $v) self::setVal((isset($prefix[$c]) ? $prefix[$c] : '') . $c, stripslashes($v));
 	}
 	
 	/**
