@@ -190,6 +190,7 @@ class Post
 			$json->addDAO("errors", $erros);
 			foreach(DAO::getAll() as $k => $d)
 				$json->addDAO($k, $d);
+			die($json->render());
 		}else{
 			Session::set('form_erros', serialize($erros));
 			Session::set('form_tipo', POST_ERRO);
