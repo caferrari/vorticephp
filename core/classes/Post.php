@@ -184,7 +184,7 @@ class Post
 		foreach($erros as $k => $v) is_array($erros[$k]) ? $erros[$k][1] = e($v[1]) : $erros[$k] = e($v);
 		$mensagem = e($mensagem);
 		
-		if (ajax){
+		if (ajax || !isset($_SERVER['HTTP_REFERER'])){
 			$json = Json::getInstance();
 			$json->set(0, $mensagem);
 			$json->addDAO("errors", $erros);
