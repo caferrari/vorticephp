@@ -71,7 +71,8 @@ class ExemploController {
 		else
 		{
 			Template::setVar('area', 'Alterar Item');
-			$rs = ExemploDAO::select(new Exemplo($id));
+			$rs = ExemploDAO::select($id);
+			
 			Post::setVal("id", $id);
 			Post::setVal("sigla", $rs->sigla);
 			Post::setVal("nome", $rs->nome);

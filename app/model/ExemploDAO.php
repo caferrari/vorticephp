@@ -21,7 +21,7 @@ class ExemploDAO extends DAO {
 	public function insert($dto){
 		$sql = "INSERT INTO orgaos (sigla, nome)
 				VALUES ('{$dto->sigla}', '{$dto->nome}')";
-		return Banco::getInstance()->executar($sql);
+		return Database::getInstance()->exec($sql);
 	}
 	
 	/**
@@ -32,7 +32,7 @@ class ExemploDAO extends DAO {
 	*/
 	public function update($dto){
 		$sql = "UPDATE orgaos SET sigla = '{$dto->sigla}', nome = '{$dto->nome}' WHERE id = {$dto->id}";
-		return Banco::getInstance()->executar($sql);
+		return Database::getInstance()->exec($sql);
 	}
 	
 	/**
@@ -41,9 +41,9 @@ class ExemploDAO extends DAO {
 	* @param	Exemplo	$dto	Record object
 	* @return	Exemplo
 	*/
-	public function select($dto){
-		$sql = "SELECT * FROM orgaos WHERE id = {$dto->id}";
-		return Reflect::createObject($sql);
+	public function select($id){
+		$sql = "SELECT * FROM orgaos WHERE id = $id";
+		return Database::getInstance()->queryOne($sql);
 	}
 	
 	/**
@@ -53,7 +53,7 @@ class ExemploDAO extends DAO {
 	* @return	void
 	*/
 	public function delete($dto){
-		Banco::getInstance()->executar("DELETE FROM orgaos WHERE id={$dto->id}");
+		Database::getInstance()->exec("DELETE FROM orgaos WHERE id={$dto->id}");
 	}
 	
 	/**
@@ -63,7 +63,7 @@ class ExemploDAO extends DAO {
 	*/
 	public function getList(){
 		$sql = "SELECT o.* FROM orgaos o ORDER BY o.nome";
-		return Reflect::createArray($sql);
+		return Database::getInstance()->query($sql);
 	}
 }
 ?>
