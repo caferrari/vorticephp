@@ -13,15 +13,14 @@ class Database
 	private $connected = false;
 	private $bd_str = array(
 		'mysql:dbname=%dbase;host=%host',
-		'pgsql:host=%host port=5432 dbname=%dbase user=%user password=%pass',
+		'pgsql:dbname=%dbase;user=%user;password=%pass;host=%host',
 		'mssql:host=%host;dbname=%dbase',
 		'sybase:host=%host;dbname=%dbase'
 	);
 
-	private function __construct()
-	{
+	private $prepared = array();
 
-	}
+	private function __construct(){}
 
 	public static function getInstance($name="default")
 	{
@@ -30,7 +29,6 @@ class Database
 		return self::$instances[$name];
 	}
 
-	
 	public function init($host='', $user='', $pass='', $database='', $type=0)
 	{
 		$this->pars = array(
@@ -50,28 +48,33 @@ class Database
 		foreach ($this->pars as $k => $v)
 			$dsn = str_replace("%$k", $v, $dsn);
 		
-		switch ($this->pars['type']){
-			case 1:
-				$this->pdo = new PDO($dsn);
-				break;
-			default:
-				$this->pdo = new PDO($dsn, $this->pars['user'], $this->pars['pass']);
-				break;
+		try {
+			switch ($this->pars['type']){
+				case 1:
+					$this->pdo = new PDO($dsn);
+					break;
+				default:
+					$this->pdo = new PDO($dsn, $this->pars['user'], $this->pars['pass']);
+					break;
+			}
+		}catch (PDOException $e){
+    		die ('Connection failed: ' . $e->getMessage());
 		}
 		$this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		$this->connected = true;
-		return $this;
 	}
 
-	function &getPDO()
+	public function &getPDO()
 	{
 		return $this->pdo;
 	}
 
-	public function prepare($sql)
+	public function &prepare($sql)
 	{
 		$this->connect();
-		return $this->pdo->prepare($sql);
+		$key = md5($sql);
+		if (!isset($this->prepared[$key])) $this->prepared[$key] = $this->pdo->prepare($sql);
+		return $this->prepared[$key];
 	}
 
 	public function exec($sql)
@@ -82,14 +85,16 @@ class Database
 
 	public function query($sql, $object = "DTO")
 	{
-		$this->connect();
-		return $this->pdo->query($sql, is_object($object) ? PDO::FETCH_INTO : PDO::FETCH_CLASS, $object);
+		$query = $this->prepare($sql);
+		$query->execute();
+		return $query->fetchAll(PDO::FETCH_OBJ);
 	}
 	
 	public function queryOne($sql, $object = "DTO")
 	{
-		$this->connect();
-		return $this->query($sql, $object)->fetch();
+		$query = $this->prepare($sql);
+		$query->execute();
+		return $query->fetch(PDO::FETCH_OBJ);
 	}
 }
 
