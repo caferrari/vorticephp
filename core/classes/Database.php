@@ -96,5 +96,17 @@ class Database
 		$query->execute();
 		return $query->fetch(PDO::FETCH_OBJ);
 	}
+	
+	public function max($table='', $field='id'){
+		$sql = "SELECT max($field) as n FROM $table";
+		$query = $this->prepare($sql);
+		$query->execute();
+		$obj = $query->fetch(PDO::FETCH_OBJ);
+		return $obj->n;
+	}
+	
+	public function lastID($table){
+		return $this->max($table);
+	}
 }
 
