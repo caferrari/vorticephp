@@ -48,7 +48,7 @@ function __autoload($class)
 */
 function is_mobile(){
 	$op = strtolower(isset($_SERVER['HTTP_X_OPERAMINI_PHONE']) ? $_SERVER['HTTP_X_OPERAMINI_PHONE'] : '');
-	$ua = strtolower($_SERVER['HTTP_USER_AGENT']);
+	$ua = isset($_SERVER['HTTP_USER_AGENT']) ? strtolower($_SERVER['HTTP_USER_AGENT']) : '';
 	$ac = isset($_SERVER['HTTP_ACCEPT']) ? strtolower($_SERVER['HTTP_ACCEPT']) : '';
 	return strpos($ac, 'application/vnd.wap.xhtml+xml') !== false
 		|| $op != ''
@@ -104,7 +104,7 @@ function is_mobile(){
 * @return	boolean
 */
 function is_bot(){
-	$ua = strtolower($_SERVER['HTTP_USER_AGENT']);
+	$ua = isset($_SERVER['HTTP_USER_AGENT']) ? strtolower($_SERVER['HTTP_USER_AGENT']) : '';
 	$ip = $_SERVER['REMOTE_ADDR'];
 	return $ip == '66.249.65.39' 
 		|| strpos($ua, 'googlebot') !== false 
