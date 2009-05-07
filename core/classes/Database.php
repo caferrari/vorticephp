@@ -83,10 +83,13 @@ class Database
 		return $this->pdo->exec($sql);
 	}
 
-	public function query($sql, $object = "DTO")
+	public function query($sql, $o = "DTO")
 	{
 		$query = $this->prepare($sql);
-		$query->execute();
+		if (is_array($o))
+			$query->execute($o);
+		else
+			$query->execute();
 		return $query->fetchAll(PDO::FETCH_OBJ);
 	}
 	

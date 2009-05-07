@@ -49,7 +49,7 @@ function __autoload($class)
 function is_mobile(){
 	$op = strtolower(isset($_SERVER['HTTP_X_OPERAMINI_PHONE']) ? $_SERVER['HTTP_X_OPERAMINI_PHONE'] : '');
 	$ua = strtolower($_SERVER['HTTP_USER_AGENT']);
-	$ac = strtolower($_SERVER['HTTP_ACCEPT']);
+	$ac = isset($_SERVER['HTTP_ACCEPT']) ? strtolower($_SERVER['HTTP_ACCEPT']) : '';
 	return strpos($ac, 'application/vnd.wap.xhtml+xml') !== false
 		|| $op != ''
 		|| strpos($ua, 'iphone') !== false
