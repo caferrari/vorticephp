@@ -98,9 +98,8 @@ class Link{
 	*/
 	static function criaLink($pagina='', $parametros=''){
 		if (!ereg("^([a-z\-]+\+)?([a-z\-]+)(:[a-z\-]+)?$", $pagina)){
-			$tmp = rootvirtual;
 			if (request_lang != default_lang) return rootvirtual . request_lang . "/$pagina";
-			else return rootvirtual . "$pagina";
+			return rootvirtual . "$pagina";
 		}
 		$pagina = preg_split("/[:\+]/", $pagina);
 
@@ -126,8 +125,8 @@ class Link{
 		$link = (function_exists("link_encode")) ? link_encode($url) : Link::default_encode($url);
 		if (request_lang != default_lang)
 			return rootvirtual . request_lang . "/$link";
-		else
-			return rootvirtual . "$link";
+		
+		return rootvirtual . "$link";
 	}
 	
 	/**
@@ -139,8 +138,7 @@ class Link{
 	static function translate_uri(){
 		$q = $_SERVER["REQUEST_URI"];
 		if (rootvirtual != "/") $q = ereg_replace("^".rootvirtual, "", $q);
-		$q = ereg_replace("^/", "", $q);
-		$q = ereg_replace("/$", "", $q);
+		$q = ereg_replace("^/|/$", "", $q);
 		$tmp = explode("/", $q);
 		if ($tmp[0] != ''){
 			if (ereg("^([a-z]{2}|[a-z]{2}-[a-z]{2})$", $tmp[0]) && !file_exists(rootfisico . "app/controller/" . ucfirst($tmp[0])."Controller.php") && !is_dir(rootfisico . "app/modules/{$tmp[0]}")){
@@ -151,9 +149,7 @@ class Link{
 					header("Location: " . rootvirtual . $q , true, 301);
 					die();
 				}
-			}else{
-				$q = implode("/", $tmp);
-			}
+			}else $q = implode("/", $tmp);
 		}
 		define("uri", urldecode($q));
 		if (!defined("request_lang")) define("request_lang", default_lang);

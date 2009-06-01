@@ -77,9 +77,13 @@ class Database
 		return $this->prepared[$key];
 	}
 
-	public function exec($sql)
+	public function exec($sql, $pars=false)
 	{
 		$this->connect();
+		if ($pars){
+			$query = $this->prepare($sql);
+			return $query->execute($pars);
+		}
 		return $this->pdo->exec($sql);
 	}
 
@@ -111,5 +115,18 @@ class Database
 	public function lastID($table){
 		return $this->max($table);
 	}
+	
+	public function begin(){
+		$this->pdo->exec("BEGIN;");
+	}
+	
+	public function commit(){
+		$this->pdo->exec("COMMIT;");
+	}
+	
+	public function rollback(){
+		$this->pdo->exec("ROLLBACK;");
+	}
+
 }
 

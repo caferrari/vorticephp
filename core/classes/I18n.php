@@ -109,7 +109,7 @@ class I18n{
 					header("Location: " . rootvirtual . "$tmp/" . uri , true, 301) and exit();
 				}
 			}
-		}
+		}else return;
 
 		if (!in_array(request_lang, $av_lang)) throw (new TranslationNotFoundException(request_lang));
 		$active = request_lang;
@@ -153,7 +153,7 @@ class I18n{
 	* @return	string
 	*/
 	public static function translate(&$content){
-		preg_match_all("|\{{([^\}]+)\}}|", $content, $mat,PREG_SET_ORDER);
+		preg_match_all("|\{{([^\}]+)\}}|", $content, $mat, PREG_SET_ORDER);
 		foreach($mat as $mat)
 			$content = str_replace($mat[0], self::e($mat[1]), $content);
 		return $content;
