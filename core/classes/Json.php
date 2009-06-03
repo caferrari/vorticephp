@@ -40,6 +40,7 @@ class Json{
 		$this->json = array(
 			"status" => 1,
 			"mensagem" => "",
+			"errors" => array(),
 			"pacotes" => array()
 		);
 	}
@@ -61,9 +62,11 @@ class Json{
 	* @param	string	$mensagem	Status message
 	* @return	bool
 	*/
-	public function set($status, $mensagem=""){
+	public function set($status, $mensagem="", $errors=""){
+		if ($errors == "") $errors = array();
 		$this->getInstance();
 		$this->json["status"] = $status;
+		$this->json["errors"] = $errors;
 		if ($mensagem!="") $this->json["mensagem"] = $mensagem;
 		return true;	
 	}

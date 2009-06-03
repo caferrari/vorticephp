@@ -50,7 +50,7 @@ class Database
 		
 		try {
 			switch ($this->pars['type']){
-				case 1:
+				case BD_PGSQL:
 					$this->pdo = new PDO($dsn);
 					break;
 				default:

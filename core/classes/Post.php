@@ -184,10 +184,16 @@ class Post
 		foreach($erros as $k => $v) is_array($erros[$k]) ? $erros[$k][1] = e($v[1]) : $erros[$k] = e($v);
 		$mensagem = e($mensagem);
 		
-		if (ajax || !isset($_SERVER['HTTP_REFERER'])){
+		if (ajax || !isset($_SERVER['HTTP_REFERER']) || Template::$rendermode == 'json'){
+			$tmp = array();
+			foreach ($erros as $k => $v){
+				$o = new DAO();
+				$o->key = $k;
+				$o->value = $v;
+				$tmp[] = $o;
+			}
 			$json = Json::getInstance();
-			$json->set(0, $mensagem);
-			$json->addDAO("errors", $erros);
+			$json->set(0, $mensagem, $tmp);
 			foreach(DAO::getAll() as $k => $d)
 				$json->addDAO($k, $d);
 			die($json->render());
