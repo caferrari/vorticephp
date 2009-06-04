@@ -33,7 +33,7 @@ class Post
 	* Error/Sucess message
 	*
 	* @staticvar	string
-	* @access		private
+	* @access		public
 	*/
 	public static $mensagem = '';
 	
@@ -41,9 +41,17 @@ class Post
 	* Message type
 	*
 	* @staticvar	int
-	* @access	private
+	* @access	public
 	*/
 	public static $tipo;
+	
+	/**
+	* Have data sent back via post error?
+	*
+	* @staticvar	bool
+	* @access	public
+	*/
+	public static $hasData = false;
 	
 	/**
 	* Constructor
@@ -68,11 +76,12 @@ class Post
 		
 		self::$form = array();
 		
-		if (Session::get("form_val")){
-			$tmp = unserialize(Session::get("form_val"));
-			self::$form = is_array($tmp) ? $tmp : array();
-		}
-	
+		
+		$tmp = unserialize(Session::get("form_val"));
+		self::$form = is_array($tmp) ? $tmp : array();
+		if (count($tmp) != '')
+			self::$hasData = true;
+			
 		$tmp = @unserialize(Session::get('form_erros'));
 		self::$erros = (is_array($tmp) && count($tmp) > 0) ? $tmp : "";
 		
@@ -119,11 +128,22 @@ class Post
 	}
 	
 	/**
-	* Load a object as post data
+	* Load a object as post data if dont have data sent back by a post error
 	*
 	* @return	void
 	*/
 	public static function load($obj, $prefix='')
+	{
+		if (self::$hasData) return;
+		if (is_object($obj)) foreach (get_object_vars($obj) as $c => $v) self::setVal((isset($prefix[$c]) ? $prefix[$c] : '') . $c, stripslashes($v));
+	}
+	
+	/**
+	* Load a object as post data forced!
+	*
+	* @return	void
+	*/
+	public static function forceLoad($obj, $prefix='')
 	{
 		if (is_object($obj)) foreach (get_object_vars($obj) as $c => $v) self::setVal((isset($prefix[$c]) ? $prefix[$c] : '') . $c, stripslashes($v));
 	}
