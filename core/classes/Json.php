@@ -29,7 +29,7 @@ class Json{
 	* @access		private
 	* @static
 	*/
-	static $instancia = false;
+	static $instance = false;
 	
 	/**
 	* Constructor, Initialize the Json object
@@ -39,9 +39,9 @@ class Json{
 	private function __construct(){
 		$this->json = array(
 			"status" => 1,
-			"mensagem" => "",
+			"message" => "",
 			"errors" => array(),
-			"pacotes" => array()
+			"packages" => array()
 		);
 	}
 	
@@ -51,8 +51,8 @@ class Json{
 	* @return	Json
 	*/
 	public static function getInstance(){
-		if (!self::$instancia) self::$instancia = new self();
-		return self::$instancia;
+		if (!self::$instance) self::$instance = new self();
+		return self::$instance;
 	}
 	
 	/**
@@ -62,12 +62,12 @@ class Json{
 	* @param	string	$mensagem	Status message
 	* @return	bool
 	*/
-	public function set($status, $mensagem="", $errors=""){
+	public function set($status, $message="", $errors=""){
 		if ($errors == "") $errors = array();
 		$this->getInstance();
 		$this->json["status"] = $status;
 		$this->json["errors"] = $errors;
-		if ($mensagem!="") $this->json["mensagem"] = $mensagem;
+		if ($message!="") $this->json["message"] = $message;
 		return true;	
 	}
 	
@@ -78,18 +78,8 @@ class Json{
 	* @param	mixed	$values		Package values
 	* @return	void
 	*/
-	public function addDAO($name, $values){
-		$this->json["pacotes"][$name] = $values;
-	}
-	
-	/**
-	* Add data package
-	*
-	* @param	mixed	$pct		Package
-	* @return	void
-	*/
-	public function addPacote($pct){
-		$this->json["pacotes"][] = $pct;
+	public function addPackage($name, $values){
+		$this->json["packages"][$name] = $values;
 	}
 	
 	/**

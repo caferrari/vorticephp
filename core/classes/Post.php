@@ -206,16 +206,12 @@ class Post
 		
 		if (ajax || !isset($_SERVER['HTTP_REFERER']) || Template::$rendermode == 'json'){
 			$tmp = array();
-			foreach ($erros as $k => $v){
-				$o = new DAO();
-				$o->key = $k;
-				$o->value = $v;
-				$tmp[] = $o;
-			}
+			foreach ($erros as $k => $v)
+				$tmp[] = array("key" => $k, "value" => $v);
 			$json = Json::getInstance();
 			$json->set(0, $mensagem, $tmp);
 			foreach(DAO::getAll() as $k => $d)
-				$json->addDAO($k, $d);
+				$json->addPackage($k, $d);
 			die($json->render());
 		}else{
 			Session::set('form_erros', serialize($erros));
@@ -238,7 +234,7 @@ class Post
 		if (ajax){
 			$json = Json::getInstance();
 			foreach(DAO::getAll() as $k => $d)
-				$json->addDAO($k, $d);
+				$json->addPackage($k, $d);
 			$json->set(1, $mensagem);
 		}else{
 			Session::set('form_tipo', POST_OK);

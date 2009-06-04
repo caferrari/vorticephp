@@ -150,7 +150,7 @@ function redirect($destino="", $delay=0){
 	//if (!ereg("^/", $destino) && !ereg("^http://", $destino)) $destino = "/$destino";
 	if (ajax){
 		$json = Json::getInstance();
-		$json->addPacote(array("redirect", $destino, $delay));
+		$json->addPackage("redirect", array($destino, $delay));
 		die($json->render());
 	}else
 		die ("<html><head><meta http-equiv=\"refresh\" content=\"$delay;URL=$destino\"></head><body></body></html>");
