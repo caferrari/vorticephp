@@ -405,7 +405,7 @@ class Template{
 		I18n::translate($meio);
 		
 		self::$conteudo = ob_get_clean();
-		self::$conteudo = str_replace("<!--conteudo-->", $meio, self::$conteudo);	
+		self::$conteudo = self::$semtemplate ? $meio : str_replace("<!--conteudo-->", $meio, self::$conteudo);
 		self::setVar("rootsite", self::$rootsite);		
 		
 		self::mergeVars();
