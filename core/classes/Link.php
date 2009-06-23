@@ -193,7 +193,9 @@ class Link{
 				$controller = $url[0];
 				$action = $url[1];
 			}else{
-				if ($url[0]{0} == ".")
+				if (is_dir(rootfisico . "app/modules/" . $url[0]))
+					$module = $url[0];
+				elseif ($url[0]{0} == ".")
 					$action = $url[0];
 				else
 					$controller = $url[0];
@@ -229,7 +231,7 @@ class Link{
 		
 		if ($action=='') $action = default_action;
 		if ($controller=='') $controller = default_controller;
-		
+
 		define ("module", $module);
 		define ("controller", $controller);
 		define ("action", $action);

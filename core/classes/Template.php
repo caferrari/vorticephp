@@ -430,7 +430,7 @@ class Template{
 					return self::$conteudo;
 				break;
 			case "json":
-					//header('Content-type: application/json');
+					header('Content-type: application/json');
 					return json_encode(DAO::getAll());
 				break;
 			case "serial":
@@ -465,7 +465,6 @@ class Template{
 	* @return	string
 	*/
 	public function executar($view, $action, $controller, $module=false){
-		
 		if (!self::$masterload && file_exists("app/controller/MasterController.php") && class_exists("MasterController")){
 			$obj = new MasterController();
 			$t = self::$tpl;
@@ -497,8 +496,10 @@ class Template{
 		}
 		
 		$v = $view ? "$c/$view" : self::getView();
-		if (file_exists(rootfisico . "app/view/$v.php")){
-			include rootfisico . "app/view/$v.php";
+		$vpath = rootfisico . (module ? "app/modules/" . module . "/view/$v.php" : "app/view/$v.php");
+		
+		if (file_exists($vpath)){
+			include $vpath;
 			return ob_get_clean();
 		}
 	}

@@ -32,8 +32,7 @@ function __autoload($class)
     
 	if (defined("module")){
 		$m = module;
-		$folders[] = "app/modules/$m/model/";
-		$folders[] = "app/modules/$m/controller/";
+		array_unshift($folders, "app/modules/$m/model/", "app/modules/$m/controller/");
 	}
 
 	foreach ($folders as $f)
