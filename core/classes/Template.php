@@ -485,8 +485,13 @@ class Template{
 		}
 		else throw (new ControllerNotFoundException($controller));
 		
+		$_ref =& DAO::getAll();
+		foreach ($_ref as $k => &$v)
+			$$k = $v;
+		unset($_ref);
+				
 		ob_start();
-		
+				
 		if (mobile){
 			$v = $view ? "$c/mobile.$view" : self::getView("mobile.");
 			if (file_exists(rootfisico . "app/view/$v.php")){

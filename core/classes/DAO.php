@@ -37,7 +37,7 @@ class DAO
 	*
 	* @return	array
 	*/
-	public function getAll(){
+	public function &getAll(){
 		return self::$rs;
 	}
 	
