@@ -88,7 +88,7 @@ class Json{
 	* @return	string
 	*/
 	public function render(){
-		foreach (DAO::getAll() as $k => $p) $this->addDAO($k, $p);
+		foreach (DAO::getAll() as $k => $p) $this->addPackage($k, $p);
 		return json_encode($this->json);
 	}
 }
