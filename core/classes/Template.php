@@ -269,13 +269,14 @@ class Template{
 				while (false !== ($file = readdir($handle))) {
 					$nome = explode(".", $file);
 					if (count($nome) > 1 && $nome[count($nome)-1] == 'css'){
+						$mtime = filemtime(rootfisico . "$dir/$file");
 						if (strstr($nome[0], "mobile"))
-							$tmp["mobile"][] = "<link href=\"" . rootvirtual . "$dir/$file\" rel=\"stylesheet\" media=\"all\" />";
+							$tmp["mobile"][] = "<link href=\"" . rootvirtual . "$dir/$file?$mtime\" rel=\"stylesheet\" media=\"all\" />";
 						else
 							if (strstr($nome[0], "print"))
-								$tmp["print"][] = "<link href=\"" . rootvirtual . "$dir/$file\" rel=\"stylesheet\" media=\"print\" />";
+								$tmp["print"][] = "<link href=\"" . rootvirtual . "$dir/$file?$mtime\" rel=\"stylesheet\" media=\"print\" />";
 							else
-								$tmp["screen"][] = "<link href=\"" . rootvirtual . "$dir/$file\" rel=\"stylesheet\" media=\"screen\" />";
+								$tmp["screen"][] = "<link href=\"" . rootvirtual . "$dir/$file?$mtime\" rel=\"stylesheet\" media=\"screen\" />";
 					}
 				}
 				closedir($handle);
@@ -317,31 +318,33 @@ class Template{
 	}
 	
 	/**
-	* Read and make all Link for the template scripts
-	* @return	void
-	*/
-	protected function geraJs(){
-		$pasta = self::$tpl;
+	* Load the JS files inside a dir
+	* @param	string	$dir	path
+	* @return	string
+	*/	
+	protected function loadJsDir($dir){
 		$tmp = array();
-		if (is_dir(rootfisico . "js"))
-			if ($handle = opendir(rootfisico . "js")){
+		if (is_dir(rootfisico . $dir))
+			if ($handle = opendir(rootfisico . $dir)){
 				while (false !== ($file = readdir($handle))) {
-					$nome = explode(".", $file);
-					if (count($nome) > 1 && $nome[count($nome)-1] == 'js') $tmp[] = "<script type=\"text/javascript\" src=\"" . self::$rootsite . "js/$file\"></script>";
-				}
-				closedir($handle);
-			}
-		
-		if (is_dir("templates/$pasta/js"))
-			if ($handle = opendir("templates/$pasta/js")){
-				while (false !== ($file = readdir($handle))) {
-					$nome = explode(".", $file);
-					if (count($nome) == 2 && $nome[1] == 'js') $tmp[] = "<script type=\"text/javascript\" src=\"" . self::$rootsite . "templates/$pasta/js/$file\"></script>";
+					$mtime = filemtime(rootfisico . "$dir/$file");
+					if (ereg("\.js$", $file)) $tmp[] = "<script type=\"text/javascript\" src=\"" . self::$rootsite . "$dir/$file?$mtime\"></script>";
 				}
 				closedir($handle);
 			}
 		sort($tmp);
 		return implode("\r\n\t", $tmp);
+	}
+	
+	/**
+	* Read and make all Link for the template scripts
+	* @return	void
+	*/
+	protected function geraJs(){
+		$pasta = self::$tpl;
+		$tmp = self::loadJsDir("js");
+		$tmp .= self::loadJsDir("templates/$pasta/js");
+		return $tmp;
 	}
 	
 	/**
@@ -379,7 +382,7 @@ class Template{
 	* @return	string
 	*/
 	public static function render(){
-		$meio = Template::executar(false, action, controller, module);
+		$meio = Template::execute(false, action, controller, module);
 
 		if (!self::$tpl)  throw(new NoTemplatesLoadedException());
 		$pasta = self::$tpl;
@@ -445,15 +448,15 @@ class Template{
 	}
 	
 	/**
-	* Alias for executar method
+	* Alias for execute method
 	* @param	string	$view
 	* @param	string	$action
 	* @param	string	$controller	
 	* @param	string	$module
 	* @return	string
 	*/
-	public static function execute($view, $action, $controller, $module=false){
-		return self::executar($view, $action, $controller, $module);
+	public static function executar($view, $action, $controller, $module=false){
+		return self::execute($view, $action, $controller, $module);
 	}
 	
 	/**
@@ -464,7 +467,7 @@ class Template{
 	* @param	string	$module
 	* @return	string
 	*/
-	public function executar($view, $action, $controller, $module=false){
+	public function execute($view, $action, $controller, $module=false){
 		if (!self::$masterload && file_exists("app/controller/MasterController.php") && class_exists("MasterController")){
 			$obj = new MasterController();
 			$t = self::$tpl;
