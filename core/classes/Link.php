@@ -180,7 +180,10 @@ class Link{
 		$module = false;
 		$controller = '';
 		$action = '';
-		if (@$q->url != ''){
+
+		$q->url = isset($q->url) ? $q->url : '';
+
+		if ($q->url != ''){
 			$url = explode("+", $q->url);
 			if (count($url)==2){
 				$module = $url[0];

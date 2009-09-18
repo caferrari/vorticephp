@@ -8,7 +8,7 @@
  * DTO class, Base for records objects
  *
  * @version	1
- * @package	Framework
+ * @package	Database
  * @author	Luan Almeida <luanlmd@gmail.com>
  */
 class DTO 

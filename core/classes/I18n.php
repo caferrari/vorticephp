@@ -33,7 +33,7 @@ class I18n{
 	private function load_conf($file){
 		$ar = self::$dic;
 		
-		$content = explode("\n", @file_get_contents(rootfisico . $file));
+		$content = explode("\n", file_exists(rootfisico . $file) ? file_get_contents(rootfisico . $file) : "");
 		$key = false;
 		foreach($content as $i){
 			$i = trim($i);
