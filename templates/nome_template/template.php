@@ -29,6 +29,7 @@
 	<ul id="lang">
 		<li><a href="<?= rootvirtual . uri ?>" lang="<?=default_lang?>"><?=default_lang?></a></li>
 		<li><a href="<?= rootvirtual ?>en/<?= uri ?>" lang="en">en</a></li>
+		<li><a href="<?= rootvirtual ?>jp/<?= uri ?>" lang="jp">日本語</a></li>
 	</ul>
 	<div id="topo">
 		<h1><a class="hidetxt" href="<? echo rootvirtual . request_lang ?>" title="{{Página inicial}}">{{Exemplo de Sistema}}</a></h1>

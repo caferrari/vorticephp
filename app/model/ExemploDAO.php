@@ -20,8 +20,9 @@ class ExemploDAO extends DAO {
 	*/
 	public function insert($dto){
 		$sql = "INSERT INTO orgaos (sigla, nome)
-				VALUES ('{$dto->sigla}', '{$dto->nome}')";
-		return Database::getInstance()->exec($sql);
+				VALUES (?, ?)";
+		$args = array($dto->sigla, $dto->nome);
+		return Database::getInstance()->exec($sql, $args);
 	}
 	
 	/**
@@ -31,8 +32,9 @@ class ExemploDAO extends DAO {
 	* @return	void
 	*/
 	public function update($dto){
-		$sql = "UPDATE orgaos SET sigla = '{$dto->sigla}', nome = '{$dto->nome}' WHERE id = {$dto->id}";
-		return Database::getInstance()->exec($sql);
+		$sql = "UPDATE orgaos SET sigla=?, nome=? WHERE id=?";
+		$args = array($dto->sigla, $dto->nome, $dto->id);
+		return Database::getInstance()->exec($sql, $args);
 	}
 	
 	/**
@@ -41,8 +43,8 @@ class ExemploDAO extends DAO {
 	* @param	Exemplo	$dto	Record object
 	* @return	Exemplo
 	*/
-	public function select($id){
-		$sql = "SELECT * FROM orgaos WHERE id = $id";
+	public function get($id){
+		$sql = "SELECT * FROM orgaos WHERE id=$id";
 		return Database::getInstance()->queryOne($sql);
 	}
 	
@@ -52,8 +54,9 @@ class ExemploDAO extends DAO {
 	* @param	Exemplo	$dto	Record object
 	* @return	void
 	*/
-	public function delete($dto){
-		Database::getInstance()->exec("DELETE FROM orgaos WHERE id={$dto->id}");
+	public function delete($id){
+		$args = array($id);
+		Database::getInstance()->exec("DELETE FROM orgaos WHERE id=?", $args);
 	}
 	
 	/**

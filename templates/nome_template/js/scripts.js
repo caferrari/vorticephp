@@ -1,6 +1,5 @@
 $(document).ready(function() {
 	$('td').autoHover();
-	$("ul.checkbox").hideChecks();
 	$("a.confirm").confirmDialog(
 		function (item, json)
 		{ 
@@ -12,7 +11,7 @@ $(document).ready(function() {
 		}
 	);
 	
-	window.setTimeout("$('#mensagem').fadeOut(\"slow\")", 10000);
+	window.setTimeout("$('#mensagem').fadeOut(\"slow\")", 5000);
 
 	/*
 	$("#conteudo a").live("click", function(){

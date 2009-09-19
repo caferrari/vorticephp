@@ -15,17 +15,14 @@
 <ul class="submenu">
 	<li>[<a href="<?= new Link("exemplo:adicionar") ?>">{{Adicionar novo Item}}</a>]</li>
 </ul>
-<?
-$exemplo = DAO::get();
-?>
-<? if (count($exemplo)){ ?>
+<? if (count($itens)){ ?>
 <table width="100%">
 	<tr>
 		<th width="100">{{Sigla}}</th>
 		<th>{{Nome}}</th>
 		<th width="100">{{Ações}}</th>
 	</tr>
-	<? foreach($exemplo as $o){ ?>
+	<? foreach($itens as $o){ ?>
 	<tr class="item">
 		<td><?= $o->sigla ?></a></td>
 		<td><?= $o->nome ?></td>

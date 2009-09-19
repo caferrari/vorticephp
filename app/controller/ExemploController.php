@@ -9,7 +9,7 @@
  * @package SampleApp
  * @subpackage Controller
  */
-class ExemploController {
+class ExemploController extends Controller{
 
 	/**
 	* Execute the action /exemplo
@@ -17,7 +17,7 @@ class ExemploController {
 	* @return	void
 	*/
 	public function index(){
-		DAO::add(ExemploDAO::getList());
+		$this->itens = ExemploDAO::getList();
 	}
 	
 	/**
@@ -34,7 +34,7 @@ class ExemploController {
 			
 			if ($sigla=='') $erros[] = "Digite a sigla do item";
 			if ($nome=='') $erros[] = "Digite o nome do item";
-			if (count($erros)==0)
+			if (!count($erros))
 			{
 				ExemploDAO::insert(new Exemplo(NULL, $nome, $sigla));
 				Post::setSucesso("Item adicionado com sucesso!", new Link("exemplo"));
@@ -60,7 +60,7 @@ class ExemploController {
 			
 			if ($sigla=='') $erros[] = "Digite a sigla do item";
 			if ($nome=='') $erros[] = "Digite o nome do item";
-			if (count($erros)==0)
+			if (!count($erros))
 			{
 				ExemploDAO::update(new Exemplo($id, $nome, $sigla));
 				Post::setSucesso("Item alterado com sucesso!", new Link("exemplo"));
@@ -68,15 +68,10 @@ class ExemploController {
 			else
 				Post::setErros("Ocorreram os seguintes erros:", $erros);
 		}
-		else
-		{
-			Template::setVar('area', 'Alterar Item');
-			$rs = ExemploDAO::select($id);
-			
-			Post::setVal("id", $id);
-			Post::setVal("sigla", $rs->sigla);
-			Post::setVal("nome", $rs->nome);
-		}
+		
+		Template::setVar('area', 'Alterar Item');
+		Post::load(ExemploDAO::get($id));
+
 		Template::setView("adicionar");
 	}
 	
@@ -89,7 +84,7 @@ class ExemploController {
 	public function excluir(){
 		$id = p('id');
 		try {
-			ExemploDAO::delete(new Exemplo($id));
+			ExemploDAO::delete($id);
 			Post::setSucesso("Item excluido com sucesso!", new Link("exemplo"));
 		} catch (Exception $e) {
 			Post::setErros($e->getMessage());

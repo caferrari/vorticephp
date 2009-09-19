@@ -2,25 +2,6 @@
 jQuery Plugins By Carlos A. Ferrari
 */
 
-/* replace de checkbox e bloqueio de envio sem nenhum item */
-$.fn.hideChecks = function(){
-	ul = $(this)
-	$(this).find("input[@type=checkbox]").hide().each( function (){
-		$(this).parent("label:first").click( function (){
-			($(this).parent().find("input").attr("checked")) ?
-				$(this).addClass("checked") : $(this).removeClass("checked");
-			($(this).parents("form:first").find(":checkbox:checked").length == 0) ?
-				$(this).parents("form:first").find(":submit").attr("disabled", "disabled") :
-				$(this).parents("form:first").find(":submit").removeAttr("disabled");
-		}).hover(
-			function (){ $(this).parent().find("label:first").addClass("hover"); },
-			function (){ $(this).parent().find("label:first").removeClass("hover"); }
-		);
-	});
-	if ($(this).find(":checkbox:checked").length == 0) 
-		$(this).parents("form:first").find(":submit").attr("disabled", "disabled");	
-}
-
 /* Adiciona a classe Hover quando passa o mouse */
 $.fn.autoHover = function(item){
 	var i = item || ".item";
