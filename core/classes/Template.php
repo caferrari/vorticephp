@@ -352,12 +352,12 @@ class Template{
 	* @return	void
 	*/
 	protected function runPlugins(){
-		if (is_dir("app/plugins"))
-			if ($handle = opendir("app/plugins")){
+		if (is_dir(rootfisico."app/plugins"))
+			if ($handle = opendir(rootfisico."app/plugins")){
 				while (false !== ($file = readdir($handle))) {
 					$nome = explode(".", $file);
 					if (count($nome) == 2 && $nome[1] == 'php'){
-						require_once "app/plugins/$file";
+						require_once rootfisico."app/plugins/$file";
 						$classe = ucfirst($nome[0]);
 						new $classe();
 					}
