@@ -61,7 +61,7 @@ class I18n{
 		if (is_dir($dir)){
 			if ($dh = opendir($dir)) {
 				while (($file = readdir($dh)) !== false)
-				    if (ereg("([a-z\-]+)\.conf$", $file, $mat)) $t[] = $mat[1];
+				    if (preg_match("/([a-z\-]+)\.conf$/", $file, $mat)) $t[] = $mat[1];
 				closedir($dh);
 			}
 		}
@@ -81,7 +81,7 @@ class I18n{
 		$langs = $langs[1];
 		
 		foreach ($langs as $l)
-			if (ereg("([a-z]{2})-[a-z]{2}", $l, $mat))
+			if (preg_match("/([a-z]{2})-[a-z]{2}/", $l, $mat))
 				$langs[] = $mat[1];
 				
 		return $langs;

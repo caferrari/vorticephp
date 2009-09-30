@@ -40,8 +40,8 @@ class Link{
 	* @static
 	*/
 	static function default_encode($url){
-		$url = json_decode($url);
-		$pagina = $url->url;
+		$url = unserialize($url);
+		$pagina = $url["url"];
 		$pagina = explode(":", $pagina);
 		$pars = '';
 		
@@ -57,12 +57,12 @@ class Link{
 		$pagina = implode($pagina, "/");
 		
 		if (isset($url->pars)){
-			$pars = http_build_query($url->pars);
+			$pars = http_build_query($url["pars"]);
 			$pars = str_replace("=", ":", $pars);
 			$pars = str_replace("&", "/", $pars);
 		}
 		
-		return ereg_replace("/$", "", $pagina . "/" . $pars);
+		return preg_replace("/\/$/", "", $pagina . "/" . $pars);
 	}
 	
 	/**
@@ -77,14 +77,14 @@ class Link{
 		$pagina = array();
 		$partes = explode("/", $url);
 		foreach ($partes as $p)
-			if (ereg(".*:.*", $p)){
+			if (preg_match("/.*:.*/", $p)){
 				$p = explode(":", $p); 
 				$pars[$p[0]] = $p[1];
 			}else
 				$pagina[] = $p;
 		$pagina = implode($pagina, ":");
 
-		$json = json_encode(array("url" => $pagina, "pars" => $pars));
+		$json = serialize(array("url" => $pagina, "pars" => $pars));
 		return $json;
 	}
 	
@@ -97,7 +97,7 @@ class Link{
 	* @static
 	*/
 	static function criaLink($pagina='', $parametros=''){
-		if (!ereg("^([a-z\-]+\+)?([a-z\-]+)(:[a-z\-]+)?$", $pagina)){
+		if (!preg_match("/^([a-z\-]+\+)?([a-z\-]+)(:[a-z\-]+)?$/", $pagina)){
 			if (request_lang != default_lang) return rootvirtual . request_lang . "/$pagina";
 			return rootvirtual . "$pagina";
 		}
@@ -121,7 +121,7 @@ class Link{
 		parse_str(is_array($parametros) ? http_build_query($parametros) : $parametros, $p);
 		if (count($pagina)==0 || $pagina[0] == '') $pagina="";
 		else $pagina = implode(":", $pagina);
-		$url = $parametros ? json_encode(array("url" => $pagina, "pars" => $p)) : json_encode(array("url" => $pagina));
+		$url = $parametros ? serialize(array("url" => $pagina, "pars" => $p)) : serialize(array("url" => $pagina));
 		$link = (function_exists("link_encode")) ? link_encode($url) : Link::default_encode($url);
 		if (request_lang != default_lang)
 			return rootvirtual . request_lang . "/$link";
@@ -137,17 +137,17 @@ class Link{
 	*/
 	static function translate_uri(){
 		$q = $_SERVER["REQUEST_URI"];
-		if (rootvirtual != "/") $q = ereg_replace("^".rootvirtual, "", $q);
-		$q = ereg_replace("^/|/$", "", $q);
+		if (rootvirtual != "/") $q = preg_replace("/^".addcslashes(rootvirtual, "/")."/", "", $q);
+		$q = preg_replace("/^\/|\/$/", "", $q);
 		$tmp = explode("/", $q);
 		if ($tmp[0] != ''){
-			if (ereg("^([a-z]{2}|[a-z]{2}-[a-z]{2})$", $tmp[0]) && !file_exists(rootfisico . "app/controller/" . ucfirst($tmp[0])."Controller.php") && !is_dir(rootfisico . "app/modules/{$tmp[0]}")){
+			if (preg_match("/^([a-z]{2}|[a-z]{2}-[a-z]{2})$/", $tmp[0]) && !file_exists(rootfisico . "app/controller/" . ucfirst($tmp[0])."Controller.php") && !is_dir(rootfisico . "app/modules/{$tmp[0]}")){
 				define("request_lang", $tmp[0]);
 				unset($tmp[0]);
 				$q = implode("/", $tmp);
 				if (request_lang==default_lang){
 					header("Location: " . rootvirtual . $q , true, 301);
-					die();
+					exit();
 				}
 			}else $q = implode("/", $tmp);
 		}
@@ -174,17 +174,17 @@ class Link{
 					$q = '';
 				}
 			else
-				$q = json_decode(Link::default_decode($q));
+				$q = unserialize(Link::default_decode($q));
 		}
 		
 		$module = false;
 		$controller = '';
 		$action = '';
 
-		$q->url = isset($q->url) ? $q->url : '';
+		$q["url"] = isset($q["url"]) ? $q["url"] : '';
 
-		if ($q->url != ''){
-			$url = explode("+", $q->url);
+		if ($q["url"] != ''){
+			$url = explode("+", $q["url"]);
 			if (count($url)==2){
 				$module = $url[0];
 				$url = $url[1];
@@ -224,11 +224,11 @@ class Link{
 			if ($module != false) $tmpmod = "$module+";
 			if ($controller==default_controller && ($action==default_action || $action=='')){
 				header("Location: " . new Link($tmpmod . default_controller . ":" . default_action, $_PAR), true, 301);
-				die();
+				exit();
 			}
 			if ($controller!=default_controller && $action==default_action){
 				header("Location: " . new Link("{$tmpmod}{$controller}:" . default_action, $_PAR), true, 301);
-				die();
+				exit();
 			}
 		}
 		
@@ -239,8 +239,8 @@ class Link{
 		define ("controller", $controller);
 		define ("action", $action);
 		
-		if (isset($q->pars))
-			if (is_object($q->pars) || is_array($q->pars)) foreach ($q->pars as $k => $p) $_PAR[$k] = $p;
+		if (isset($q["pars"]))
+			if (is_object($q["pars"]) || is_array($q["pars"])) foreach ($q["pars"] as $k => $p) $_PAR[$k] = $p;
 	}
 	
 	/**

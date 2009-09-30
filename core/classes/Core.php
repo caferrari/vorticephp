@@ -44,7 +44,7 @@ class Core{
 		
 		if (file_exists(rootfisico . "app/funcoes.php")) include rootfisico . "app/funcoes.php";
 
-		if (!defined("rootvirtual")) define ("rootvirtual", ereg_replace("/+", "/", str_replace($_SERVER["DOCUMENT_ROOT"], "/", rootfisico)));
+		if (!defined("rootvirtual")) define ("rootvirtual", preg_replace("/\/+/", "/", str_replace($_SERVER["DOCUMENT_ROOT"], "/", rootfisico)));
 		if (!defined("default_lang")) define("default_lang", "pt-br");
 
 		Link::translate_uri();

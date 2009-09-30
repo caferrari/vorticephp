@@ -146,13 +146,12 @@ function p($v){
 * @return	void
 */
 function redirect($destino="", $delay=0){
-	//if (!ereg("^/", $destino) && !ereg("^http://", $destino)) $destino = "/$destino";
 	if (ajax){
 		$json = Json::getInstance();
 		$json->addPackage("redirect", array($destino, $delay));
-		die($json->render());
+		exit($json->render());
 	}else
-		die ("<html><head><meta http-equiv=\"refresh\" content=\"$delay;URL=$destino\"></head><body></body></html>");
+		exit("<html><head><meta http-equiv=\"refresh\" content=\"$delay;URL=$destino\"></head><body></body></html>");
 }
 
 /**

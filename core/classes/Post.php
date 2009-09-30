@@ -72,7 +72,7 @@ class Post
 		global $_PAR;
 		if (!is_array($_PAR)) $_PAR = array();
 		foreach (array_merge($_POST, $_GET, $_PAR) as $k => $v)
-			if ($v!='' && ($k=="id" || ereg("^id_", $k)) && !is_numeric($v)) throw new IntegerRequiredException("it can be a SQL injection try!");
+			if ($v!='' && ($k=="id" || preg_match("/^id_/", $k)) && !is_numeric($v)) throw new IntegerRequiredException("it can be a SQL injection try!");
 		
 		self::$form = array();
 		
@@ -212,12 +212,12 @@ class Post
 			$json->set(0, $mensagem, $tmp);
 			foreach(DAO::getAll() as $k => $d)
 				$json->addPackage($k, $d);
-			die($json->render());
+			exit($json->render());
 		}else{
 			Session::set('form_erros', serialize($erros));
 			Session::set('form_tipo', POST_ERRO);
 			Session::set('form_mensagem' , $mensagem);
-			die ("<html><head><meta http-equiv=\"refresh\" content=\"0;URL=" . $_SERVER['HTTP_REFERER'] . "\"></head><body></body></html>");
+			exit ("<html><head><meta http-equiv=\"refresh\" content=\"0;URL=" . $_SERVER['HTTP_REFERER'] . "\"></head><body></body></html>");
 		}
 	}
 	

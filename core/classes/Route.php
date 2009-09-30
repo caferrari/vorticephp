@@ -30,6 +30,7 @@ class Route{
 	* @static
 	*/
 	public static function add($er, $ac, $pars=''){
+		$er = "/" . addcslashes($er, "/") . "/";
 		self::$routes[] = array("er" => $er, "ac" => $ac, "pars" => $pars);
 	}
 	
@@ -41,10 +42,10 @@ class Route{
 	*/
 	public static function exec(){
 		foreach (self::$routes as $r){
-			if (ereg($r['er'], uri, $match)){
+			if (preg_match($r['er'], uri, $match)){
 				$p = $r['pars'];
 				for ($x=1; $x<count($match); $x++) $p = str_replace("%$x", $match[$x], $p);
-				$p = ereg_replace("%[0-9]+", "", $p);				
+				$p = preg_replace("/%[0-9]+/", "", $p);				
 				parse_str($p, $pars);
 				define ("routed", true);
 				return json_decode(json_encode(array(

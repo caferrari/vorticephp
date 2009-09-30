@@ -9,5 +9,5 @@
 * @package SampleApp
 */
  
-//Route::add("/teste/(.*)/([0-9]+)$", "noticias:exibir", "nome=%1&id=%2");
+//Route::add("teste/(.*)/([0-9]+)$", "news:show", "nome=%1&id=%2");
 ?>

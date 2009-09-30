@@ -131,7 +131,7 @@ class Template{
 		$dir = rootfisico . "templates";
 		if (is_dir($dir) && $dh = opendir($dir))
 			while (($file = readdir($dh)) !== false)
-				if (ereg("^[0-9a-z\_]+$", $file) && is_dir("$dir/$file") && file_exists("$dir/$file/template.php")) self::addTemplate($file);
+				if (preg_match("/^[0-9a-z\_]+$/", $file) && is_dir("$dir/$file") && file_exists("$dir/$file/template.php")) self::addTemplate($file);
 	}
 
 	/**
@@ -328,7 +328,7 @@ class Template{
 			if ($handle = opendir(rootfisico . $dir)){
 				while (false !== ($file = readdir($handle))) {
 					$mtime = filemtime(rootfisico . "$dir/$file");
-					if (ereg("\.js$", $file)) $tmp[] = "<script type=\"text/javascript\" src=\"" . self::$rootsite . "$dir/$file?$mtime\"></script>";
+					if (preg_match("/\.js$/", $file)) $tmp[] = "<script type=\"text/javascript\" src=\"" . self::$rootsite . "$dir/$file?$mtime\"></script>";
 				}
 				closedir($handle);
 			}
@@ -417,9 +417,8 @@ class Template{
 		I18n::translate(self::$conteudo);
 		
 		if (self::$clean){
-			self::$conteudo = ereg_replace("[[:space:]]{1,}", " ", self::$conteudo);
-			self::$conteudo = ereg_replace("[ ]+</", "</", self::$conteudo);
-			//$template = ereg_replace("> <", "><", $template);
+			self::$conteudo = preg_replace("/[[:space:]]{1,}/", " ", self::$conteudo);
+			self::$conteudo = preg_replace("/[ ]+<\//", "</", self::$conteudo);
 		}
 		
 		if (function_exists("render_" . self::$rendermode)){
