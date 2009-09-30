@@ -8,6 +8,5 @@
 * start page
 * @package Framework
 */
-define ("rootfisico", str_replace("index.php", "", __FILE__));
 include("core/core.php");
 ?>

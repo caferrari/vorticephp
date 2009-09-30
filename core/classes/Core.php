@@ -29,12 +29,15 @@ class Core{
 	public function __construct(){
 		error_reporting(E_ALL);
 		header('Content-type: text/html; charset=UTF-8');
-
+		
+		define ("windows", preg_match("/^[a-zA-Z]:/", __FILE__));
 		define ("ajax", isset($_SERVER["HTTP_X_REQUESTED_WITH"]));
 		define ("post", $_SERVER["REQUEST_METHOD"] == "POST");
 		define ("mobile", is_mobile());
 		define ("bot", is_bot());
 
+		if (!defined("rootfisico")) define ("rootfisico", str_replace("core/classes/Core.php", "", str_replace("\\", "/", __FILE__)));
+		
 		if (file_exists(rootfisico . "app/config.php")) include rootfisico . "app/config.php";
 
 		if (!defined("default_controller")) define ("default_controller", "index");
@@ -44,7 +47,7 @@ class Core{
 		
 		if (file_exists(rootfisico . "app/funcoes.php")) include rootfisico . "app/funcoes.php";
 
-		if (!defined("rootvirtual")) define ("rootvirtual", preg_replace("/\/+/", "/", str_replace($_SERVER["DOCUMENT_ROOT"], "/", rootfisico)));
+		if (!defined("rootvirtual")) define ("rootvirtual", preg_replace("/\/+/", "/", str_replace(str_replace("\\", "/", $_SERVER["DOCUMENT_ROOT"]), "/", rootfisico)));
 		if (!defined("default_lang")) define("default_lang", "pt-br");
 
 		Link::translate_uri();
