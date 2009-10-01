@@ -10,7 +10,7 @@
  * @subpackage View
  */
 ?>
-<h2><?= (action=='adicionar') ? 'Adicionar Item' : 'Editar Item';  ?></h2>
+<h2>{{<?= (action=='adicionar') ? 'Adicionar Item' : 'Editar Item';  ?>}}</h2>
 <span class="desc"><!--desc--></span>
 <fieldset>
 	<form method="post" action="<?= new Link("exemplo:" . action) ?>">

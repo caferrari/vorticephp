@@ -10,7 +10,7 @@
  * @subpackage View
  */
 ?>
-<h2>Página Inicial (Mobile)</h2>
+<h2>{{Página Inicial}} (Mobile)</h2>
 <ul id="menu-principal">
 	<li><a class="lnk1" href="<?= new Link("exemplo") ?>" title="{{Exemplo}}">{{Exemplo}}</a></li>
 </ul>

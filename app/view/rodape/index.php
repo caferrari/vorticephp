@@ -10,4 +10,4 @@
  * @subpackage View
  */
 ?>
-<div id="rodape">VorticePHP 2009</div>
+<div id="rodape">{{VorticePHP 2009}}</div>
