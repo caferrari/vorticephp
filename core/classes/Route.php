@@ -48,10 +48,10 @@ class Route{
 				$p = preg_replace("/%[0-9]+/", "", $p);				
 				parse_str($p, $pars);
 				define ("routed", true);
-				return json_decode(json_encode(array(
+				return array(
 					"url" => $r['ac'],
 					"pars" => $pars
-				)));
+				);
 			}
 		}
 		define ("routed", false);
