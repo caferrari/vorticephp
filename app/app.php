@@ -11,8 +11,7 @@
  * @package SampleApp
  */
 
-//Database::getInstance()->init("mysql.ferrari.eti.br", "exemplobd", "exemplobd", "exemplodb");
-Database::getInstance()->init(rootfisico . "teste.db", "", "", "", BD_SQLITE);
+Database::getInstance()->init("mysql.ferrari.eti.br", "exemplobd", "exemplobd", "exemplodb");
 //Banco::getInstance('another_one')->inicializa("database2_ip", "database2_user", "database2_pass", "database2_name", BD_PGSQL);
 
 Template::setVar("mensagem", Post::renderMsg());
