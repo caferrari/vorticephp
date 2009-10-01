@@ -8,6 +8,7 @@ define("BD_MYSQL", 0);
 define("BD_PGSQL", 1);
 define("BD_MSSQL", 2);
 define("BD_SYSBASE", 3);
+define("BD_SQLITE", 4);
 
 /**
  * Framework Database class
@@ -55,7 +56,8 @@ class Database
 		'mysql:dbname=%dbase;host=%host',
 		'pgsql:dbname=%dbase;user=%user;password=%pass;host=%host',
 		'mssql:host=%host;dbname=%dbase',
-		'sybase:host=%host;dbname=%dbase'
+		'sybase:host=%host;dbname=%dbase',
+		'sqlite:%host'
 	);
 
 	/**

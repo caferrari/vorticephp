@@ -36,7 +36,8 @@ class Core{
 		define ("mobile", is_mobile());
 		define ("bot", is_bot());
 
-		if (!defined("rootfisico")) define ("rootfisico", str_replace("core/classes/Core.php", "", str_replace("\\", "/", __FILE__)));
+		if (!defined("rootfisico"))  define ("rootfisico", str_replace("core/classes/Core.php", "", str_replace("\\", "/", __FILE__)));
+		if (!defined("rootvirtual")) define ("rootvirtual", preg_replace("/\/+/", "/", str_replace(str_replace("\\", "/", $_SERVER["DOCUMENT_ROOT"]), "/", rootfisico)));
 		
 		if (file_exists(rootfisico . "app/config.php")) include rootfisico . "app/config.php";
 
@@ -47,7 +48,6 @@ class Core{
 		
 		if (file_exists(rootfisico . "app/funcoes.php")) include rootfisico . "app/funcoes.php";
 
-		if (!defined("rootvirtual")) define ("rootvirtual", preg_replace("/\/+/", "/", str_replace(str_replace("\\", "/", $_SERVER["DOCUMENT_ROOT"]), "/", rootfisico)));
 		if (!defined("default_lang")) define("default_lang", "pt-br");
 
 		Link::translate_uri();

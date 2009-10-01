@@ -26,7 +26,7 @@ class Session {
 	* @return	void
 	* @private
 	*/
-	private function start(){
+	private static function start(){
 		self::$key = md5(tpl_title . session_id());
 	}
 

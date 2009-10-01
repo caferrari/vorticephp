@@ -127,7 +127,7 @@ class Template{
 	* @return	void
 	* @access	private
 	*/
-	private function loadTemplates(){
+	private static function loadTemplates(){
 		$dir = rootfisico . "templates";
 		if (is_dir($dir) && $dh = opendir($dir))
 			while (($file = readdir($dh)) !== false)
@@ -146,7 +146,7 @@ class Template{
 	* Disable the template rendering
 	* @return	void
 	*/
-	public function semTemplate(){
+	public static function semTemplate(){
 		self::$semtemplate = true;
 	}
 
@@ -164,7 +164,7 @@ class Template{
 	* @param	string	$titulo	System title
 	* @return	void
 	*/
-	public function setTitulo($titulo){
+	public static function setTitulo($titulo){
 		if ($titulo) self::$titulo = $titulo;
 	}
 
@@ -262,7 +262,7 @@ class Template{
 	* @param	string	$dir	path
 	* @return	string
 	*/	
-	protected function loadCssDir($dir){
+	protected static function loadCssDir($dir){
 		$tmp = array("mobile" => array(), "screen" => array(), "print" => array());
 		if (is_dir($dir)){
 			if ($handle = opendir($dir)) {
@@ -294,7 +294,7 @@ class Template{
 	* Alias for geraCss method
 	* @return	void
 	*/
-	protected function makeCss(){
+	protected static function makeCss(){
 		return self::geraCss();
 	}
 	
@@ -302,7 +302,7 @@ class Template{
 	* Read and make all Link for the template css's
 	* @return	void
 	*/
-	protected function geraCss(){
+	protected static function geraCss(){
 		$pasta = self::$tpl;
 		$tmp = self::loadCssDir("css");
 		$tmp .= self::loadCssDir("templates/$pasta/css");
@@ -313,7 +313,7 @@ class Template{
 	* Alias for geraJs method
 	* @return	void
 	*/
-	protected function makeJs(){
+	protected static function makeJs(){
 		return self::geraJs();
 	}
 	
@@ -322,7 +322,7 @@ class Template{
 	* @param	string	$dir	path
 	* @return	string
 	*/	
-	protected function loadJsDir($dir){
+	protected static function loadJsDir($dir){
 		$tmp = array();
 		if (is_dir(rootfisico . $dir))
 			if ($handle = opendir(rootfisico . $dir)){
@@ -340,7 +340,7 @@ class Template{
 	* Read and make all Link for the template scripts
 	* @return	void
 	*/
-	protected function geraJs(){
+	protected static function geraJs(){
 		$pasta = self::$tpl;
 		$tmp = self::loadJsDir("js");
 		$tmp .= self::loadJsDir("templates/$pasta/js");
@@ -351,7 +351,7 @@ class Template{
 	* Run users plugins
 	* @return	void
 	*/
-	protected function runPlugins(){
+	protected static function runPlugins(){
 		if (is_dir(rootfisico."app/plugins"))
 			if ($handle = opendir(rootfisico."app/plugins")){
 				while (false !== ($file = readdir($handle))) {
@@ -370,7 +370,7 @@ class Template{
 	* Merge the vars to the conteudo
 	* @return	void
 	*/
-	protected function mergeVars(){
+	protected static function mergeVars(){
 		foreach (self::$vars as $k => $v){
 			self::$conteudo = str_replace("<!--{$k}-->", $v, self::$conteudo);
 			unset(self::$vars[$k]);
@@ -466,7 +466,7 @@ class Template{
 	* @param	string	$module
 	* @return	string
 	*/
-	public function execute($view, $action, $controller, $module=false){
+	public static function execute($view, $action, $controller, $module=false){
 		if (!self::$masterload && file_exists("app/controller/MasterController.php") && class_exists("MasterController")){
 			$obj = new MasterController();
 			$t = self::$tpl;

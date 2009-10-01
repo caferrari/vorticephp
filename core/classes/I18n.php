@@ -30,7 +30,7 @@ class I18n{
 	* @return	void
 	* @access	private
 	*/
-	private function load_conf($file){
+	private static function load_conf($file){
 		$ar = self::$dic;
 		
 		$content = explode("\n", file_exists(rootfisico . $file) ? file_get_contents(rootfisico . $file) : "");
@@ -56,7 +56,7 @@ class I18n{
 	* @return	array
 	* @access	private
 	*/
-	private function load_lang($dir, $nick){
+	private static function load_lang($dir, $nick){
 		$t = array(default_lang);
 		if (is_dir($dir)){
 			if ($dh = opendir($dir)) {
