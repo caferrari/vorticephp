@@ -189,6 +189,16 @@ if (!function_exists("lcfirst")){
 }
 
 /**
+* Get current microtime
+* @return	float
+*/
+function microtime_float()
+{
+    list($usec, $sec) = explode(" ", microtime());
+    return ((float)$usec + (float)$sec);
+}
+
+/**
 * Translate a phrase using I18n class
 * @param	mixed
 * @return	string

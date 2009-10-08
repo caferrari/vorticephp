@@ -94,10 +94,8 @@ class I18n{
 	* @return	void
 	*/
 	public static function start($module = '_base'){
-		if (!defined("default_lang")) throw (new ConstantNotFoundException("Please make a constant called 'default_lang' on the file app/config.php"));
-
 		$av_lang = self::load_lang(rootfisico . "app/i18n", "_base");
-
+		define("av_lang", implode(", ", $av_lang));
 		if (count($av_lang) > 1){
 			$langs = $av_lang;		
 			if (is_array(self::get_lang()) && is_array($av_lang))

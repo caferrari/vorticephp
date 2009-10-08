@@ -20,6 +20,14 @@ class Core{
 	* @access	private
 	*/
 	private $content;
+	
+	/**
+	* Start Execution Time
+	*
+	* @var		float
+	* @access	private
+	*/
+	public $start;
 
 	/**
 	* Constructor. make all happens
@@ -28,6 +36,7 @@ class Core{
 	*/
 	public function __construct(){
 		error_reporting(E_ALL);
+		$this->start = microtime_float();
 		header('Content-type: text/html; charset=UTF-8');
 		
 		define ("windows", preg_match("/^[a-zA-Z]:/", __FILE__));
@@ -62,6 +71,7 @@ class Core{
 		Template::start();
 		include rootfisico . "app/app.php";
 		$this->content = Template::render();
+		header ("Vortice-LoadTime:" . (microtime_float() - $this->start));
 	}
 	
 	/**
