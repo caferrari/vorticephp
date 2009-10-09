@@ -44,6 +44,14 @@ class Core{
 		define ("post", $_SERVER["REQUEST_METHOD"] == "POST");
 		define ("mobile", is_mobile());
 		define ("bot", is_bot());
+		
+		require_once "Crypt.php";
+		require_once "Session.php";
+		require_once "Template.php";
+		require_once "I18n.php";
+		require_once "Link.php";
+		require_once "Route.php";
+		require_once "Post.php";
 
 		if (!defined("rootfisico"))  define ("rootfisico", str_replace("core/classes/Core.php", "", str_replace("\\", "/", __FILE__)));
 		if (!defined("rootvirtual")) define ("rootvirtual", preg_replace("/\/+/", "/", str_replace(str_replace("\\", "/", $_SERVER["DOCUMENT_ROOT"]), "/", rootfisico)));
