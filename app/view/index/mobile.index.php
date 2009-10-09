@@ -14,5 +14,6 @@
 <ul id="menu-principal">
 	<li><a class="lnk1" href="<?= new Link("exemplo") ?>" title="{{Exemplo}}">{{Exemplo}}</a></li>
 </ul>
-
-<p><br /><?= $_SERVER['HTTP_USER_AGENT'] ?>: <?php echo is_mobile() ? "Mobile" : "Desktop" ?>, <?php echo is_bot() ? "BOT" : "Visitor" ?></p>
+<?php 
+include "info.php";
+?>
