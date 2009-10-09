@@ -153,16 +153,21 @@ class Database
 	* Execute a SQL
 	* @return	Integer
 	*/
-	public function exec($sql, $pars=false)
+	public function exec($sql, $pars=null)
 	{
 		$this->connect();
-		if ($pars){
-			$query = $this->prepare($sql);
-			return $query->execute($pars);
+		$query = $this->prepare($sql);
+		$rows_afected = $query->execute($pars);
+		
+		if( preg_match('/^insert into ([a-zA-Z0-9\-_]+)/', strtolower($sql), $match) ) 
+		{
+			$sequence = null;
+			if( $this->pars['type'] == BD_PGSQL ) $sequence = $match[1].'_id_seq';
+			
+			return $this->pdo->lastInsertId($sequence);
 		}
-		return $this->pdo->exec($sql);
+		return $rows_afected;
 	}
-
 	/**
 	* Execute a SQL query
 	* @return	Array
