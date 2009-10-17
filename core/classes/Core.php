@@ -52,9 +52,10 @@ class Core{
 		require_once "Link.php";
 		require_once "Route.php";
 		require_once "Post.php";
-
-		if (!defined("rootfisico"))  define ("rootfisico", str_replace("core/classes/Core.php", "", str_replace("\\", "/", __FILE__)));
-		if (!defined("rootvirtual")) define ("rootvirtual", preg_replace("/\/+/", "/", str_replace(str_replace("\\", "/", $_SERVER["DOCUMENT_ROOT"]), "/", rootfisico)));
+		
+		if (!defined("rootfisico"))  define ("rootfisico", str_replace("index.php", "", str_replace("\\", "/", $_SERVER["SCRIPT_FILENAME"])));
+		if (!defined("projectroot")) define ("projectroot", preg_replace("/[^\/]+\/?$/", "", rootfisico));
+		if (!defined("rootvirtual")) define ("rootvirtual", preg_replace("/\/+/", "/", str_replace(str_replace("\\", "/", projectroot), "/", rootfisico)));
 		
 		if (file_exists(rootfisico . "app/config.php")) include rootfisico . "app/config.php";
 
@@ -77,7 +78,7 @@ class Core{
 		
 		Post::start();
 		Template::start();
-		include rootfisico . "app/app.php";
+		if (file_exists(rootfisico . "app/app.php"))include rootfisico . "app/app.php";
 		$this->content = Template::render();
 		header ("Vortice-LoadTime:" . (microtime_float() - $this->start));
 	}
