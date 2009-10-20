@@ -69,4 +69,3 @@ class ExemploDAO extends DAO {
 		return Database::getInstance()->query($sql);
 	}
 }
-?>

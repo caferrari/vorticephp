@@ -41,7 +41,7 @@
 		<!--mensagem-->
 		<!--conteudo-->
 	</div>
-	<!--plugin:inc:rodape:index-->
+	<div id="rodape"><a href="http://github.com/caferrari/vorticephp" title="Project at GitHub!">Check the project at Github</a></div>
 </div>
 </body>
 </html>

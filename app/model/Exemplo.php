@@ -1,6 +1,6 @@
-<?
+<?php
 /* 
- * Copyright (c) 2008, Carlos André Ferrari <[carlos@]ferrari.eti.br>; Luan Almeida <[luan@]luan.eti.br>
+ * Copyright (c) 2009, Carlos André Ferrari <[carlos@]ferrari.eti.br>; Luan Almeida <[luan@]luan.eti.br>
  * All rights reserved. 
  */
 
@@ -10,24 +10,7 @@
  * @subpackage Model
  * @subpackage DTO
  */
-class Exemplo extends DTO {
-	/**
-	* Record field id
-	* @var	int
-	*/
-	public $id;
-	
-	/**
-	* Record field name
-	* @var	string
-	*/
-	public $nome;
-	
-	/**
-	* Record field acronym
-	* @var	string
-	*/
-	public $sigla;
+class Exemplo {
 
 	/**
 	* Contruct a Exemplo object
@@ -40,4 +23,3 @@ class Exemplo extends DTO {
 		$this->sigla 	= $sigla;
 	}
 }
-?>
