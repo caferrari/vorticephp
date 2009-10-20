@@ -81,6 +81,7 @@ class Core{
 		if (file_exists(rootfisico . "app/app.php"))include rootfisico . "app/app.php";
 		$this->content = Template::render();
 		header ("Vortice-LoadTime:" . (microtime_float() - $this->start));
+		header ("X-Powered-By: VorticePHP");
 	}
 	
 	/**

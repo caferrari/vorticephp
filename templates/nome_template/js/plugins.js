@@ -73,19 +73,3 @@ $.fn.msgDialog = function(json)
 		}
 	});
 }
-
-/* Carrega links em um div */
-$.fn.linkToAjax = function (t){
-	var div_conteiner = $(this);
-	var target = t;
-	$(t).filter(':not(.link_processado)').click ( function (){
-		$.ajax({
-			dataType : "html", type : "get", url : $(this).attr("href"),
-			success : function (html) {
-				div_conteiner.html(html).linkToAjax(t, div_conteiner);
-			}
-		})		
-		return false;
-	});
-	$(t).addClass('link_processado');
-}

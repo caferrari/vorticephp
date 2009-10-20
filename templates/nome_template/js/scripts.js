@@ -10,17 +10,6 @@ $(document).ready(function() {
 			}
 		}
 	);
-	
 	window.setTimeout("$('#mensagem').fadeOut(\"slow\")", 5000);
-
-	/*
-	$("#conteudo a").live("click", function(){
-		var href = $(this).attr("href");
-		$("#conteudo").load(href);
-		window.location.hash = href.replace(rootvirtual, '');
-		return false;
-	});
-	if (window.location.hash != '') $("#conteudo").load((rootvirtual + window.location.hash).replace("#", ""));
-	*/
 });
 
