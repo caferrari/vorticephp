@@ -10,7 +10,7 @@
  * @subpackage View
  */
 ?>
-<h2>{{<?php (action=='adicionar') ? 'Adicionar Item' : 'Editar Item';  ?>}}</h2>
+<h2>{{<?php echo (action=='adicionar') ? 'Adicionar Item' : 'Editar Item';  ?>}}</h2>
 <span class="desc"><!--desc--></span>
 <fieldset>
 	<form method="post" action="<?php echo new Link("exemplo:" . action) ?>">
