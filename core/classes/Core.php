@@ -52,10 +52,10 @@ class Core{
 		require_once "Link.php";
 		require_once "Route.php";
 		require_once "Post.php";
-		
+
+	
 		if (!defined("rootfisico"))  define ("rootfisico", str_replace("index.php", "", str_replace("\\", "/", $_SERVER["SCRIPT_FILENAME"])));
-		if (!defined("projectroot")) define ("projectroot", preg_replace("/[^\/]+\/?$/", "", rootfisico));
-		if (!defined("rootvirtual")) define ("rootvirtual", preg_replace("/\/+/", "/", str_replace(projectroot, "/", rootfisico)));
+		if (!defined("rootvirtual")) define ("rootvirtual", preg_replace("@/+@", "/", preg_replace("@{$_SERVER["DOCUMENT_ROOT"]}|index.php@", "/", $_SERVER["SCRIPT_FILENAME"])));
 		
 		if (file_exists(rootfisico . "app/config.php")) include rootfisico . "app/config.php";
 
