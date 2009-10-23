@@ -35,9 +35,9 @@ class Core{
 	* @return	void
 	*/
 	public function __construct(){
-		error_reporting(E_ALL);
 		$this->start = microtime_float();
 		header('Content-type: text/html; charset=UTF-8');
+		header("X-Powered-By: VorticePHP");
 		
 		define ("windows", preg_match("/^[a-zA-Z]:/", __FILE__));
 		define ("ajax", isset($_SERVER["HTTP_X_REQUESTED_WITH"]));
@@ -52,12 +52,12 @@ class Core{
 		require_once "Link.php";
 		require_once "Route.php";
 		require_once "Post.php";
-
-	
-		if (!defined("rootfisico"))  define ("rootfisico", str_replace("index.php", "", str_replace("\\", "/", $_SERVER["SCRIPT_FILENAME"])));
-		if (!defined("rootvirtual")) define ("rootvirtual", preg_replace("@/+@", "/", preg_replace("@{$_SERVER["DOCUMENT_ROOT"]}|index.php@", "/", $_SERVER["SCRIPT_FILENAME"])));
 		
-		if (file_exists(rootfisico . "app/config.php")) include rootfisico . "app/config.php";
+		$tmproot = str_replace("index.php", "", str_replace("\\", "/", $_SERVER["SCRIPT_FILENAME"]));
+
+		if (file_exists("{$tmproot}app/config.php")) include "{$tmproot}app/config.php";
+		if (!defined("rootfisico"))  define ("rootfisico", $tmproot);
+		if (!defined("rootvirtual")) define ("rootvirtual", preg_replace("@/+@", "/", preg_replace("@{$_SERVER["DOCUMENT_ROOT"]}|index.php@", "/", $_SERVER["SCRIPT_FILENAME"])));
 
 		if (!defined("default_controller")) define ("default_controller", "index");
 		if (!defined("default_action")) 	define ("default_action", "index");
@@ -78,10 +78,10 @@ class Core{
 		
 		Post::start();
 		Template::start();
-		if (file_exists(rootfisico . "app/app.php"))include rootfisico . "app/app.php";
+		
+		if (file_exists(rootfisico . "app/app.php")) include rootfisico . "app/app.php";
 		$this->content = Template::render();
 		header ("Vortice-LoadTime:" . (microtime_float() - $this->start));
-		header ("X-Powered-By: VorticePHP");
 	}
 	
 	/**

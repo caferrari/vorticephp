@@ -9,6 +9,9 @@
 * @package Framework
 */
 
+// Enable error reporting
+error_reporting(E_ALL);
+
 require_once "classes/Core.php";
 require_once "funcoes.php";
 try{
