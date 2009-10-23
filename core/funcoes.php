@@ -140,6 +140,26 @@ function p($v){
 }
 
 /**
+* initalize and get URL parts
+* @param	$i	url part index
+* @return	string
+*/
+function u($i){
+	if (!defined("uri_parts")){
+		preg_match_all("@([^/]+):([^/]+)|([^/]+)@", uri, $mat, PREG_SET_ORDER);
+		$u = array();
+		foreach ($mat as $k => $v){
+			$u[$k] = $v[0];
+			if (count($v) == 3) $u[$v[1]] = $v[2];	
+		}
+		define ("uri_parts", serialize($u));
+	}else
+		$u = unserialize(uri_parts);
+
+	return isset($u[$i]) ? $u[$i] : '';
+}
+
+/**
 * Redirect the response
 * @param	$destino	Destination url encoded with Link class
 * @param	$delay		Delay

@@ -53,8 +53,8 @@ class Core{
 		require_once "Route.php";
 		require_once "Post.php";
 		
-		$tmproot = str_replace("index.php", "", str_replace("\\", "/", $_SERVER["SCRIPT_FILENAME"]));
-
+		$tmproot = str_replace("\\", "/", dirname($_SERVER["SCRIPT_FILENAME"]) . "/");
+		
 		if (file_exists("{$tmproot}app/config.php")) include "{$tmproot}app/config.php";
 		if (!defined("rootfisico"))  define ("rootfisico", $tmproot);
 		if (!defined("rootvirtual")) define ("rootvirtual", preg_replace("@/+@", "/", preg_replace("@{$_SERVER["DOCUMENT_ROOT"]}|index.php@", "/", $_SERVER["SCRIPT_FILENAME"])));
