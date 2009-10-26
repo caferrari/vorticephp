@@ -222,6 +222,17 @@ class Post
 	}
 	
 	/**
+	* Alias to setErros method
+	*
+	* @param	string	$message	Errors message
+	* @param	array	$errors		Errors array
+	* @return	void
+	*/
+	public static function error($message, $errors=''){
+		self::setErros($message, $errors);
+	}
+	
+	/**
 	* Sucess post
 	*
 	* @param	string	$mensagem	Sucess message
@@ -241,6 +252,17 @@ class Post
 			Session::set('form_mensagem' , $mensagem);
 		}
 		if ($redirect) redirect($redirect);
+	}
+	
+	/**
+	* Alias to setSucesso method
+	*
+	* @param	string	$mensagem	Sucess message
+	* @param	string	$redirec	Redirect URL encoded with Link class
+	* @return	void
+	*/
+	public static function success($mensagem, $redirect=false){
+		self::setSucesso($mensagem, $redirect);
 	}
 	
 	/**

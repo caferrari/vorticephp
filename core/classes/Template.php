@@ -420,28 +420,22 @@ class Template{
 			self::$conteudo = preg_replace("/[[:space:]]{1,}/", " ", self::$conteudo);
 			self::$conteudo = preg_replace("/[ ]+<\//", "</", self::$conteudo);
 		}
-		
-		if (function_exists("render_" . self::$rendermode)){
-			$tmp = "render_" . self::$rendermode;
-			$tmp();
-			return '';
-		}
 
 		switch (self::$rendermode){
 			case "html":
-					return self::$conteudo;
-				break;
+				return self::$conteudo;
 			case "json":
-					header('Content-type: application/json');
-					return json_encode(DAO::getAll());
-				break;
+				//header('Content-type: application/json');
+				header('Content-type: text/plain');
+				return json_encode(DAO::getAll());
 			case "serial":
-					return serialize(DAO::getAll());
-				break;
+				header('Content-type: text/plain');
+				return serialize(DAO::getAll());
 			case "content":
-					return $meio;
-				break;
+				return $meio;
 			default:
+				$tmp_render = "render_" . self::$rendermode;
+				if (function_exists($tmp_render)) return $tmp_render();
 				throw (new ResponseTypeNotFoundException("Formato de retorno inválido: " . self::$rendermode));
 		}
 	}

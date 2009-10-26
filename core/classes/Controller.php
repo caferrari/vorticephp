@@ -20,6 +20,8 @@ class Controller {
 	* @access	private
 	*/
 	function __set($met, $val){
+		if ($mat == '_view') 		Template::setView($val);
+		if ($mat == '_template') 	Template::setTemplate($val);
 		DAO::add($val, $met);
 	}
 }

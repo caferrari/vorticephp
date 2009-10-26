@@ -37,10 +37,10 @@ class ExemploController extends Controller{
 			if (!count($erros))
 			{
 				ExemploDAO::insert(new Exemplo(NULL, $nome, $sigla));
-				Post::setSucesso("Item adicionado com sucesso!", new Link("exemplo"));
+				Post::success("Item adicionado com sucesso!", new Link("exemplo"));
 			}
 			else
-				Post::setErros("Ocorreram os seguintes erros:", $erros);
+				Post::error("Ocorreram os seguintes erros:", $erros);
 		}
 	}
 	
@@ -63,10 +63,10 @@ class ExemploController extends Controller{
 			if (!count($erros))
 			{
 				ExemploDAO::update(new Exemplo($id, $nome, $sigla));
-				Post::setSucesso("Item alterado com sucesso!", new Link("exemplo"));
+				Post::success("Item alterado com sucesso!", new Link("exemplo"));
 			}
 			else
-				Post::setErros("Ocorreram os seguintes erros:", $erros);
+				Post::error("Ocorreram os seguintes erros:", $erros);
 		}
 		
 		Template::setVar('area', 'Alterar Item');
@@ -85,9 +85,9 @@ class ExemploController extends Controller{
 		$id = p('id');
 		try {
 			ExemploDAO::delete($id);
-			Post::setSucesso("Item excluido com sucesso!", new Link("exemplo"));
+			Post::success("Item excluido com sucesso!", new Link("exemplo"));
 		} catch (Exception $e) {
-			Post::setErros($e->getMessage());
+			Post::error($e->getMessage());
 		}
 	}
 
