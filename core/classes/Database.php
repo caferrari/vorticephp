@@ -9,9 +9,11 @@ define("BD_PGSQL", 1);
 define("BD_MSSQL", 2);
 define("BD_SYSBASE", 3);
 define("BD_SQLITE", 4);
+define("BD_ORACLE", 5);
 
 /**
  * Framework Database class
+ * Oracle support by: Marcio Paiva Barbosa <mpaivabarbosa@gmail.com>
  *
  * @version	1
  * @package	Database
@@ -57,7 +59,8 @@ class Database
 		'pgsql:dbname=%dbase;user=%user;password=%pass;host=%host',
 		'mssql:host=%host;dbname=%dbase',
 		'sybase:host=%host;dbname=%dbase',
-		'sqlite:%host'
+		'sqlite:%host',
+		'oci:dbname=%dbase;charset=AL32UTF8'
 	);
 
 	/**
@@ -124,6 +127,8 @@ class Database
 		}catch (PDOException $e){
     		exit ('Database connection failed: ' . $e->getMessage());
 		}
+		
+		$this->pdo->setAttribute(PDO::ATTR_CASE, PDO::CASE_LOWER);
 		$this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		$this->connected = true;
 	}
@@ -172,25 +177,23 @@ class Database
 	* Execute a SQL query
 	* @return	Array
 	*/
-	public function query($sql, $o = "DTO")
+	public function query($sql, $object="DTO")
 	{
-		$query = $this->prepare($sql);
-		if (is_array($o))
-			$query->execute($o);
-		else
-			$query->execute();
-		return $query->fetchAll(PDO::FETCH_OBJ);
+		$this->connect();
+		$rs = $this->pdo->query($sql);
+		$rs->setFetchMode(PDO::FETCH_CLASS, $object);
+		return $rs->fetchAll();
 	}
 	
 	/**
 	* Prepare a SQL Query with one result
 	* @return	Object
 	*/
-	public function queryOne($sql, $object = "DTO")
+	public function queryOne($sql, $object="DTO")
 	{
-		$query = $this->prepare($sql);
-		$query->execute();
-		return $query->fetch(PDO::FETCH_OBJ);
+		$this->connect();
+		$rs = $this->pdo->query($sql);
+		return $rs->fetchObject($object);
 	}
 	
 	/**
@@ -199,10 +202,7 @@ class Database
 	*/
 	public function max($table='', $field='id'){
 		$sql = "SELECT max($field) as n FROM $table";
-		$query = $this->prepare($sql);
-		$query->execute();
-		$obj = $query->fetch(PDO::FETCH_OBJ);
-		return $obj->n;
+		return $this->queryOne($sql)->n;
 	}
 	
 	/**
