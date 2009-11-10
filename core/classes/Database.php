@@ -168,8 +168,9 @@ class Database
 		{
 			$sequence = null;
 			if( $this->pars['type'] == BD_PGSQL ) $sequence = $match[1].'_id_seq';
-			
-			return $this->pdo->lastInsertId($sequence);
+			try{
+				return $this->pdo->lastInsertId($sequence);
+			}catch (Exception $e){ }
 		}
 		return $rows_afected;
 	}

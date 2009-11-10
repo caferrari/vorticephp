@@ -36,7 +36,7 @@ function __autoload($class)
 	}
 
 	foreach ($folders as $f)
-		if (file_exists(rootfisico . "{$f}/{$class}.php")) { require_once(rootfisico . "{$f}/{$class}.php"); return; }
+		if (file_exists(rootfisico . "{$f}/{$class}.php")) { include_once(rootfisico . "{$f}/{$class}.php"); return; }
     
  	//throw (new Exception("Class not found: $class"));
 }
