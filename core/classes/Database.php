@@ -33,7 +33,7 @@ class Database
 	* @var			PDO
 	* @access		private
 	*/
-	private $pdo = null;
+	public $pdo = null;
 	
 	/**
 	* Database connection parameters
@@ -92,7 +92,7 @@ class Database
 	* Initialize a Database instance
 	* @return	void
 	*/
-	public function init($host='', $user='', $pass='', $database='', $type=0)
+	public function init($host='', $user=null, $pass=null, $database='', $type=0)
 	{
 		$this->pars = array(
 			'host'  => $host,
@@ -116,14 +116,7 @@ class Database
 			$dsn = str_replace("%$k", $v, $dsn);
 		
 		try {
-			switch ($this->pars['type']){
-				case BD_PGSQL:
-					$this->pdo = new PDO($dsn);
-					break;
-				default:
-					$this->pdo = new PDO($dsn, $this->pars['user'], $this->pars['pass']);
-					break;
-			}
+			$this->pdo = new PDO($dsn, $this->pars['user'], $this->pars['pass']);
 		}catch (PDOException $e){
     		exit ('Database connection failed: ' . $e->getMessage());
 		}
@@ -164,12 +157,9 @@ class Database
 		$query = $this->prepare($sql);
 		$rows_afected = $query->execute($pars);
 		
-		if( preg_match('/^insert into ([a-zA-Z0-9\-_]+)/', strtolower($sql), $match) ) 
-		{
-			$sequence = null;
-			if( $this->pars['type'] == BD_PGSQL ) $sequence = $match[1].'_id_seq';
+		if(preg_match('/^insert into ([a-zA-Z0-9\-_]+)/', strtolower($sql), $match)){
 			try{
-				return $this->pdo->lastInsertId($sequence);
+				return $this->pdo->lastInsertId(($this->pars['type'] == BD_PGSQL) ? $sequence = $match[1].'_id_seq' : null);
 			}catch (Exception $e){ }
 		}
 		return $rows_afected;
@@ -219,7 +209,8 @@ class Database
 	* @return	void
 	*/
 	public function begin(){
-		$this->pdo->exec("BEGIN;");
+		$this->connect();
+		$this->pdo->beginTransaction();
 	}
 	
 	/**
@@ -227,14 +218,16 @@ class Database
 	* @return	void
 	*/
 	public function commit(){
-		$this->pdo->exec("COMMIT;");
+		$this->connect();
+		$this->pdo->commit();
 	}
 	
 	/**
 	* Rollback a transaction
 	* @return	void
 	*/
-	public function rollback(){
-		$this->pdo->exec("ROLLBACK;");
+	public function rollBack(){
+		$this->connect();
+		$this->pdo->rollBack();
 	}
 }
