@@ -17,15 +17,16 @@
 function __autoload($class)
 {
 	if (class_exists($class, false) || interface_exists($class, false)) {
-        return;   
-    }
-    
-    $folders = array(
-	    "core/classes/",
-	    "core/classes/exceptions",
-	    "app/classes/",
-	    "app/model/",
-	    "app/controller/",
+		return;   
+	}
+
+	$folders = array(
+		"core/classes/",
+		"core/classes/exceptions",
+		"app/classes/",
+		"app/model/",
+		"app/facade/",
+		"app/controller/",
 		"app/helper/",
 		"core/helper/"
     );

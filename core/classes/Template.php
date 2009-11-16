@@ -461,32 +461,35 @@ class Template{
 	* @return	string
 	*/
 	public static function execute($view, $action, $controller, $module=false){
-		if (!self::$masterload && file_exists("app/controller/MasterController.php") && class_exists("MasterController")){
-			$obj = new MasterController();
-			$t = self::$tpl;
-			if (method_exists($obj, "index")) $obj->index();
-			if (method_exists($obj, $t)) $obj->$t();
-			self::$masterload = true;
-		}
-		
+		ob_start();
 		$c = $controller;
 		$controller = camelize($controller)."Controller";
-		
-		if (class_exists($controller))
-		{
+		if (class_exists($controller)){
+			if (!self::$masterload && class_exists("MasterController")){
+				$obj = new MasterController();
+				$t = self::$tpl;
+				if (method_exists($obj, "index")) $obj->index();
+				if (method_exists($obj, $t)) $obj->$t();
+				self::$masterload = true;
+			}
 			$obj = new $controller();
 			$action = lcfirst(camelize($action));
 			if (method_exists($obj, $action)) $obj->$action();
 			else throw (new ActionNotFoundException("$controller:$action"));
-		}
-		else throw (new ControllerNotFoundException($controller));
+		}else{
+			// if its a static view
+			$vpath = rootfisico . "app/view/_static/" . uri . ".php";
+			if (file_exists($vpath)){
+				include ($vpath);
+				return ob_get_clean();
+			}else
+				throw (new ControllerNotFoundException($controller));
+		} 
 		
 		$_ref = DAO::getAll();
 		foreach ($_ref as $k => &$v)
 			$$k = $v;
 		unset($_ref);
-			
-		ob_start();
 				
 		if (mobile){
 			$v = $view ? "$c/mobile.$view" : self::getView("mobile.");
