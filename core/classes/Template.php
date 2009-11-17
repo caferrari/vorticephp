@@ -384,8 +384,8 @@ class Template{
 	public static function render(){
 		$meio = Template::execute(false, action, controller, module);
 
-		if (!self::$tpl)  throw(new NoTemplatesLoadedException());
-		$pasta = self::$tpl;
+		if (!self::$tpl)  self::$semtemplate = true;
+		else $pasta = self::$tpl;
 		
 		ob_start();	
 		
@@ -478,7 +478,7 @@ class Template{
 			else throw (new ActionNotFoundException("$controller:$action"));
 		}else{
 			// if its a static view
-			$vpath = rootfisico . "app/view/_static/" . uri . ".php";
+			$vpath = rootfisico . "app/view/_static/" . (uri ? uri : 'index') . ".php";
 			if (file_exists($vpath)){
 				include ($vpath);
 				return ob_get_clean();
