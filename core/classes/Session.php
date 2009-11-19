@@ -5,7 +5,7 @@
  */
 
 /**
- * Session Manager class
+ * Route Class, decode routed requests
  *
  * @version	1
  * @package	Utils

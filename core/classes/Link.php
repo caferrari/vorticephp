@@ -62,7 +62,8 @@ class Link{
 			$pars = str_replace("&", "/", $pars);
 		}
 		
-		return preg_replace("/\/$/", "", $pagina . "/" . $pars);
+		$l = $pagina . "/" . $pars . "/";
+		return preg_replace("@\/+@", "/", $l);
 	}
 	
 	/**
@@ -97,10 +98,8 @@ class Link{
 	* @static
 	*/
 	static function criaLink($pagina='', $parametros=''){
-		if (!preg_match("/^([a-z\-]+\+)?([a-z\-]+)(:[a-z\-]+)?$/", $pagina)){
-			if (request_lang != default_lang) return rootvirtual . request_lang . "/$pagina";
-			return rootvirtual . "$pagina";
-		}
+		if (!preg_match("/^([a-z\-]+\+)?([a-z\-]+)(:[a-z\-]+)?$/", $pagina))
+			return preg_replace("@\/+@", "/", rootvirtual . ((request_lang != default_lang) ? request_lang : "") . "/$pagina/");
 		$pagina = preg_split("/[:\+]/", $pagina);
 
 		if (count($pagina)==3){
@@ -137,6 +136,12 @@ class Link{
 	*/
 	static function translate_uri(){
 		$q = $_SERVER["REQUEST_URI"];
+		
+		if (!post && !preg_match("@\/$@", $q)){
+			header ("HTTP/1.1 301 Moved Permanently");
+			header ("Location: $q/");
+		}
+		
 		if (rootvirtual != "/") $q = preg_replace("/^".addcslashes(rootvirtual, "/")."/", "", $q);
 		$q = preg_replace("/^\/|\/$/", "", $q);
 		$tmp = explode("/", $q);

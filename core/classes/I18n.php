@@ -107,7 +107,7 @@ class I18n{
 					header("Location: " . rootvirtual . "$tmp/" . uri , true, 301) and exit();
 				}
 			}
-		}
+		}else return;
 
 		if (!in_array(request_lang, $av_lang)) throw (new TranslationNotFoundException(request_lang));
 		$active = request_lang;

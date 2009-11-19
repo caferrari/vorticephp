@@ -118,6 +118,16 @@ class Post
 	}
 	
 	/**
+	* Return errors
+	*
+	* @return	array
+	*/
+	public static function getError($field=''){
+		if (isset(self::$erros[$field])) return self::$erros[$field];
+		return false;
+	}
+	
+	/**
 	* Return form field value
 	*
 	* @param	string	$c		Form field name
