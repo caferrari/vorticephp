@@ -54,7 +54,8 @@ function is_mobile(){
 		|| $op != ''
 		|| strpos($ua, 'iphone') !== false
 		|| strpos($ua, 'android') !== false
-		|| strpos($ua, 'symbian') !== false 
+		|| strpos($ua, 'symbian') !== false
+		|| strpos($ua, 'diablo') !== false  
 		|| strpos($ua, 'htc') !== false
 		|| strpos($ua, 'blackberry') !== false
 		|| strpos($ua, 'sprint') !== false    
