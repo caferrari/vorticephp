@@ -39,12 +39,6 @@ class Core{
 		header('Content-type: text/html; charset=UTF-8');
 		header("X-Powered-By: VorticePHP");
 		
-		define ("windows", preg_match("/^[a-zA-Z]:/", __FILE__));
-		define ("ajax", isset($_SERVER["HTTP_X_REQUESTED_WITH"]));
-		define ("post", $_SERVER["REQUEST_METHOD"] == "POST");
-		define ("mobile", is_mobile());
-		define ("bot", is_bot());
-		
 		require_once "Crypt.php";
 		require_once "Session.php";
 		require_once "Template.php";
@@ -63,6 +57,12 @@ class Core{
 		if (!defined("default_action")) 	define ("default_action", "index");
 		if (!defined("default_lang")) 		define ("default_lang", "pt-br");
 		if (!defined("tpl_title")) 			define ("tpl_title", md5(__FILE__));
+		
+		define ("windows", preg_match("/^[a-zA-Z]:/", __FILE__));
+		define ("ajax", isset($_SERVER["HTTP_X_REQUESTED_WITH"]));
+		define ("post", $_SERVER["REQUEST_METHOD"] == "POST");
+		define ("mobile", is_mobile());
+		define ("bot", is_bot());
 		
 		if (file_exists(rootfisico . "app/funcoes.php")) include rootfisico . "app/funcoes.php";
 
