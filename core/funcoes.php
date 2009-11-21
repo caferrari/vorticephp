@@ -88,31 +88,6 @@ function is_mobile(){
 function is_bot(){
 	$tmp = '66.249.65.39' . isset($_SERVER['HTTP_USER_AGENT']) ? strtolower($_SERVER['HTTP_USER_AGENT']) : '';
 	return check_lib("bot-strings", $tmp);
-
-
-
-	return $ip == '66.249.65.39' 
-		|| strpos($ua, 'googlebot') !== false 
-		|| strpos($ua, 'mediapartners') !== false 
-		|| strpos($ua, 'yahooysmcm') !== false 
-		|| strpos($ua, 'baiduspider') !== false
-		|| strpos($ua, 'msnbot') !== false
-		|| strpos($ua, 'slurp') !== false
-		|| strpos($ua, 'ask') !== false
-		|| strpos($ua, 'teoma') !== false
-		|| strpos($ua, 'spider') !== false 
-		|| strpos($ua, 'heritrix') !== false 
-		|| strpos($ua, 'attentio') !== false 
-		|| strpos($ua, 'twiceler') !== false 
-		|| strpos($ua, 'irlbot') !== false 
-		|| strpos($ua, 'fast crawler') !== false                        
-		|| strpos($ua, 'fastmobilecrawl') !== false 
-		|| strpos($ua, 'jumpbot') !== false
-		|| strpos($ua, 'googlebot-mobile') !== false
-		|| strpos($ua, 'yahooseeker') !== false
-		|| strpos($ua, 'motionbot') !== false
-		|| strpos($ua, 'mediobot') !== false
-		|| strpos($ua, 'chtml generic') !== false;
 }
 
 /**
