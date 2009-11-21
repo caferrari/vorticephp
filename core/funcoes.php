@@ -47,7 +47,10 @@ function __autoload($class)
 * @return	boolean
 */
 function is_mobile(){
-	$op = strtolower(isset($_SERVER['HTTP_X_OPERAMINI_PHONE']) ? $_SERVER['HTTP_X_OPERAMINI_PHONE'] : '');
+	$op = strtolower(isset($_SERVER['HTTP_X_OPERAMINI_PHONE']) ? $_SERVER['HTTP_X_OPERAMINI_PHONE'] : 
+				isset($_SERVER['X-OperaMini-Phone-UA']) ? $_SERVER['X-OperaMini-Phone-UA'] :
+				isset($_SERVER['X-OperaMini-Phone']) ? $_SERVER['X-OperaMini-Phone'] : ''
+			);
 	$ua = isset($_SERVER['HTTP_USER_AGENT']) ? strtolower($_SERVER['HTTP_USER_AGENT']) : '';
 	$ac = isset($_SERVER['HTTP_ACCEPT']) ? strtolower($_SERVER['HTTP_ACCEPT']) : '';
 	return strpos($ac, 'application/vnd.wap.xhtml+xml') !== false
@@ -55,7 +58,8 @@ function is_mobile(){
 		|| strpos($ua, 'iphone') !== false
 		|| strpos($ua, 'android') !== false
 		|| strpos($ua, 'symbian') !== false
-		|| strpos($ua, 'diablo') !== false  
+		|| strpos($ua, 'diablo') !== false
+		|| strpos($ua, 'operamini') !== false
 		|| strpos($ua, 'htc') !== false
 		|| strpos($ua, 'blackberry') !== false
 		|| strpos($ua, 'sprint') !== false    
