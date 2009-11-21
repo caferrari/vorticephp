@@ -59,7 +59,10 @@ function is_mobile(){
 		|| strpos($ua, 'android') !== false
 		|| strpos($ua, 'symbian') !== false
 		|| strpos($ua, 'diablo') !== false
+		|| strpos($ua, 'fennec') !== false
+		|| strpos($ua, 'opera mobi') !== false
 		|| strpos($ua, 'operamini') !== false
+		|| strpos($ua, 'opera mini') !== false
 		|| strpos($ua, 'htc') !== false
 		|| strpos($ua, 'blackberry') !== false
 		|| strpos($ua, 'sprint') !== false    
@@ -70,7 +73,6 @@ function is_mobile(){
 		|| strpos($ua, 'mobile') !== false
 		|| strpos($ua, 'windows ce') !== false
 		|| strpos($ua, 'epoc') !== false
-		|| strpos($ua, 'opera mini') !== false
 		|| strpos($ua, 'nitro') !== false
 		|| strpos($ua, 'j2me') !== false
 		|| strpos($ua, 'midp-') !== false
