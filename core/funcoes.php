@@ -16,9 +16,7 @@
 */
 function __autoload($class)
 {
-	if (class_exists($class, false) || interface_exists($class, false)) {
-		return;   
-	}
+	if (class_exists($class, false) || interface_exists($class, false)) return;
 
 	$folders = array(
 		"core/classes/",
@@ -67,7 +65,6 @@ function check_lib($filename, $base){
 * @return	boolean
 */
 function is_mobile(){
-	Session::set("asd", "adsads asdasd ads");
 	$mobile = isset($_SESSION["vortice-mobile"]) ? $_SESSION["vortice-mobile"] : "";
 	if ($mobile === ""){
 		$base = isset($_SERVER['HTTP_X_OPERAMINI_PHONE']) ? $_SERVER['HTTP_X_OPERAMINI_PHONE'] : 
@@ -129,7 +126,7 @@ function u($i){
 function redirect($destino="", $delay=0){
 	if (ajax){
 		$json = Json::getInstance();
-		$json->addPackage("redirect", array($destino, $delay));
+		$json->addPackage("redirect", urlencode($destino));
 		exit($json->render());
 	}else
 		exit("<html><head><meta http-equiv=\"refresh\" content=\"$delay;URL=$destino\"></head><body></body></html>");
