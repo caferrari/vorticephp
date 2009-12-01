@@ -35,6 +35,6 @@ class Controller {
 	*/
 	public function __get($met){
 		if (isset($this->$met)) return $this->$met;
-		return DAO::get("met");	
+		return DAO::get("$met");	
 	}
 }

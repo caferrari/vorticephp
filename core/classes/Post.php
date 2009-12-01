@@ -222,6 +222,7 @@ class Post
 			$json->set(0, $mensagem, $tmp);
 			foreach(DAO::getAll() as $k => $d)
 				$json->addPackage($k, $d);
+			header('Content-type: text/json'); 
 			exit($json->render());
 		}else{
 			Session::set('form_erros', serialize($erros));
