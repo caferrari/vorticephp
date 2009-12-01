@@ -20,6 +20,6 @@ class ActionNotFoundException extends BaseException{
 	*/
 	public function __construct($desc=''){
 		header('HTTP/1.1 404 Not Found');
-		parent::__construct('Action not Found', $desc, "404");
+		parent::__construct("Action \"$desc\" not Found", $desc, "404");
 	}
 }

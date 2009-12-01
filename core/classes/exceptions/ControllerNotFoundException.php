@@ -20,6 +20,6 @@ class ControllerNotFoundException extends BaseException{
 	*/
 	public function __construct($desc=''){
 		header('HTTP/1.1 404 Not Found');
-		parent::__construct('Controller not Found', $desc, "404");
+		parent::__construct("Controller \"$desc\" not Found", $desc, "404");
 	}
 }

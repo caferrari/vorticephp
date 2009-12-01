@@ -475,7 +475,7 @@ class Template{
 			$obj = new $controller();
 			$action = lcfirst(camelize($action));
 			if (method_exists($obj, $action)) $obj->$action();
-			else throw (new ActionNotFoundException("$controller:$action"));
+			else throw (new ActionNotFoundException("$controller->$action()"));
 		}else{
 			// if its a static view
 			$vpath = rootfisico . "app/view/_static/" . (uri ? uri : 'index') . ".php";
