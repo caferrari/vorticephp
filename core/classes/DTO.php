@@ -92,5 +92,23 @@ class DTO
 		$id = Database::getInstance($instance)->exec($sql, $this->toArray($fields));
 		return $id;
 	}
+	
+	/**
+	* Update data in the database
+	*
+	* @return 	dto
+	*/
+	public function save($table, $fields, $instance='default'){
+		if (!isset($this->id) || !is_numeric($this->id)) return $this->insert($table, $fields, $instance);
+		$id = $this->id;
+		unset($this->id);
+		$values = $this->toArray($fields);
+		$values[] = $this->id = $id;
+		$tmp = array();
+		$fields = explode(",", $fields);
+		foreach ($fields as $k=>$f) $tmp[] = $fields[$k] . "=?";
+		$sql = "UPDATE $table SET " . implode($tmp, ', ') . " WHERE id=?";
+		return Database::getInstance($instance)->exec($sql, $values);
+	}
 
 }
