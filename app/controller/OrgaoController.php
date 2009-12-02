@@ -17,7 +17,8 @@ class OrgaoController extends Controller{
 	* @return	void
 	*/
 	public function index(){
-		$this->itens = OrgaoDAO::getList();
+		//$this->itens = OrgaoDAO::getList();
+		$this->itens = Orgao::listAll('orgao');
 	}
 	
 	/**
@@ -30,7 +31,7 @@ class OrgaoController extends Controller{
 		{
 			$erros = array();
 
-			$orgao = Post::create('Orgao');
+			$orgao = Post::toObject('Orgao');
 
 			if ($orgao->sigla == '') $erros['sigla'] = "Digite a sigla do item";
 			if ($orgao->nome == '') $erros['nome'] = "Digite o nome do item";
@@ -56,7 +57,7 @@ class OrgaoController extends Controller{
 		{
 			$erros = array();
 
-			$orgao = Post::create("Orgao");
+			$orgao = Post::toObject("Orgao");
 			
 			if ($orgao->sigla == '') $erros['sigla'] = "Digite a sigla do item";
 			if ($orgao->nome == '') $erros['nome'] = "Digite o nome do item";
@@ -71,7 +72,7 @@ class OrgaoController extends Controller{
 		}
 		
 		Template::setVar('area', 'Alterar Item');
-		Post::load(OrgaoDAO::get($id));
+		Post::load(Orgao::load($id, 'orgao'));
 		$this->_view = "adicionar";
 	}
 	
@@ -82,7 +83,7 @@ class OrgaoController extends Controller{
 	* @return	void
 	*/
 	public function excluir(){
-		$orgao = Post::create("Orgao");
+		$orgao = Post::toObject("Orgao");
 		try {
 			$orgao->delete();
 			Post::success("Item excluido com sucesso!", new Link("orgao"));

@@ -142,7 +142,7 @@ class Post
 	*
 	* @return	dto
 	*/
-	public static function create($class)
+	public static function toObject($class)
 	{
 		$obj = new $class();
 		foreach (get_object_vars($obj) as $k => $v) $obj->$k = p($k);

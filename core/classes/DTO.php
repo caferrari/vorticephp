@@ -13,7 +13,6 @@
  */
 class DTO 
 {
-
 	protected static $dbInstance = 'default';
 
 	/**
@@ -124,5 +123,27 @@ class DTO
 		if (!isset($this->id) || !is_numeric($this->id)) return false;
 		return Database::getInstance($instance)->exec("DELETE FROM $table WHERE id=?", array($this->id));
 	}
+	
+	/**
+	* List the table data
+	*
+	* @return 	array
+	*/
+	public function listAll($table=null, $instance='default'){
+		$table = uncamelize(($table == null) ? (isset($this->_table) ? $this->_table : get_class($this)) : $table);
+		$class = camelize($table);
+		return Database::getInstance($instance)->query("SELECT * FROM $table", $class);
+	}
 
+	/**
+	* Load a record data
+	*
+	* @return 	dto
+	*/
+	public function load($id, $table=null, $instance='default'){
+		if (!is_numeric($id)) throw new IntegerRequiredException("id must be an integer");
+		$table = uncamelize(($table == null) ? (isset($this->_table) ? $this->_table : get_class($this)) : $table);
+		$class = camelize($table);
+		return Database::getInstance($instance)->queryOne("SELECT * FROM $table WHERE id='$id'", $class);
+	}
 }

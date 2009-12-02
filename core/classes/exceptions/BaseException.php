@@ -43,6 +43,7 @@ class BaseException extends Exception{
 		$this->details = $details;
 		$this->errorfile = $errorfile;
 		parent::__construct($message);
+		$this->trace = parent::__toString();
 		$this->log();
 	}
 
@@ -69,6 +70,10 @@ class BaseException extends Exception{
 		}
 	}
 	
+	public function setFile($file){
+		$this->file = $file;
+	}
+	
 	/**
 	* Convert an error class to a string
 	*
@@ -90,7 +95,7 @@ class BaseException extends Exception{
 		$arquivo = str_replace("{message}", $this->message, $arquivo);
 		$arquivo = str_replace("{code}", $this->errorfile, $arquivo);
 		$arquivo = str_replace("{file}", $this->file, $arquivo);
-		$arquivo = str_replace("{trace}", parent::__toString(), $arquivo);
+		$arquivo = str_replace("{trace}", $this->trace, $arquivo);
 
 		$headers = array(
 			'404' => 'HTTP/1.1 404 Not Found',
