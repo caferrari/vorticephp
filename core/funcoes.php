@@ -149,8 +149,12 @@ function reset_keys(&$arr){
 * @param	$str		string
 * @return	string
 */
-function camelize($str="") {
-    return str_replace(" ", "", ucwords(str_replace(array("_", "-"), " ", $str)));
+function camelize($str='') {
+    return str_replace(' ', '', ucwords(str_replace(array('_', '-'), ' ', $str)));
+}
+
+function uncamelize($str=''){
+	return preg_replace('@^_+|_+$@', '', strtolower(preg_replace("/([A-Z])/", "_$1", $str)));
 }
 
 /**

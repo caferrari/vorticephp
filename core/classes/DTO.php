@@ -86,7 +86,8 @@ class DTO
 	*
 	* @return 	int
 	*/
-	public function insert($table, $fields, $instance='default'){
+	public function insert($fields, $table=null, $instance='default'){
+		$table = uncamelize(($table == null) ? (isset($this->_table) ? $this->_table : get_class($this)) : $table);
 		$values = substr(str_repeat("?,", count(explode(",", $fields))), 0, -1);
 		$sql = "INSERT INTO $table ($fields) VALUES ($values);";
 		$id = Database::getInstance($instance)->exec($sql, $this->toArray($fields));
@@ -98,8 +99,9 @@ class DTO
 	*
 	* @return 	dto
 	*/
-	public function save($table, $fields, $instance='default'){
-		if (!isset($this->id) || !is_numeric($this->id)) return $this->insert($table, $fields, $instance);
+	public function save($fields, $table=null, $instance='default'){
+		if (!isset($this->id) || !is_numeric($this->id)) return $this->insert($fields, $table, $instance);
+		$table = uncamelize(($table == null) ? (isset($this->_table) ? $this->_table : get_class($this)) : $table);
 		$id = $this->id;
 		unset($this->id);
 		$values = $this->toArray($fields);
