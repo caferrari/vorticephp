@@ -137,7 +137,7 @@ class Link{
 	static function translate_uri(){
 		$q = $_SERVER["REQUEST_URI"];
 		
-		if (!post && !preg_match("@\/$@", $q)){
+		if (!ajax && !post && !preg_match("@\/$@", $q)){
 			header ("HTTP/1.1 301 Moved Permanently");
 			header ("Location: $q/");
 		}
