@@ -90,6 +90,7 @@ class Core{
 	* @return	string
 	*/
 	public function &__toString(){
+		if (!is_string($this->content)) $this->content = '';
 		return $this->content;
 	}
 }
