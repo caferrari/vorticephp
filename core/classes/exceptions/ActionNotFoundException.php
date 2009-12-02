@@ -19,8 +19,8 @@ class ActionNotFoundException extends BaseException{
 	* @return	void
 	*/
 	public function __construct($desc=''){
-		$msg = "Check if the action name is correct ino the controller!<br />if the name is correct, fix this problem 
-				creating the file method $desc into the controller" . rootvirtual . "app/controller/{$desc}.php</strong><br />";
+		$msg = "Check if the action name is correct in the controller.<br />if the name is correct, fix this problem 
+				creating the method <strong>$desc</strong> into the controller";
 		parent::__construct("Action \"$desc\" not Found", $msg, '404');
 	}
 }
