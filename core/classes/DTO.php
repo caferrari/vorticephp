@@ -110,7 +110,19 @@ class DTO
 		$fields = explode(",", $fields);
 		foreach ($fields as $k=>$f) $tmp[] = $fields[$k] . "=?";
 		$sql = "UPDATE $table SET " . implode($tmp, ', ') . " WHERE id=?";
-		return Database::getInstance($instance)->exec($sql, $values);
+		Database::getInstance($instance)->exec($sql, $values);
+		return $this;
+	}
+
+	/**
+	* Delete data from the database
+	*
+	* @return 	int
+	*/
+	public function delete($table=null, $instance='default'){
+		$table = uncamelize(($table == null) ? (isset($this->_table) ? $this->_table : get_class($this)) : $table);
+		if (!isset($this->id) || !is_numeric($this->id)) return false;
+		return Database::getInstance($instance)->exec("DELETE FROM $table WHERE id=?", array($this->id));
 	}
 
 }
