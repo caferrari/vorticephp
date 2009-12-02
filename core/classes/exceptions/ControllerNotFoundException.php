@@ -19,7 +19,8 @@ class ControllerNotFoundException extends BaseException{
 	* @return	void
 	*/
 	public function __construct($desc=''){
-		header('HTTP/1.1 404 Not Found');
-		parent::__construct("Controller \"$desc\" not Found", $desc, "404");
+		$msg = "Check if the controller name is correct in the url!<br />if the name is correct, fix this problem 
+				creating the file <strong>" . rootvirtual . "app/controller/{$desc}.php</strong><br />";
+		parent::__construct("Controller \"$desc\" not Found", $msg, '404');
 	}
 }

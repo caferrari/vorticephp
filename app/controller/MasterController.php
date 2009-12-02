@@ -23,14 +23,5 @@ class MasterController{
 		Template::setVar("mensagem", Post::renderMsg());
 		//Template::setClean(); // Clean the whitespaces before sending the page.. 
 	}
-	
-	
-	/**
-	* Executed when "nome_template" template is executed
-	*
-	* @return	void
-	*/
-	function nome_template(){
 
-	}
 }

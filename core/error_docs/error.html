@@ -1,0 +1,27 @@
+<html>
+	<head>
+		<title>{message}</title>
+		<style type="text/css">
+			body {margin: 0; padding: 0; background: #555; }
+			h1 { color: white; padding: 10px 10px; margin: 0; }
+			dl { background: #f5f5f5; padding: 5px; margin: 0 10px; border: 1px solid #333; }
+			dt { font-weight: bold; color: #333; }
+			dd { padding: 20px; background-color: #ffe; border: 1px solid #ddd; margin-bottom: 15px; margin-right: 10px;}
+			dd, dl { -moz-border-radius: 10px; -webkit-border-radius: 10px; border-radius: 10px; }
+		</style>
+	</head>
+	<body>
+		<h1>{code} - {message}</h1>
+		
+		<dl>
+			<dt>Details:</dt>
+			<dd>{details}</dd>
+			
+			<dt>File:</dt>
+			<dd>{file}</dd>
+			
+			<dt>Trace:</dt>
+			<dd><pre>{trace}</pre></dd>
+		</dl>
+	</body>
+</html>

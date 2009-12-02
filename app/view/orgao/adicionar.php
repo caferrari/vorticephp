@@ -13,7 +13,7 @@
 <h2>{{<?php echo (action=='adicionar') ? 'Adicionar Item' : 'Editar Item';  ?>}}</h2>
 <span class="desc"><!--desc--></span>
 <fieldset>
-	<form method="post" action="<?php echo new Link("exemplo:" . action) ?>">
+	<form method="post">
 		<input type="hidden" id="id" name="id" value="<?php echo Post::getVal('id') ?>" />
 		<p>
 			<label for="titulo">{{Sigla}}:</label>

@@ -138,6 +138,18 @@ class Post
 	}
 	
 	/**
+	* DTO object factory
+	*
+	* @return	dto
+	*/
+	public static function create($class)
+	{
+		$obj = new $class();
+		foreach (get_object_vars($obj) as $k => $v) $obj->$k = p($k);
+		return $obj;
+	}
+	
+	/**
 	* Load a object as post data if dont have data sent back by a post error
 	*
 	* @return	void

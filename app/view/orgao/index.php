@@ -13,7 +13,7 @@
 <h2>{{Itens}}</h2>
 <span class="desc"><!--desc--></span>
 <ul class="submenu">
-	<li>[<a href="<?= new Link("exemplo:adicionar") ?>">{{Adicionar novo Item}}</a>]</li>
+	<li>[<a href="<?= new Link("orgao:adicionar") ?>">{{Adicionar novo Item}}</a>]</li>
 </ul>
 <?php if (count($itens)){ ?>
 <table width="100%">
@@ -26,7 +26,7 @@
 	<tr class="item">
 		<td><?php echo $o->sigla ?></a></td>
 		<td><?php echo $o->nome ?></td>
-		<td><a href="<?php echo new Link('exemplo:alterar', "id={$o->id}") ?>">{{Alterar}}</a> | <a class="confirm" title="{{Excluir item}}: <?php echo $o->nome ?>" href="<?php echo new Link('exemplo:excluir', "id={$o->id}") ?>">{{Excluir}}</a></td>
+		<td><a href="<?php echo new Link('orgao:alterar', "id={$o->id}") ?>">{{Alterar}}</a> | <a class="confirm" title="{{Excluir item}}: <?php echo $o->nome ?>" href="<?php echo new Link('orgao:excluir', "id={$o->id}") ?>">{{Excluir}}</a></td>
 	</tr>
 	<?php endforeach; ?>
 </table>

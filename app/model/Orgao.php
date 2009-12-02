@@ -10,8 +10,7 @@
  * @subpackage Model
  * @subpackage DTO
  */
-class Exemplo {
-
+class Orgao extends DTO{
 	/**
 	* Contruct a Exemplo object
 	*

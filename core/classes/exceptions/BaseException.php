@@ -75,17 +75,28 @@ class BaseException extends Exception{
 	* @return	string
 	*/
 	public function __toString(){
-		$file = rootfisico . "app/error_docs/{$this->errorfile}.html";
-		if (file_exists($file)){
-			$arquivo = file_get_contents($file);
-			$arquivo = str_replace("{details}", $this->details, $arquivo);
-			$arquivo = str_replace("{message}", $this->message, $arquivo);
-			$arquivo = str_replace("{code}", $this->code, $arquivo);
-			$arquivo = str_replace("{file}", $this->file, $arquivo);
-			$arquivo = str_replace("{trace}", parent::__toString(), $arquivo);
-			return $arquivo;
-		}else{
-			return parent::__toString();
-		}
+		$file1 = rootfisico . "app/error_docs/{$this->errorfile}.html";
+		$file2 = rootfisico . "app/error_docs/error.html";
+		$file3 = rootfisico . "core/error_docs/error.html";
+
+		if (file_exists($file1)) 
+			$arquivo = file_get_contents($file1);
+		elseif (file_exists($file2)) 
+			$arquivo = file_get_contents($file2);
+		else 
+			$arquivo = file_get_contents($file3);
+					
+		$arquivo = str_replace("{details}", $this->details, $arquivo);
+		$arquivo = str_replace("{message}", $this->message, $arquivo);
+		$arquivo = str_replace("{code}", $this->errorfile, $arquivo);
+		$arquivo = str_replace("{file}", $this->file, $arquivo);
+		$arquivo = str_replace("{trace}", parent::__toString(), $arquivo);
+
+		$headers = array(
+			'404' => 'HTTP/1.1 404 Not Found',
+			'500' => 'HTTP/1.1 500 Internal Server Error'
+		);
+		header($headers[$this->errorfile]);
+		exit($arquivo);
 	}
 }

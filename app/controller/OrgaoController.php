@@ -9,7 +9,7 @@
  * @package SampleApp
  * @subpackage Controller
  */
-class ExemploController extends Controller{
+class OrgaoController extends Controller{
 
 	/**
 	* Execute the action /exemplo
@@ -17,7 +17,7 @@ class ExemploController extends Controller{
 	* @return	void
 	*/
 	public function index(){
-		$this->itens = ExemploDAO::getList();
+		$this->itens = OrgaoDAO::getList();
 	}
 	
 	/**
@@ -29,15 +29,15 @@ class ExemploController extends Controller{
 		if (post)
 		{
 			$erros = array();
-			foreach($_POST as $k => $v)
-				$$k = is_array($v) ? $v : addslashes(htmlspecialchars($v));
-			
-			if ($sigla=='') $erros[] = "Digite a sigla do item";
-			if ($nome=='') $erros[] = "Digite o nome do item";
+
+			$orgao = Post::create('Orgao');
+
+			if ($orgao->sigla == '') $erros['sigla'] = "Digite a sigla do item";
+			if ($orgao->nome == '') $erros['nome'] = "Digite o nome do item";
 			if (!count($erros))
 			{
-				ExemploDAO::insert(new Exemplo(NULL, $nome, $sigla));
-				Post::success("Item adicionado com sucesso!", new Link("exemplo"));
+				$orgao->insert('sigla, nome');
+				Post::success("Item adicionado com sucesso!", new Link("orgao"));
 			}
 			else
 				Post::error("Ocorreram os seguintes erros:", $erros);
@@ -55,24 +55,24 @@ class ExemploController extends Controller{
 		if (post)
 		{
 			$erros = array();
-			foreach($_POST as $k => $v)
-				$$k = is_array($v) ? $v : addslashes(htmlspecialchars($v));
+
+			$orgao = Post::create("Orgao");
 			
-			if ($sigla=='') $erros[] = "Digite a sigla do item";
-			if ($nome=='') $erros[] = "Digite o nome do item";
+			if ($orgao->sigla == '') $erros['sigla'] = "Digite a sigla do item";
+			if ($orgao->nome == '') $erros['nome'] = "Digite o nome do item";
+			
 			if (!count($erros))
 			{
-				ExemploDAO::update(new Exemplo($id, $nome, $sigla));
-				Post::success("Item alterado com sucesso!", new Link("exemplo"));
+				$orgao->save('sigla, nome');
+				Post::success("Item alterado com sucesso!", new Link("orgao"));
 			}
 			else
 				Post::error("Ocorreram os seguintes erros:", $erros);
 		}
 		
 		Template::setVar('area', 'Alterar Item');
-		Post::load(ExemploDAO::get($id));
-
-		Template::setView("adicionar");
+		Post::load(OrgaoDAO::get($id));
+		$this->_view = "adicionar";
 	}
 	
 	/**
@@ -82,10 +82,10 @@ class ExemploController extends Controller{
 	* @return	void
 	*/
 	public function excluir(){
-		$id = p('id');
+		$orgao = Post::create("Orgao");
 		try {
-			ExemploDAO::delete($id);
-			Post::success("Item excluido com sucesso!", new Link("exemplo"));
+			$orgao->delete();
+			Post::success("Item excluido com sucesso!", new Link("orgao"));
 		} catch (Exception $e) {
 			Post::error($e->getMessage());
 		}
