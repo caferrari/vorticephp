@@ -142,10 +142,11 @@ class Post
 	*
 	* @return	dto
 	*/
-	public static function toObject($class)
+	public static function toObject($class = 'DTO')
 	{
 		$obj = new $class();
-		foreach (get_object_vars($obj) as $k => $v) $obj->$k = p($k);
+		if (!is_array($_POST)) return false;
+		foreach ($_POST as $k => $v) $obj->$k = p($k);
 		return $obj;
 	}
 	

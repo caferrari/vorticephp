@@ -32,11 +32,12 @@ function link_decode($l){
 	$l = Crypt::Decrypt($l, getSessionKey());
 	$l = (array) json_decode($l);
 
-	$chave = (isset($l['chave'])) ?$l['chave'] : '';
+	$chave = (isset($l['chave'])) ? $l['chave'] : '';
 	unset ($l["chave"]);
+	if (isset($l["pars"])) 
+		$l["pars"] = (array)$l["pars"]; 
 	$l = serialize($l);
 	if ($chave == md5($l)) return $l;
-
 	throw new Exception("ops!");
 }
 */
