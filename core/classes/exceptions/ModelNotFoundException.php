@@ -19,7 +19,6 @@ class ModelNotFoundException extends BaseException{
 	* @return	void
 	*/
 	public function __construct($desc=''){
-		header('HTTP/1.1 404 Not Found');
-		parent::__construct('Model not Found', $desc, "404");
+		parent::__construct('Model not Found', $desc, "500");
 	}
 }

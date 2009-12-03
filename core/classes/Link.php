@@ -174,9 +174,9 @@ class Link{
 		else{
 			if (function_exists("link_decode"))
 				try {
-					$q = link_decode($q);
+					$q = unserialize(link_decode($q));
 				}catch (Exception $e){
-					$q = '';
+					throw new BaseException("Invalid URL", "URL checksum failed!", '400');
 				}
 			else
 				$q = unserialize(Link::default_decode($q));

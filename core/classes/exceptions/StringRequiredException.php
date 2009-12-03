@@ -19,7 +19,6 @@ class StringRequiredException extends BaseException{
 	* @return	void
 	*/
 	public function __construct($desc=''){
-		header('HTTP/1.1 500 Internal Server Error');
 		parent::__construct('A String is required', $desc, "500");
 	}
 }

@@ -9,34 +9,34 @@
  * @package SampleApp
  */
 
-/*
 
 // Descomente este bloco para habilitar o suporte à URL's Encriptadas
 
-function getSessionKey($id){
+/*
+function getSessionKey($id='key'){
 	if (Session::get("link_key_$id")=="")
 		Session::set("link_key_$id", substr(crypt(date("U") . $id), -10));
 	return Session::get("link_key_$id");
 }
 
 function link_encode($l){
-	$ck = getSessionKey(1);
-	$cl = getSessionKey(2);
-	$link = json_decode($l);
-	$link->_chave = base64_encode(Crypt::Encrypt(json_encode($link), $ck));
-	return rootvirtual .  Crypt::Encrypt(json_encode($link), $cl);
+	$lnk = unserialize($l);
+	$lnk["chave"] = md5($l);
+	$lnk = json_encode($lnk);
+	$lnk = Crypt::Encrypt($lnk, getSessionKey());
+	return $lnk . "/";
 }
 
 function link_decode($l){
-	$ck = getSessionKey(1);
-	$cl = getSessionKey(2);
-	if ($l=='') return $l;
-	$link = json_decode(Crypt::Decrypt($l, $cl));
-	$chave = @$link->_chave;
-	unset($link->_chave);
-	$nova_chave = base64_encode(Crypt::Encrypt(json_encode($link), $ck));
-	if ($chave != $nova_chave)
-		throw (new Exception("URL violada!"));
-	return $link;
+	if (!$l) return;
+	$l = Crypt::Decrypt($l, getSessionKey());
+	$l = (array) json_decode($l);
+
+	$chave = (isset($l['chave'])) ?$l['chave'] : '';
+	unset ($l["chave"]);
+	$l = serialize($l);
+	if ($chave == md5($l)) return $l;
+
+	throw new Exception("ops!");
 }
 */

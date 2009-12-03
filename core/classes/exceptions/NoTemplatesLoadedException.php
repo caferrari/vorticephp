@@ -19,7 +19,6 @@ class NoTemplatesLoadedException extends BaseException{
 	* @return	void
 	*/
 	public function __construct($desc=''){
-		header('HTTP/1.1 500 Internal Server Error');
 		parent::__construct('No one template loaded', $desc, "500");
 	}
 }

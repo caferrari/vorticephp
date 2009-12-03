@@ -19,7 +19,6 @@ class UndefinedPropertyException extends BaseException{
 	* @return	void
 	*/
 	public function __construct($desc=''){
-		header('HTTP/1.1 500 Internal Server Error');
 		parent::__construct('Undefined Property', $desc, "500");
 	}
 }

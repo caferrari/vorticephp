@@ -72,7 +72,7 @@ class Post
 		global $_PAR;
 		if (!is_array($_PAR)) $_PAR = array();
 		foreach (array_merge($_POST, $_GET, $_PAR) as $k => $v)
-			if ($v!='' && ($k=="id" || preg_match("/^id[_\-]/", $k)) && !is_numeric($v)) throw new IntegerRequiredException("it can be a SQL injection try!");
+			if ($v!='' && ($k=="id" || preg_match("/^id[_\-]/", $k)) && !is_numeric($v)) throw new BaseException("Integer Required", "it can be a try of SQL injection", '403');
 		
 		self::$form = array();
 		
