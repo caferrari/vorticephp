@@ -145,8 +145,8 @@ class Post
 	public static function toObject($class = 'DTO')
 	{
 		$obj = new $class();
-		if (!is_array($_POST)) return false;
-		foreach ($_POST as $k => $v) $obj->$k = p($k);
+		if (is_array($_PAR))  foreach ($_PAR  as $k => $v) $obj->$k = $_PAR[$k];
+		if (is_array($_POST)) foreach ($_POST as $k => $v) $obj->$k = $_POST[$k];
 		return $obj;
 	}
 	
