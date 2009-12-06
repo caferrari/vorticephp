@@ -290,6 +290,16 @@ class Post
 	}
 	
 	/**
+	* Set in what comment the message will be renderized
+	*
+	* @param	string	$comment	Comment name
+	* @return	void
+	*/
+	public function autoRender($comment = 'message'){
+		Template::setVar($comment, Post::renderMsg());
+	}
+	
+	/**
 	* Create a object based on the posted data and the current controller
 	*
 	* @param	string	$class 		Optional class name, if not given the atual controller will be used as class
