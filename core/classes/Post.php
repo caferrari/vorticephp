@@ -144,10 +144,9 @@ class Post
 	*/
 	public static function toObject($class = 'DTO')
 	{
-		global $_POST, $_PAR;
 		$obj = new $class();
-		if (isset($_PAR) && is_array($_PAR))   foreach ($_PAR  as $k => $v) $obj->$k = $_PAR[$k];
-		if (isset($_POST) && is_array($_POST)) foreach ($_POST as $k => $v) $obj->$k = $_POST[$k];
+		if (!is_array($_POST)) return false;
+		foreach ($_POST as $k => $v) $obj->$k = p($k);
 		return $obj;
 	}
 	
@@ -272,6 +271,7 @@ class Post
 			foreach(DAO::getAll() as $k => $d)
 				$json->addPackage($k, $d);
 			$json->set(1, $mensagem);
+			if (!$redirect) exit($json->render());
 		}else{
 			Session::set('form_tipo', POST_OK);
 			Session::set('form_mensagem' , $mensagem);
@@ -288,16 +288,6 @@ class Post
 	*/
 	public static function success($mensagem, $redirect=false){
 		self::setSucesso($mensagem, $redirect);
-	}
-	
-	/**
-	* Set in what comment the message will be renderized
-	*
-	* @param	string	$comment	Comment name
-	* @return	void
-	*/
-	public function autoRender($comment = 'message'){
-		Template::setVar($comment, Post::renderMsg());
 	}
 	
 	/**
