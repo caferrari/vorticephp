@@ -72,7 +72,7 @@ class Post
 		global $_PAR;
 		if (!is_array($_PAR)) $_PAR = array();
 		foreach (array_merge($_POST, $_GET, $_PAR) as $k => $v)
-			if ($v!='' && ($k=="id" || preg_match("@^id[_\-]@", $k)) && !is_numeric($v)) throw new BaseException("Integer Required", "Any parameter started with 'id' must be an Integer", '403');
+			if ($v!='' && ($k=="id" || preg_match("@^id[_\-]@", $k)) && !is_numeric($v)) throw new VorticeException("Integer Required", "Any parameter started with 'id' must be an Integer", '403');
 		
 		self::$form = array();
 		
@@ -84,7 +84,8 @@ class Post
 		$tmp = @unserialize(Session::get('form_errors'));
 		self::$errors = (is_array($tmp) && count($tmp) > 0) ? $tmp : "";
 		
-		if (Session::get("form_message")){
+		if (Session::get("form_message"))
+		{
 			self::$message = Session::get('form_message');
 			self::$type = Session::get('form_type');
 		}
