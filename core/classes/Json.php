@@ -79,7 +79,7 @@ class Json{
 	* @return	void
 	*/
 	public function addPackage($name, $values){
-		$this->json["packages"][$name] = $values;
+		if (!preg_match("@^_.*@", $name)) $this->json["packages"][$name] = $values;
 	}
 	
 	/**

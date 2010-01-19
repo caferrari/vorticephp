@@ -11,7 +11,7 @@
  * @package	Exceptions
  * @author	Carlos André Ferrari <carlos@ferrari.eti.br>
  */
-class ModelNotFoundException extends BaseException{
+class ModelNotFoundException extends VorticeException{
 	/**
 	* Constructor, create an error object
 	*

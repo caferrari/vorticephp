@@ -5,14 +5,14 @@
  */
 
 /**
- * Template Class, template engine and framework super core
+ * Vortice core Class, template engine and framework super core
  *
  * @version	1
  * @package	Framework
  * @author	Carlos André Ferrari <carlos@ferrari.eti.br>
  * @author	Luan Almeida <luanlmd@gmail.com>
  */
-class Template{
+class Vortice{
 	/**
 	* Variables to replace on the template render
 	* @staticvar	array
@@ -49,11 +49,11 @@ class Template{
 	private static $view = '';
 	
 	/**
-	* Is the template engine initialized?
+	* Is the framework engine initialized?
 	* @staticvar	boolean
 	* @access		private
 	*/
-	private static $iniciado = false;
+	private static $started = false;
 	
 	/**
 	* Clean html white spaces before send it to the browser?
@@ -74,21 +74,21 @@ class Template{
 	* @vstaticar	array
 	* @access		private
 	*/
-	private static $titulo = "";
+	private static $title = "";
 	
 	/**
 	* Forget the template renderization?
 	* @staticvar	bool
 	* @access		private
 	*/
-	private static $semtemplate = false;
+	private static $notemplate = false;
 	
 	/**
 	* Loaded html content
 	* @staticvar	string
 	* @access		protected
 	*/
-	protected static $conteudo = '';
+	protected static $contents = '';
 	
 	/**
 	* Return data format
@@ -110,11 +110,11 @@ class Template{
 	* @return	void
 	*/
 	public static function start(){
-		if (!self::$iniciado){ 
-			self::$iniciado = true;
-			self::$titulo = tpl_title;
-			self::$rootsite = rootvirtual;
-			self::setVar("titulo", self::$titulo);
+		if (!self::$started){ 
+			self::$started = true;
+			self::$title = apphash;
+			self::$rootsite = virtualroot;
+			self::setVar("title", self::$title);
 			self::setView(controller . ":" . action);
 			self::loadTemplates();
 			if (!defined("module")) define ("module", false);
@@ -128,46 +128,20 @@ class Template{
 	* @access	private
 	*/
 	private static function loadTemplates(){
-		$dir = rootfisico . "templates";
+		$dir = root . "app/webroot/templates";
 		if (is_dir($dir) && $dh = opendir($dir))
 			while (($file = readdir($dh)) !== false)
 				if (preg_match("/^[0-9a-z\_]+$/", $file) && is_dir("$dir/$file") && file_exists("$dir/$file/template.php")) self::addTemplate($file);
 	}
 
 	/**
-	* Alias to semTemplate Method
-	* @return	void
-	*/
-	public static function noTemplate(){
-		self::semTemplate();
-	}
-	
-	/**
 	* Disable the template rendering
 	* @return	void
 	*/
-	public static function semTemplate(){
-		self::$semtemplate = true;
-	}
-
-	/**
-	* Alias to setTitulo Method
-	* @param	string	$titulo	System title
-	* @return	void
-	*/
-	public static function setTitle($titulo){
-		self::setTitulo($titulo);
+	public static function disableTemplate(){
+		self::$notemplate = true;
 	}
 	
-	/**
-	* Set the system title
-	* @param	string	$titulo	System title
-	* @return	void
-	*/
-	public static function setTitulo($titulo){
-		if ($titulo) self::$titulo = $titulo;
-	}
-
 	/**
 	* Set the render mode
 	* @param	string	$mode	new render mode
@@ -183,7 +157,7 @@ class Template{
 	* @return	void
 	*/
 	public static function addTemplate($nome){
-		if (!file_exists(rootfisico . "templates/$nome/template.php")) throw(new TemplateNotFoundException($nome));
+		if (!file_exists(root . "app/webroot/templates/$nome/template.php")) throw(new TemplateNotFoundException($nome));
 		self::$templates[$nome] = $nome;
 		if (self::$tpl == '') self::$tpl = $nome;
 	}
@@ -264,19 +238,19 @@ class Template{
 	*/	
 	protected static function loadCssDir($dir){
 		$tmp = array("mobile" => array(), "screen" => array(), "print" => array());
-		if (is_dir($dir)){
-			if ($handle = opendir($dir)) {
+		if (is_dir(root . "app/webroot/$dir")){
+			if ($handle = opendir(root . "app/webroot/$dir")) {
 				while (false !== ($file = readdir($handle))) {
 					$nome = explode(".", $file);
 					if (count($nome) > 1 && $nome[count($nome)-1] == 'css'){
-						$mtime = filemtime(rootfisico . "$dir/$file");
+						$mtime = filemtime(root . "app/webroot/$dir/$file");
 						if (strstr($nome[0], "mobile"))
-							$tmp["mobile"][] = "<link href=\"" . rootvirtual . "$dir/$file?$mtime\" rel=\"stylesheet\" media=\"all\" />";
+							$tmp["mobile"][] = "<link href=\"" . virtualroot . "$dir/$file?$mtime\" rel=\"stylesheet\" media=\"all\" />";
 						else
 							if (strstr($nome[0], "print"))
-								$tmp["print"][] = "<link href=\"" . rootvirtual . "$dir/$file?$mtime\" rel=\"stylesheet\" media=\"print\" />";
+								$tmp["print"][] = "<link href=\"" . virtualroot . "$dir/$file?$mtime\" rel=\"stylesheet\" media=\"print\" />";
 							else
-								$tmp["screen"][] = "<link href=\"" . rootvirtual . "$dir/$file?$mtime\" rel=\"stylesheet\" media=\"screen\" />";
+								$tmp["screen"][] = "<link href=\"" . virtualroot . "$dir/$file?$mtime\" rel=\"stylesheet\" media=\"screen\" />";
 					}
 				}
 				closedir($handle);
@@ -324,10 +298,10 @@ class Template{
 	*/	
 	protected static function loadJsDir($dir){
 		$tmp = array();
-		if (is_dir(rootfisico . $dir))
-			if ($handle = opendir(rootfisico . $dir)){
+		if (is_dir(root . "app/webroot/$dir"))
+			if ($handle = opendir(root . "app/webroot/$dir")){
 				while (false !== ($file = readdir($handle))) {
-					$mtime = filemtime(rootfisico . "$dir/$file");
+					$mtime = filemtime(root . "app/webroot/$dir/$file");
 					if (preg_match("/\.js$/", $file)) $tmp[] = "<script type=\"text/javascript\" src=\"" . self::$rootsite . "$dir/$file?$mtime\"></script>";
 				}
 				closedir($handle);
@@ -348,31 +322,12 @@ class Template{
 	}
 	
 	/**
-	* Run users plugins
-	* @return	void
-	*/
-	protected static function runPlugins(){
-		if (is_dir(rootfisico."app/plugins"))
-			if ($handle = opendir(rootfisico."app/plugins")){
-				while (false !== ($file = readdir($handle))) {
-					$nome = explode(".", $file);
-					if (count($nome) == 2 && $nome[1] == 'php'){
-						require_once rootfisico."app/plugins/$file";
-						$classe = ucfirst($nome[0]);
-						new $classe();
-					}
-				}
-				closedir($handle);
-			}
-	}
-	
-	/**
-	* Merge the vars to the conteudo
+	* Merge the vars to the contents
 	* @return	void
 	*/
 	protected static function mergeVars(){
 		foreach (self::$vars as $k => $v){
-			self::$conteudo = str_replace("<!--{$k}-->", $v, self::$conteudo);
+			self::$contents = str_replace("<!--{$k}-->", $v, self::$contents);
 			unset(self::$vars[$k]);
 		}
 	}
@@ -382,7 +337,7 @@ class Template{
 	* @return	string
 	*/
 	public static function render(){
-		$meio = Template::execute(false, action, controller, module);
+		$middle = self::execute(false, action, controller, module);
 
 		if (!self::$tpl)  self::$semtemplate = true;
 		else $pasta = self::$tpl;
@@ -396,34 +351,33 @@ class Template{
 				return ($json->render());
 			}
 			self::$rendermode = "content";
-		}elseif (!self::$semtemplate){
-			if (mobile && file_exists(rootfisico . "templates/{$pasta}/mobile.php"))
-				include rootfisico . "templates/{$pasta}/mobile.php";
+		}elseif (!self::$notemplate){
+			if (mobile && file_exists(root . "app/webroot/templates/{$pasta}/mobile.php"))
+				include root . "app/webroot/templates/{$pasta}/mobile.php";
 			else 
-				include rootfisico . "templates/{$pasta}/template.php";
+				include root . "app/webroot/templates/{$pasta}/template.php";
 			self::setVar("csstags", self::geraCss());
 			self::setVar("jstags", self::geraJs());
 		}
 		
-		I18n::translate($meio);
+		I18n::translate($middle);
 		
-		self::$conteudo = ob_get_clean();
-		self::$conteudo = self::$semtemplate ? $meio : preg_replace("@<!--conte(udo|nt)-->@", $meio, self::$conteudo);
+		self::$contents = ob_get_clean();
+		self::$contents = self::$notemplate ? $middle : preg_replace("@<!--conte(udo|nt)-->@", $middle, self::$contents);
 		self::setVar("rootsite", self::$rootsite);		
 		
 		self::mergeVars();
-		self::runPlugins();
 		
-		I18n::translate(self::$conteudo);
+		I18n::translate(self::$contents);
 		
 		if (self::$clean){
-			self::$conteudo = preg_replace("/[[:space:]]{1,}/", " ", self::$conteudo);
-			self::$conteudo = preg_replace("/[ ]+<\//", "</", self::$conteudo);
+			self::$contents = preg_replace("/[[:space:]]{1,}/", " ", self::$contents);
+			self::$contents = preg_replace("/[ ]+<\//", "</", self::$contents);
 		}
 
 		switch (self::$rendermode){
 			case "html":
-				return self::$conteudo;
+				return self::$contents;
 			case "json":
 				//header('Content-type: application/json');
 				header('Content-type: text/plain');
@@ -432,7 +386,7 @@ class Template{
 				header('Content-type: text/plain');
 				return serialize(DAO::getAll());
 			case "content":
-				return $meio;
+				return $middle;
 			default:
 				$tmp_render = "render_" . self::$rendermode;
 				if (function_exists($tmp_render)) return $tmp_render();
@@ -478,7 +432,7 @@ class Template{
 			else throw (new ActionNotFoundException("$controller->$action()"));
 		}else{
 			// if its a static view
-			$vpath = rootfisico . "app/view/_static/" . (uri ? uri : 'index') . ".php";
+			$vpath = root . "app/view/_static/" . (uri ? uri : 'index') . ".php";
 			if (file_exists($vpath)){
 				include ($vpath);
 				return ob_get_clean();
@@ -493,14 +447,14 @@ class Template{
 				
 		if (mobile){
 			$v = $view ? "$c/mobile.$view" : self::getView("mobile.");
-			if (file_exists(rootfisico . "app/view/$v.php")){
-				include rootfisico . "app/view/$v.php";
+			if (file_exists(root . "app/view/$v.php")){
+				include root . "app/view/$v.php";
 				return ob_get_clean();
 			}
 		}
 		
 		$v = $view ? "$c/$view" : self::getView();
-		$vpath = rootfisico . (module ? "app/modules/" . module . "/view/$v.php" : "app/view/$v.php");
+		$vpath = root . (module ? "app/modules/" . module . "/view/$v.php" : "app/view/$v.php");
 		
 		if (file_exists($vpath)){
 			include $vpath;

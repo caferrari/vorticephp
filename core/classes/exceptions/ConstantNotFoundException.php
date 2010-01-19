@@ -11,7 +11,7 @@
  * @package	Exceptions
  * @author	Carlos André Ferrari <carlos@ferrari.eti.br>
  */
-class ConstantNotFoundException extends BaseException{
+class ConstantNotFoundException extends VorticeException{
 	/**
 	* Constructor, create an error object
 	*

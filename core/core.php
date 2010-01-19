@@ -12,12 +12,12 @@
 // Enable error reporting
 error_reporting(E_ALL);
 
-require_once "classes/Core.php";
-require_once "funcoes.php";
+include_once "classes/Core.php";
+include_once "functions.php";
 try{
 	print (new Core());
 }catch (Exception $e){
-	$ex = new BaseException(get_class($e), $e->getMessage(), '500');
+	$ex = new VorticeException(get_class($e), $e->getMessage(), '500');
 	$ex->setFile($e->getFile());
 	$ex->trace = $e->__toString();
 	print $ex;

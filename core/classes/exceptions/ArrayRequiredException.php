@@ -11,7 +11,7 @@
  * @package	Exceptions
  * @author	Carlos André Ferrari <carlos@ferrari.eti.br>
  */
-class ArrayRequiredException extends BaseException{
+class ArrayRequiredException extends VorticeException{
 	/**
 	* Constructor, create an error object
 	*

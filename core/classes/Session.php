@@ -27,7 +27,7 @@ class Session {
 	* @private
 	*/
 	private static function start(){
-		self::$key = md5(tpl_title . session_id());
+		self::$key = md5(apphash . session_id());
 	}
 
 	/**

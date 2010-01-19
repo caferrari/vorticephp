@@ -1,1 +1,1 @@
-deny from all
+RewriteRule (.*) index.php [L]

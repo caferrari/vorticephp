@@ -21,8 +21,8 @@ class Controller {
 	* @access	public
 	*/
 	public function __set($met, $val){
-		if ($met == '_view') 		Template::setView($val);
-		if ($met == '_template') 	Template::setTemplate($val);
+		if ($met == '_view') 		Vortice::setView($val);
+		if ($met == '_template') 	Vortice::setTemplate($val);
 		DAO::add($val, $met);
 		$this->$met = $val;
 	}

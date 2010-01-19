@@ -35,7 +35,7 @@ function __autoload($class)
 	}
 
 	foreach ($folders as $f)
-		if (file_exists(rootfisico . "{$f}/{$class}.php")) { include_once(rootfisico . "{$f}/{$class}.php"); return; }
+		if (file_exists(root . "{$f}/{$class}.php")) { include_once(root . "{$f}/{$class}.php"); return; }
     
  	//throw (new Exception("Class not found: $class"));
 }
@@ -45,7 +45,7 @@ function __autoload($class)
 * @return	boolean
 */
 function check_lib($filename, $base){
-	$path = rootfisico . "lib/$filename";
+	$path = root . "core/lib/$filename";
 	if (!file_exists($path)) return false;
 	$base = strtolower($base);
 	$found = false;
@@ -140,8 +140,7 @@ function redirect($destino="", $delay=0){
 function reset_keys(&$arr){
 	$new = array();
 	foreach ($arr as $i) $new[] = $i;
-	$arr = $new;
-	return $arr;
+	return $new;
 }
 
 /**
@@ -153,6 +152,11 @@ function camelize($str='') {
     return str_replace(' ', '', ucwords(str_replace(array('_', '-'), ' ', $str)));
 }
 
+/**
+* Convert SalaDeImprensa to sala_de_imprensa
+* @param	$str		string
+* @return	string
+*/
 function uncamelize($str=''){
 	return preg_replace('@^_+|_+$@', '', strtolower(preg_replace("/([A-Z])/", "_$1", $str)));
 }
@@ -178,6 +182,10 @@ function microtime_float()
 {
     list($usec, $sec) = explode(" ", microtime());
     return ((float)$usec + (float)$sec);
+}
+
+function d($v){
+	die(print_r($v));
 }
 
 /**

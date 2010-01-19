@@ -17,10 +17,10 @@
 	<meta name="description" content="" />
 	<meta name="keywords" content="" />
 	<meta name="author" content="Carlos André Ferrari" />
-	<meta name="language" content="<?= request_lang?>" />
+	<meta name="language" content="<?php echo request_lang?>" />
 	<!--csstags-->
 	<script>
-		var rootvirtual = '<?php echo rootvirtual ?>';
+		var rootvirtual = '<?php echo virtualroot ?>';
 	</script>
 	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
 	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/jquery-ui.min.js"></script>
@@ -29,19 +29,19 @@
 <body>
 <div id="conteiner">
 	<ul id="lang">
-		<li><a href="<?php echo rootvirtual ?>" lang="pt-br">pt-br</a></li>
-		<li><a href="<?php echo rootvirtual ?>en/<?php uri ?>" lang="en">en</a></li>
-		<li><a href="<?php echo rootvirtual ?>jp/<?php uri ?>" lang="jp">日本語</a></li>
+		<li><a href="<?php echo virtualroot ?>" lang="pt-br">pt-br</a></li>
+		<li><a href="<?php echo virtualroot ?>en/<?php uri ?>" lang="en">en</a></li>
+		<li><a href="<?php echo virtualroot ?>jp/<?php uri ?>" lang="jp">日本語</a></li>
 	</ul>
 	<div id="topo">
-		<h1><a class="hidetxt" href="<? echo rootvirtual . request_lang ?>" title="{{Página inicial}}">{{Exemplo de Sistema}}</a></h1>
+		<h1><a class="hidetxt" href="<? echo virtualroot . request_lang ?>" title="{{Página inicial}}">{{Exemplo de Sistema}}</a></h1>
 	</div>
 	<div id="conteudo">
 		<!--menu-->
 		<!--mensagem-->
 		<!--content-->
 	</div>
-	<div id="rodape"><a href="http://github.com/caferrari/vorticephp" title="Project at GitHub!">Check the project at Github</a></div>
+	<div id="rodape"><a href="http://github.com/caferrari/vorticephp2" title="Project at GitHub!">Check the project at Github</a></div>
 </div>
 </body>
 </html>

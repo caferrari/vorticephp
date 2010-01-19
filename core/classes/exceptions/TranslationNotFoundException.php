@@ -11,7 +11,7 @@
  * @package	Exceptions
  * @author	Carlos André Ferrari <carlos@ferrari.eti.br>
  */
-class TranslationNotFoundException extends BaseException{
+class TranslationNotFoundException extends VorticeException{
 	/**
 	* Constructor, create an error object
 	*

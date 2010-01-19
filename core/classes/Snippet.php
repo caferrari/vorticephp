@@ -19,7 +19,7 @@ class Snippet{
 	* @private
 	*/
 	public function __construct($path){
-		$vpath = rootfisico . "app/view/_snippets/" . $path . ".php";
+		$vpath = root . "app/view/_snippets/" . $path . ".php";
 		if (file_exists($vpath)) include ($vpath);
 	}
 }

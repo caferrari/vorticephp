@@ -11,7 +11,7 @@
  * @package	Exceptions
  * @author	Carlos André Ferrari <carlos@ferrari.eti.br>
  */
-class IntegerRequiredException extends BaseException{
+class IntegerRequiredException extends VorticeException{
 	/**
 	* Constructor, create an error object
 	*

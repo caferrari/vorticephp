@@ -11,7 +11,7 @@
  * @package	Exceptions
  * @author	Carlos André Ferrari <carlos@ferrari.eti.br>
  */
-class UndefinedPropertyException extends BaseException{
+class UndefinedPropertyException extends VorticeException{
 	/**
 	* Constructor, create an error object
 	*

@@ -11,7 +11,7 @@
  * @package	Exceptions
  * @author	Carlos André Ferrari <carlos@ferrari.eti.br>
  */
-class DatabaseNotFoundException extends BaseException{
+class DatabaseNotFoundException extends VorticeException{
 	/**
 	* Constructor, create an error object
 	*

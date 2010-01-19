@@ -11,7 +11,7 @@
  * @package	Exceptions
  * @author	Carlos André Ferrari <carlos@ferrari.eti.br>
  */
-class BaseException extends Exception{
+class VorticeException extends Exception{
 	/**
 	* Error details
 	*
@@ -54,17 +54,17 @@ class BaseException extends Exception{
 	public function log(){
 		global $_PAR;
 		
-		if (defined("logs_dir")) $log_dir = logs_dir;
-		else $log_dir = root . "logs";
+		if (defined("DIR_LOG")) $log_dir = DIR_LOG;
+		else $log_dir = root . "app/logs/";
 		@mkdir($log_dir);
 		if (is_writeable($log_dir)){
-			$debug_log_file = "$log_dir/debug/" . md5($this->trace) . ".log";
+			$debug_log_file = "{$log_dir}debug/" . md5($this->trace) . ".log";
 			$nome_log = get_class($this) . "-" . date("Y-m-d") . ".log";
 		
 			$debug_log = "uri: " . uri . "\npars: " . json_encode($_PAR) . "\nrequest: " . json_encode($_REQUEST) . "\n";
 			$debug_log .= "IP: " . $_SERVER['REMOTE_ADDR'] . "\nMessage: {$this->message} -> {$this->details}\n\n" . parent::__toString();
 		
-			@mkdir(root . "logs/debug");
+			@mkdir($log_dir . "debug/");
 			file_put_contents($debug_log_file, $debug_log);
 		}
 	}

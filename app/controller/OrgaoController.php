@@ -71,7 +71,7 @@ class OrgaoController extends Controller{
 				Post::error("Ocorreram os seguintes erros:", $erros);
 		}
 		
-		Template::setVar('area', 'Alterar Item');
+		Vortice::setVar('area', 'Alterar Item');
 		Post::load(Orgao::load($id, 'orgao'));
 		$this->_view = "adicionar";
 	}

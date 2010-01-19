@@ -11,7 +11,7 @@
  * @package	Exceptions
  * @author	Carlos André Ferrari <carlos@ferrari.eti.br>
  */
-class BaseException extends Exception{
+class VorticeException extends Exception{
 	/**
 	* Error details
 	*
@@ -38,7 +38,7 @@ class BaseException extends Exception{
 	* @param	string	$errorfile	Error file to be loaded
 	* @return	void
 	*/
-	public function __construct($message, $details='', $errorfile=''){
+	public function __construct($message, $details='', $errorfile='404'){
 		$message = e($message);
 		$this->details = $details;
 		$this->errorfile = $errorfile;

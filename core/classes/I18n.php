@@ -33,7 +33,7 @@ class I18n{
 	private static function load_conf($file){
 		$ar = self::$dic;
 		
-		$content = explode("\n", file_exists(rootfisico . $file) ? file_get_contents(rootfisico . $file) : "");
+		$content = explode("\n", file_exists(root . $file) ? file_get_contents(root . $file) : "");
 		$key = false;
 		foreach($content as $i){
 			$i = trim($i);
@@ -94,7 +94,7 @@ class I18n{
 	* @return	void
 	*/
 	public static function start($module = '_base'){
-		$av_lang = self::load_lang(rootfisico . "app/i18n", "_base");
+		$av_lang = self::load_lang(root . "app/i18n", "_base");
 		define("av_lang", implode(", ", $av_lang));
 		if (count($av_lang) > 1){
 			$langs = $av_lang;		
@@ -104,7 +104,7 @@ class I18n{
 				$tmp = array_shift($langs);
 				if ($tmp!=default_lang && Session::get("defined_lang")==''){
 					Session::set("defined_lang", $tmp);
-					header("Location: " . rootvirtual . "$tmp/" . uri , true, 301) and exit();
+					header("Location: " . virtualroot . "$tmp/" . uri , true, 301) and exit();
 				}
 			}
 		}else return;

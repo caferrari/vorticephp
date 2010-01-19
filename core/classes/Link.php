@@ -24,12 +24,12 @@ class Link{
 	/**
 	* Constructor, Create a URI
 	*
-	* @param	string	$pagina		format: [model][+controller:[action]]
-	* @param	string	$parametros	link params
+	* @param	string	$page		format: [model][+controller:[action]]
+	* @param	string	$pars		link params
 	* @return	void
 	*/
-	function __construct($pagina='', $parametros=''){
-		$this->el = $this->criaLink($pagina, $parametros);
+	function __construct($page='', $pars=''){
+		$this->el = $this->createLink($page, $pars);
 	}
 	
 	/**
@@ -41,20 +41,20 @@ class Link{
 	*/
 	static function default_encode($url){
 		$url = unserialize($url);
-		$pagina = $url["url"];
-		$pagina = explode(":", $pagina);
+		$page = $url["url"];
+		$page = explode(":", $page);
 		$pars = '';
 		
-		switch (count($pagina)){
+		switch (count($page)){
 			case 3:
-				if ($pagina[1]=='') $pagina[1] = default_controller;
+				if ($page[1]=='') $page[1] = default_controller;
 				break;
 			case 2:
-				if ($pagina[1]=='') $pagina[1] = "";
+				if ($page[1]=='') $page[1] = "";
 				break;
 		}
 		
-		$pagina = implode($pagina, "/");
+		$page = implode($page, "/");
 		
 		if (isset($url->pars)){
 			$pars = http_build_query($url["pars"]);
@@ -62,7 +62,7 @@ class Link{
 			$pars = str_replace("&", "/", $pars);
 		}
 		
-		$l = $pagina . "/" . $pars . "/";
+		$l = $page . "/" . $pars . "/";
 		return preg_replace("@\/+@", "/", $l);
 	}
 	
@@ -75,57 +75,57 @@ class Link{
 	*/
 	static function default_decode($url){
 		$pars = array();
-		$pagina = array();
+		$page = array();
 		$partes = explode("/", $url);
 		foreach ($partes as $p)
 			if (preg_match("/.*:.*/", $p)){
 				$p = explode(":", $p); 
 				$pars[$p[0]] = $p[1];
 			}else
-				$pagina[] = $p;
-		$pagina = implode($pagina, ":");
+				$page[] = $p;
+		$page = implode($page, ":");
 
-		$json = serialize(array("url" => $pagina, "pars" => $pars));
+		$json = serialize(array("url" => $page, "pars" => $pars));
 		return $json;
 	}
 	
 	/**
 	* Create a URI
 	*
-	* @param	string	$pagina		[model][+controller+[action]]
-	* @param	string	$parametros	link params
+	* @param	string	$page		[model][+controller+[action]]
+	* @param	string	$pars	link params
 	* @return	string
 	* @static
 	*/
-	static function criaLink($pagina='', $parametros=''){
-		if (!preg_match("/^([a-z\-]+\+)?([a-z\-]+)(:[a-z\-]+)?$/", $pagina))
-			return preg_replace("@\/+@", "/", rootvirtual . ((request_lang != default_lang) ? request_lang : "") . "/$pagina/");
-		$pagina = preg_split("/[:\+]/", $pagina);
+	static function createLink($page='', $pars=''){
+		if (!preg_match("/^([a-z\-]+\+)?([a-z\-]+)(:[a-z\-]+)?$/", $page))
+			return preg_replace("@\/+@", "/", virtualroot . ((request_lang != default_lang) ? request_lang : "") . "/$page/");
+		$page = preg_split("/[:\+]/", $page);
 
-		if (count($pagina)==3){
-			if ($pagina[2]==default_action) $pagina[2] = '';
-			if ($pagina[1]==default_controller && $pagina[2]=='') unset($pagina[2]);
-			reset_keys($pagina);
+		if (count($page)==3){
+			if ($page[2]==default_action) $page[2] = '';
+			if ($page[1]==default_controller && $page[2]=='') unset($page[2]);
+			reset_keys($page);
 		}
-		if (count($pagina)==2){
-			if ($pagina[0]==default_controller && $pagina[1]==default_action) $pagina=array();
-			else if ($pagina[1]==default_action) unset($pagina[1]);
-			reset_keys($pagina);
+		if (count($page)==2){
+			if ($page[0]==default_controller && $page[1]==default_action) $page=array();
+			else if ($page[1]==default_action) unset($page[1]);
+			reset_keys($page);
 		}
-		if (count($pagina)==1){
-			if ($pagina[0] == default_controller) $pagina = array();
-			reset_keys($pagina);
+		if (count($page)==1){
+			if ($page[0] == default_controller) $page = array();
+			reset_keys($page);
 		}
 
-		parse_str(is_array($parametros) ? http_build_query($parametros) : $parametros, $p);
-		if (count($pagina)==0 || $pagina[0] == '') $pagina="";
-		else $pagina = implode(":", $pagina);
-		$url = $parametros ? serialize(array("url" => $pagina, "pars" => $p)) : serialize(array("url" => $pagina));
+		parse_str(is_array($pars) ? http_build_query($pars) : $pars, $p);
+		if (count($page)==0 || $page[0] == '') $page="";
+		else $page = implode(":", $page);
+		$url = $pars ? serialize(array("url" => $page, "pars" => $p)) : serialize(array("url" => $page));
 		$link = (function_exists("link_encode")) ? link_encode($url) : Link::default_encode($url);
 		if (request_lang != default_lang)
-			return rootvirtual . request_lang . "/$link";
+			return virtualroot . request_lang . "/$link";
 		
-		return rootvirtual . "$link";
+		return virtualroot . "$link";
 	}
 	
 	/**
@@ -134,7 +134,7 @@ class Link{
 	* @return	void
 	* @static
 	*/
-	static function translate_uri(){
+	static function translateUri(){
 		$q = $_SERVER["REQUEST_URI"];
 		
 		if (!ajax && !post && !preg_match("@\/$@", $q)){
@@ -142,16 +142,16 @@ class Link{
 			header ("Location: $q/");
 		}
 		
-		if (rootvirtual != "/") $q = preg_replace("/^".addcslashes(rootvirtual, "/")."/", "", $q);
+		if (virtualroot != "/") $q = preg_replace("/^".addcslashes(virtualroot, "/")."/", "", $q);
 		$q = preg_replace("/^\/|\/$/", "", $q);
 		$tmp = explode("/", $q);
 		if ($tmp[0] != ''){
-			if (preg_match("/^([a-z]{2}|[a-z]{2}-[a-z]{2})$/", $tmp[0]) && !file_exists(rootfisico . "app/controller/" . ucfirst($tmp[0])."Controller.php") && !is_dir(rootfisico . "app/modules/{$tmp[0]}")){
+			if (preg_match("/^([a-z]{2}|[a-z]{2}-[a-z]{2})$/", $tmp[0]) && !file_exists(root . "app/controller/" . ucfirst($tmp[0])."Controller.php") && !is_dir(root . "app/modules/{$tmp[0]}")){
 				define("request_lang", $tmp[0]);
 				unset($tmp[0]);
 				$q = implode("/", $tmp);
 				if (request_lang==default_lang){
-					header("Location: " . rootvirtual . $q , true, 301);
+					header("Location: " . virtualroot . $q , true, 301);
 					exit();
 				}
 			}else $q = implode("/", $tmp);
@@ -166,7 +166,7 @@ class Link{
 	* @return	void
 	* @static
 	*/
-	static function trataQuery(){
+	static function parseQuery(){
 		global $_PAR;
 		$q = uri;
 		$route = Route::exec();
@@ -201,7 +201,7 @@ class Link{
 				$controller = $url[0];
 				$action = $url[1];
 			}else{
-				if (is_dir(rootfisico . "app/modules/" . $url[0]))
+				if (is_dir(root . "app/modules/" . $url[0]))
 					$module = $url[0];
 				elseif ($url[0]{0} == ".")
 					$action = $url[0];
@@ -213,18 +213,18 @@ class Link{
 		$tmp = explode(".", $action);
 		if (count($tmp) > 1){
 			$action = ($tmp[0] == '') ? '' : $tmp[0];
-			Template::setRenderMode($tmp[1]);
+			Vortice::setRenderMode($tmp[1]);
 		}else{
 			$action = $tmp[0];
 			$tmp = explode(".", $controller);
 			if (count($tmp) > 1){
 				$controller = ($tmp[0] == '') ? '' : $tmp[0];
-				Template::setRenderMode($tmp[1]);
+				Vortice::setRenderMode($tmp[1]);
 			}else
 				$controller = $tmp[0];
 		}
 		
-		if (!routed && Template::$rendermode=='html'){
+		if (!routed && Vortice::$rendermode=='html'){
 			$tmpmod = '';
 			if ($module != false) $tmpmod = "$module+";
 			if ($controller==default_controller && ($action==default_action || $action=='')){

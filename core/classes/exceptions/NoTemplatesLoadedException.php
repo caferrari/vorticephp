@@ -11,7 +11,7 @@
  * @package	Exceptions
  * @author	Carlos André Ferrari <carlos@ferrari.eti.br>
  */
-class NoTemplatesLoadedException extends BaseException{
+class NoTemplatesLoadedException extends VorticeException{
 	/**
 	* Constructor, create an error object
 	*

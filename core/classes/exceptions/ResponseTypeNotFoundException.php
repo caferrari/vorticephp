@@ -11,7 +11,7 @@
  * @package	Exceptions
  * @author	Carlos André Ferrari <carlos@ferrari.eti.br>
  */
-class ResponseTypeNotFoundException extends BaseException{
+class ResponseTypeNotFoundException extends VorticeException{
 	/**
 	* Constructor, create an error object
 	*

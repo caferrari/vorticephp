@@ -11,7 +11,7 @@
  * @package	Exceptions
  * @author	Carlos André Ferrari <carlos@ferrari.eti.br>
  */
-class ActionNotFoundException extends BaseException{
+class ActionNotFoundException extends VorticeException{
 	/**
 	* Constructor, create an error object
 	*

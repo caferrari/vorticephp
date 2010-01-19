@@ -16,10 +16,10 @@
 		<td>Request Type:</td><td><?php echo post ? "POST" : "GET" ?></td>
 	</tr>
 	<tr>
-		<td>Site Root:</td><td><?php echo rootfisico ?></td>
+		<td>Site Root:</td><td><?php echo root ?></td>
 	</tr>
 	<tr>
-		<td>Site Virtual Root:</td><td><?php echo rootvirtual ?></td>
+		<td>Site Virtual Root:</td><td><?php echo virtualroot ?></td>
 	</tr>
 	<tr>
 		<td>Lang:</td><td><?php echo request_lang ?></td>

@@ -19,7 +19,7 @@ class Post
 	* @staticvar	array
 	* @access		private
 	*/
-	private static $erros = array();
+	private static $errors = array();
 	
 	/**
 	* Form fields array
@@ -35,7 +35,7 @@ class Post
 	* @staticvar	string
 	* @access		public
 	*/
-	public static $mensagem = '';
+	public static $message = '';
 	
 	/**
 	* Message type
@@ -43,7 +43,7 @@ class Post
 	* @staticvar	int
 	* @access	public
 	*/
-	public static $tipo;
+	public static $type;
 	
 	/**
 	* Have data sent back via post error?
@@ -67,35 +67,34 @@ class Post
 	* @return	void
 	*/
 	public static function start(){
-		define ("POST_ERRO", 0);
+		define ("POST_ERROR", 0);
 		define ("POST_OK", 1);
 		global $_PAR;
 		if (!is_array($_PAR)) $_PAR = array();
 		foreach (array_merge($_POST, $_GET, $_PAR) as $k => $v)
-			if ($v!='' && ($k=="id" || preg_match("/^id[_\-]/", $k)) && !is_numeric($v)) throw new BaseException("Integer Required", "it can be a try of SQL injection", '403');
+			if ($v!='' && ($k=="id" || preg_match("@^id[_\-]@", $k)) && !is_numeric($v)) throw new BaseException("Integer Required", "Any parameter started with 'id' must be an Integer", '403');
 		
 		self::$form = array();
-		
 		
 		$tmp = unserialize(Session::get("form_val"));
 		self::$form = is_array($tmp) ? $tmp : array();
 		if (count($tmp) != '')
 			self::$hasData = true;
 			
-		$tmp = @unserialize(Session::get('form_erros'));
-		self::$erros = (is_array($tmp) && count($tmp) > 0) ? $tmp : "";
+		$tmp = @unserialize(Session::get('form_errors'));
+		self::$errors = (is_array($tmp) && count($tmp) > 0) ? $tmp : "";
 		
-		if (Session::get("form_mensagem")){
-			self::$mensagem = Session::get('form_mensagem');
-			self::$tipo = Session::get('form_tipo');
+		if (Session::get("form_message")){
+			self::$message = Session::get('form_message');
+			self::$type = Session::get('form_type');
 		}
 		
 		foreach ($_POST as $k => $v) self::setVal($k, $v);
 		
-		Session::del('form_erros');
+		Session::del('form_errors');
 		Session::del("form_val");
-		Session::del('form_tipo');
-		Session::del('form_mensagem');
+		Session::del('form_type');
+		Session::del('form_message');
 		Session::set("form_val", serialize($_POST));
 	}
 	
@@ -104,8 +103,8 @@ class Post
 	*
 	* @return	int
 	*/
-	public static function getTipo(){
-		return self::$tipo;
+	public static function getType(){
+		return self::$type;
 	}
 
 	/**
@@ -113,8 +112,8 @@ class Post
 	*
 	* @return	array
 	*/
-	public static function getErros(){
-		return self::$erros;
+	public static function getErrors(){
+		return self::$errors;
 	}
 	
 	/**
@@ -123,7 +122,7 @@ class Post
 	* @return	array
 	*/
 	public static function getError($field=''){
-		if (isset(self::$erros[$field])) return self::$erros[$field];
+		if (isset(self::$errors[$field])) return self::$errors[$field];
 		return false;
 	}
 	
@@ -146,6 +145,18 @@ class Post
 	{
 		$obj = new $class();
 		if (!is_array($_POST)) return false;
+		foreach ($_POST as $k => $v) $obj->$k = p($k);
+		return $obj;
+	}
+	
+	/**
+	* Inject posted data into an existing object
+	*
+	* @return	dto
+	*/
+	public static function intoObject($obj)
+	{
+		if (!is_array($_POST)) return $obj;
 		foreach ($_POST as $k => $v) $obj->$k = p($k);
 		return $obj;
 	}
@@ -188,22 +199,22 @@ class Post
 	*
 	* @return	string
 	*/
-	public static function renderMsg(){
+	public static function render(){
 		$tmp = '';
-		switch (self::$tipo){
+		switch (self::$type){
 			case POST_OK:
-					$tmp = "<div id=\"mensagem\" class=\"ok\">";
-					$tmp .= "<p>" . self::$mensagem . "</p>";
+					$tmp = "<div id=\"message\" class=\"ok\">";
+					$tmp .= "<p>" . self::$message . "</p>";
 					$tmp .= "</div>";
 				break;
-			case POST_ERRO:
-					if (strlen(self::$mensagem)==0) return;
-					if (!is_array(self::$erros)) self::$erros = array();
-					$tmp = "<div id=\"mensagem\" class=\"erro\">";
-					$tmp .= "<p>" . self::$mensagem . "</p>";
+			case POST_ERROR:
+					if (strlen(self::$message)==0) return;
+					if (!is_array(self::$errors)) self::$errors = array();
+					$tmp = "<div id=\"message\" class=\"error\">";
+					$tmp .= "<p>" . self::$message . "</p>";
 					$tmp .= "<ul>";
-					foreach (self::$erros as $erro)
-						$tmp .= is_array($erro) ? "<li>{$erro[1]}" : "<li>$erro</li>";
+					foreach (self::$errors as $error)
+						$tmp .= is_array($error) ? "<li>{$error[1]}" : "<li>$error</li>";
 					$tmp .= "</ul>";
 					$tmp .= "</div>";
 				break;
@@ -214,80 +225,69 @@ class Post
 	}
 	
 	/**
+	* Auto render error/success messages to <!--message--> html comment
+	*
+	* @return	void
+	*/
+	public static function autoRender()
+	{
+		Vortice::setVar("message", self::render());
+	}
+	
+	/**
 	* Put validation errors on a session and redirect to previews page
 	*
-	* @param	string	$mensagem	Errors message
+	* @param	string	$message	Errors message
 	* @param	array	$erros		Errors array
 	* @return	void
 	*/
-	public static function setErros($mensagem, $erros=''){
-		if ($erros=='') $erros = array();
-		if (!is_array($erros)) throw (new ArrayRequiredException($erros));
+	public static function error($message, $errors=''){
+		if ($errors=='') $errors = array();
+		if (!is_array($errors)) throw (new ArrayRequiredException($errors));
 		
-		foreach($erros as $k => $v) is_array($erros[$k]) ? $erros[$k][1] = e($v[1]) : $erros[$k] = e($v);
-		$mensagem = e($mensagem);
+		foreach($errors as $k => $v) is_array($errors[$k]) ? $errors[$k][1] = e($v[1]) : $errors[$k] = e($v);
+		$message = e($message);
 		
-		if (ajax || !isset($_SERVER['HTTP_REFERER']) || Template::$rendermode == 'json'){
+		if (ajax || !isset($_SERVER['HTTP_REFERER']) || Vortice::$rendermode == 'json'){
 			$tmp = array();
-			foreach ($erros as $k => $v)
+			foreach ($errors as $k => $v)
 				$tmp[] = array("key" => $k, "value" => $v);
 			$json = Json::getInstance();
-			$json->set(0, $mensagem, $tmp);
+			$json->set(0, $message, $tmp);
 			foreach(DAO::getAll() as $k => $d)
 				$json->addPackage($k, $d);
-			header('Content-type: text/json'); 
+			if (ajax) header('Content-type: text/json');
 			exit($json->render());
 		}else{
-			Session::set('form_erros', serialize($erros));
-			Session::set('form_tipo', POST_ERRO);
-			Session::set('form_mensagem' , $mensagem);
+			Session::set('form_errors', serialize($errors));
+			Session::set('form_type', POST_ERROR);
+			Session::set('form_message' , $message);
 			exit ("<html><head><meta http-equiv=\"refresh\" content=\"0;URL=" . $_SERVER['HTTP_REFERER'] . "\"></head><body></body></html>");
 		}
 	}
 	
 	/**
-	* Alias to setErros method
-	*
-	* @param	string	$message	Errors message
-	* @param	array	$errors		Errors array
-	* @return	void
-	*/
-	public static function error($message, $errors=''){
-		self::setErros($message, $errors);
-	}
-	
-	/**
 	* Sucess post
 	*
-	* @param	string	$mensagem	Sucess message
+	* @param	string	$message	Sucess message
 	* @param	string	$redirec	Redirect URL encoded with Link class
 	* @return	void
 	*/
-	public static function setSucesso($mensagem, $redirect=false){
-		$mensagem = e($mensagem);
+	public static function success($message, $redirect=false){
+		$message = e($message);
 	
-		if (ajax){
+		if (ajax || Vortice::$rendermode=='json'){
 			$json = Json::getInstance();
 			foreach(DAO::getAll() as $k => $d)
 				$json->addPackage($k, $d);
-			$json->set(1, $mensagem);
+			$json->set(1, $message);
+			if (ajax) header('Content-type: text/json');
 			if (!$redirect) exit($json->render());
 		}else{
-			Session::set('form_tipo', POST_OK);
-			Session::set('form_mensagem' , $mensagem);
+			Session::set('form_type', POST_OK);
+			Session::set('form_message' , $message);
 		}
 		if ($redirect) redirect($redirect);
-	}
-	
-	/**
-	* Alias to setSucesso method
-	*
-	* @param	string	$mensagem	Sucess message
-	* @param	string	$redirec	Redirect URL encoded with Link class
-	* @return	void
-	*/
-	public static function success($mensagem, $redirect=false){
-		self::setSucesso($mensagem, $redirect);
 	}
 	
 	/**
@@ -305,5 +305,4 @@ class Post
 		}
 		throw new ModelNotFoundException("Modelo $class não encontrado");
 	}
-
 }

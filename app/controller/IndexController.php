@@ -17,7 +17,7 @@ class IndexController{
 	* @return	void
 	*/
 	public function index(){
-		Template::setVar('area', 'Selecione uma Opção');
-		Template::setVar('desc', '');
+		Vortice::setVar('area', 'Selecione uma Opção');
+		Vortice::setVar('desc', '');
 	}
 }
