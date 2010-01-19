@@ -65,7 +65,8 @@ class VorticeException extends Exception{
 			$debug_log .= "IP: " . $_SERVER['REMOTE_ADDR'] . "\nMessage: {$this->message} -> {$this->details}\n\n" . parent::__toString();
 		
 			@mkdir($log_dir . "debug/");
-			file_put_contents($debug_log_file, $debug_log);
+			if (is_writeable("{$log_dir}debug" ))
+				file_put_contents($debug_log_file, $debug_log);
 		}
 	}
 	
