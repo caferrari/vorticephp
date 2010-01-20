@@ -94,7 +94,10 @@ function is_bot(){
 */
 function p($v){
 	global $_POST, $_PAR;
-	return isset($_POST[$v]) ? $_POST[$v] : (isset($_PAR[$v]) ? $_PAR[$v] : '');
+	return str_replace(
+		array("\\\"", "\\'"),
+		array("\"", "'"),
+		isset($_POST[$v]) ? $_POST[$v] : (isset($_PAR[$v]) ? $_PAR[$v] : ''));
 }
 
 /**

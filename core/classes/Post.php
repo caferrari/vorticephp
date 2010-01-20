@@ -72,8 +72,7 @@ class Post
 		global $_PAR;
 		if (!is_array($_PAR)) $_PAR = array();
 		foreach (array_merge($_POST, $_GET, $_PAR) as $k => $v)
-			if ($v!='' && ($k=="id" || preg_match("@^id[_\-]@", $k)) && !is_numeric($v)) throw new BaseException("Integer Required", "Any parameter started with 'id' must be an Integer", '403');
-		
+			if ($v!='' && ($k=="id" || preg_match("@^id[_\-]@", $k)) && !is_numeric($v)) throw new VorticeException("Integer Required", "Any parameter started with 'id' must be an Integer", '403');
 		self::$form = array();
 		
 		$tmp = unserialize(Session::get("form_val"));
@@ -84,7 +83,8 @@ class Post
 		$tmp = @unserialize(Session::get('form_errors'));
 		self::$errors = (is_array($tmp) && count($tmp) > 0) ? $tmp : "";
 		
-		if (Session::get("form_message")){
+		if (Session::get("form_message"))
+		{
 			self::$message = Session::get('form_message');
 			self::$type = Session::get('form_type');
 		}
@@ -133,7 +133,12 @@ class Post
 	* @return	string
 	*/
 	public static function getVal($c){
-		if (isset(self::$form[$c])) return self::$form[$c];
+		$v = stripslashes((isset(self::$form[$c])) ? self::$form[$c] : '');
+		return str_replace(
+			array("\""),
+			array("&quot;"),
+			$v			
+		);
 	}
 	
 	/**
@@ -141,8 +146,10 @@ class Post
 	*
 	* @return	dto
 	*/
-	public static function toObject($class = 'DTO')
+	public static function toObject($class = '')
 	{
+		if ($class == '') $class = ucfirst(controller);
+		if (!class_exists($class)) $class = 'DTO';		
 		$obj = new $class();
 		if (!is_array($_POST)) return false;
 		foreach ($_POST as $k => $v) $obj->$k = p($k);
