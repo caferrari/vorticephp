@@ -73,6 +73,7 @@ class Post
 		if (!is_array($_PAR)) $_PAR = array();
 		foreach (array_merge($_POST, $_GET, $_PAR) as $k => $v)
 			if ($v!='' && ($k=="id" || preg_match("@^id[_\-]@", $k)) && !is_numeric($v)) throw new VorticeException("Integer Required", "Any parameter started with 'id' must be an Integer", '403');
+
 		self::$form = array();
 		
 		$tmp = unserialize(Session::get("form_val"));
@@ -295,21 +296,5 @@ class Post
 			Session::set('form_message' , $message);
 		}
 		if ($redirect) redirect($redirect);
-	}
-	
-	/**
-	* Create a object based on the posted data and the current controller
-	*
-	* @param	string	$class 		Optional class name, if not given the atual controller will be used as class
-	* @return	object (DTO)
-	*/
-	public static function &makeObject($class=''){
-		if ($class == '') $class = ucfirst(controller);
-		if (class_exists($class)){
-			$obj = new $class;
-			foreach (get_object_vars($obj) as $k => $v) $obj->$k = p($k);
-			return $obj;
-		}
-		throw new ModelNotFoundException("Modelo $class não encontrado");
 	}
 }
