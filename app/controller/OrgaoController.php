@@ -12,8 +12,7 @@ class OrgaoController extends Controller{
 	* @return	void
 	*/
 	public function index(){
-		//$this->itens = OrgaoDAO::getList();
-		$this->itens = Orgao::listAll();
+		$this->itens = Orgao::all();
 	}
 	
 	/**
