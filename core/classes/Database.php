@@ -84,8 +84,8 @@ class Database
 	public static function getInstance($name="default", $env = environment)
 	{
 		if (!isset(self::$instances[$name . '_' . $env]))
-			self::$instances[$name] = new Database();
-		return self::$instances[$name];
+			self::$instances[$name . '_' . $env] = new Database();
+		return self::$instances[$name . '_' . $env];
 	}
 	
 	/**
