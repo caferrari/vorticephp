@@ -416,28 +416,31 @@ class Vortice{
 	*/
 	public static function execute($view, $action, $controller, $module=false){
 		ob_start();
+		
+		if (!self::$masterload && class_exists("MasterController")){
+			$obj = new MasterController();
+			self::$masterload = true;
+		}
+		
 		$c = $controller;
 		$controller = camelize($controller)."Controller";
 		if (class_exists($controller)){
-			if (!self::$masterload && class_exists("MasterController")){
-				$obj = new MasterController();
-				$t = self::$tpl;
-				if (method_exists($obj, "index")) $obj->index();
-				if (method_exists($obj, $t)) $obj->$t();
-				self::$masterload = true;
-			}
 			$obj = new $controller();
 			$action = lcfirst(camelize($action));
 			if (method_exists($obj, $action)) $obj->$action();
 			else throw (new ActionNotFoundException("$controller->$action()"));
 		}else{
 			// if its a static view
-			$vpath = root . "app/view/_static/" . (uri ? uri : 'index') . ".php";
-			if (file_exists($vpath)){
-				include ($vpath);
-				return ob_get_clean();
-			}else
-				throw (new ControllerNotFoundException($controller));
+			$vpath = array(
+				root . 'app/view/_static/' . (uri ? uri : 'index') . '.' . request_lang . '.php',
+				root . 'app/view/_static/' . (uri ? uri : 'index') . '.php'
+			);
+			foreach ($vpath as $vp)
+				if (file_exists($vp)){
+					include ($vp);
+					return ob_get_clean();
+				}
+			throw (new ControllerNotFoundException($controller));
 		} 
 		
 		$_ref = DAO::getAll();
