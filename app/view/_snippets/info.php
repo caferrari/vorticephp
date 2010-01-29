@@ -1,6 +1,9 @@
 <p><br /></p>
 <table>
 	<tr>
+		<td width="200">Environment:</td><td><?php echo environment ?></td>
+	</tr>
+	<tr>
 		<td width="200">Accessing from Mobile:</td><td><?php echo is_mobile() ? "Yes" : "No" ?></td>
 	</tr>
 	<tr>

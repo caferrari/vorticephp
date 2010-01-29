@@ -39,6 +39,23 @@ class Core{
 		header('Content-type: text/html; charset=UTF-8');
 		header("X-Powered-By: VorticePHP");
 		
+		$tmproot = str_replace("\\", "/", dirname($_SERVER["SCRIPT_FILENAME"]) . "/");
+		$tmproot = preg_replace("@/core/$@", "/", $tmproot);
+		
+		if (file_exists("{$tmproot}app/config.php")) include "{$tmproot}app/config.php";
+		
+		if (!defined('root'))  define ('root', $tmproot);
+		if (!defined('virtualroot')) define ('virtualroot', preg_replace("@/+@", "/", preg_replace("@{$_SERVER["DOCUMENT_ROOT"]}|core/core.php@", "/", $_SERVER["SCRIPT_FILENAME"])));
+		if (!defined('webroot')) define ('webroot', root . 'app/webroot');
+		
+		if (!file_exists(root . 'environment')) $env = 'production';
+		else $env = file_get_contents(root . 'environment');
+
+		if (preg_match('@^([a-z0-9]+)@', $env, $mat))
+			define ('environment', $mat[0]);
+			
+		define ('production', environment=='production');
+		
 		require_once "Crypt.php";
 		require_once "Session.php";
 		require_once "Vortice.php";
@@ -46,15 +63,6 @@ class Core{
 		require_once "Link.php";
 		require_once "Route.php";
 		require_once "Post.php";
-		
-		$tmproot = str_replace("\\", "/", dirname($_SERVER["SCRIPT_FILENAME"]) . "/");
-		$tmproot = preg_replace("@/core/$@", "/", $tmproot);
-		
-		if (file_exists("{$tmproot}app/config.php")) include "{$tmproot}app/config.php";
-		if (!defined("root"))  define ("root", $tmproot);
-		if (!defined("virtualroot")) define ("virtualroot", preg_replace("@/+@", "/", preg_replace("@{$_SERVER["DOCUMENT_ROOT"]}|core/core.php@", "/", $_SERVER["SCRIPT_FILENAME"])));
-		if (!defined("webroot")) define ("webroot", root . "app/webroot");
-
 
 		if (!defined("default_controller")) define ("default_controller", "index");
 		if (!defined("default_action")) 	define ("default_action", "index");

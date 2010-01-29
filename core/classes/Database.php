@@ -81,11 +81,20 @@ class Database
 	* Return a database class instance
 	* @return	Database
 	*/
-	public static function getInstance($name="default")
+	public static function getInstance($name="default", $env = environment)
 	{
-		if (!isset(self::$instances[$name]))
-			self::$instances[$name] = new DataBase();
+		if (!isset(self::$instances[$name . '_' . $env]))
+			self::$instances[$name] = new Database();
 		return self::$instances[$name];
+	}
+	
+	/**
+	* Create a new database instance for a specific environment
+	* @return	void
+	*/
+	public static function load($env, $instance='default')
+	{
+		return Database::getInstance($instance, $env);
 	}
 
 	/**

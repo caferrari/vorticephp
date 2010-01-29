@@ -15,5 +15,5 @@
 	<li><a class="lnk1" href="<?php echo new Link("orgao") ?>" title="{{Exemplo}}">{{Exemplo}}</a></li>
 </ul>
 <?php 
-include "info.php";
+	new Snippet('info');
 ?>
