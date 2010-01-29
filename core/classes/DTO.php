@@ -130,7 +130,7 @@ class DTO
 	* @return 	array
 	*/
 	public function listAll($table=null, $instance='default'){
-		$table = uncamelize(($table == null) ? (isset($this->_table) ? $this->_table : get_class($this)) : $table);
+		$table = uncamelize(($table == null) ? (isset($this->_table) ? $this->_table : preg_replace('@Controller$@', '', get_class($this))) : $table);
 		$class = camelize($table);
 		return Database::getInstance($instance)->query("SELECT * FROM $table", $class);
 	}
