@@ -433,7 +433,9 @@ class Vortice{
 			// if its a static view
 			$vpath = array(
 				root . 'app/view/_static/' . (uri ? uri : 'index') . '.' . request_lang . '.php',
-				root . 'app/view/_static/' . (uri ? uri : 'index') . '.php'
+				root . 'app/view/_static/' . uri . '/index.' . request_lang . '.php',
+				root . 'app/view/_static/' . (uri ? uri : 'index') . '.php',
+				root . 'app/view/_static/' . uri . '/index.php'
 			);
 			foreach ($vpath as $vp)
 				if (file_exists($vp)){

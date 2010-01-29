@@ -140,6 +140,7 @@ class Link{
 		if (!ajax && !post && !preg_match("@\/$@", $q)){
 			header ("HTTP/1.1 301 Moved Permanently");
 			header ("Location: $q/");
+			exit();
 		}
 		
 		if (virtualroot != "/") $q = preg_replace("/^".addcslashes(virtualroot, "/")."/", "", $q);
