@@ -24,7 +24,7 @@
 			<input id="nome" name="nome" value="<?php echo Post::getVal('nome') ?>" size="50" />
 		</p>	
 		<p class="submit">
-			<input type="submit" value="{{Enviar}}" /> {{ou}} <a href="<?php echo new Link('exemplo') ?>" title="{{Voltar para a página anterior}}">{{Voltar}}</a>
+			<input type="submit" value="{{Enviar}}" /> {{ou}} <a href="<?php echo new Link('orgao') ?>" title="{{Voltar para a página anterior}}">{{Voltar}}</a>
 		</p>
 	</form>
 </fieldset>

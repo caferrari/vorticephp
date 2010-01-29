@@ -30,8 +30,8 @@
 <div id="conteiner">
 	<ul id="lang">
 		<li><a href="<?php echo virtualroot ?>" lang="pt-br">pt-br</a></li>
-		<li><a href="<?php echo virtualroot ?>en/<?php uri ?>" lang="en">en</a></li>
-		<li><a href="<?php echo virtualroot ?>jp/<?php uri ?>" lang="jp">日本語</a></li>
+		<li><a href="<?php echo virtualroot ?>en/<?php echo uri ?>" lang="en">en</a></li>
+		<li><a href="<?php echo virtualroot ?>jp/<?php echo uri ?>" lang="jp">日本語</a></li>
 	</ul>
 	<div id="topo">
 		<h1><a class="hidetxt" href="<? echo virtualroot . request_lang ?>" title="{{Página inicial}}">{{Exemplo de Sistema}}</a></h1>
