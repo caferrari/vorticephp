@@ -1,9 +1,4 @@
 <?php
-/* 
- * Copyright (c) 2009, Carlos André Ferrari <[carlos@]ferrari.eti.br>; Luan Almeida <[luan@]luan.eti.br>
- * All rights reserved. 
- */
-
 /**
  * Sample of a framework data object
  * @package SampleApp
