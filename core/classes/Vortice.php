@@ -339,7 +339,7 @@ class Vortice{
 	public static function render(){
 		$middle = self::execute(false, action, controller, module);
 
-		if (!self::$tpl)  self::$semtemplate = true;
+		if (!self::$tpl)  self::$notemplate = true;
 		else $pasta = self::$tpl;
 		
 		ob_start();	
