@@ -64,7 +64,7 @@ $.fn.msgDialog = function(json)
 		}, 
 		open: function()
 		{
-			setTimeout("$('.dialog').dialog(\"destroy\")",5000);
+			setTimeout(function() { $('.dialog').dialog("destroy") },5000);
 		},
 		buttons: { 
 			"Ok": function(){

@@ -118,27 +118,27 @@ table tr td, table tr th {
 	text-indent: -1000px;
 }
 
-#mensagem {
+#message {
 	margin: 10px 20px;
 	padding: 15px;
 }
 
-#mensagem.erro {
+#message.erro {
 	background-color: #fcc;
 	border: 1px solid #f55;
 }
 
-#mensagem.ok {
+#message.ok {
 	background-color: #ffc;
 	border: 1px solid #ff5;
 }
 
-#mensagem p {
+#message p {
 	padding: 5px;
 	font-weight: bold;
 }
 
-#mensagem li {
+#message li {
 	list-style: circle inside;
 	padding-left: 20px;
 	line-height: 17px;
