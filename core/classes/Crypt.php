@@ -20,7 +20,7 @@ class Crypt {
 	*
 	* @staticvar	string
 	*/
-	static $chave = "afha#%&@#%&@!%ss";
+	static $chave = apphash;
 	
 	/**
 	* Encrypt or decrypt data using XOR operator
@@ -33,7 +33,7 @@ class Crypt {
 	*/
 	private static function StringXor($a,$b) {
 		if ($a=='') return '';
-		$retorno = ""; $i = strlen($a)-1; $j = strlen($b);
+		$retorno = ''; $i = strlen($a)-1; $j = strlen($b);
 		do{
 			$retorno .= ($a{$i} ^ $b{$i % $j});
 		}while ($i--);
@@ -48,9 +48,9 @@ class Crypt {
 	* @return	string
 	* @static
 	*/
-	static function Encrypt($string, $chave='') {
+	static function Encrypt($string, $chave=false) {
 		if (!is_string($string)) throw(new StringRequiredException());
-		if ($chave=='') $chave = self::$chave;
+		if (!$chave) $chave = self::$chave;
 		return base64_encode(self::StringXor($string, $chave));
 	}
 	
@@ -62,9 +62,9 @@ class Crypt {
 	* @return	string
 	* @static
 	*/
-	static function Decrypt($string, $chave='') {
+	static function Decrypt($string, $chave=false) {
 		if ($string != '' && !is_string($string)) throw(new StringRequiredException());
-		if ($chave=='') $chave = self::$chave;
+		if (!$chave) $chave = self::$chave;
 		return self::StringXor(base64_decode($string), $chave);
 	}
 }

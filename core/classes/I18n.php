@@ -61,7 +61,7 @@ class I18n{
 		if (is_dir($dir)){
 			if ($dh = opendir($dir)) {
 				while (($file = readdir($dh)) !== false)
-				    if (preg_match("/([a-z\-]+)\.conf$/", $file, $mat)) $t[] = $mat[1];
+				    if (preg_match('@([a-z\-]+)\.conf$@', $file, $mat)) $t[] = $mat[1];
 				closedir($dh);
 			}
 		}
@@ -76,12 +76,12 @@ class I18n{
 	* @access	private
 	*/
 	public static function get_lang(){
-		if (!isset($_SERVER["HTTP_ACCEPT_LANGUAGE"])) return array(default_lang);
-		preg_match_all("/([a-z\-]{2,})+,?;?/", strtolower($_SERVER["HTTP_ACCEPT_LANGUAGE"]), $langs);
+		if (!isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])) return array(default_lang);
+		preg_match_all('@([a-z\-]{2,})+,?;?@', strtolower($_SERVER['HTTP_ACCEPT_LANGUAGE']), $langs);
 		$langs = $langs[1];
 		
 		foreach ($langs as $l)
-			if (preg_match("/([a-z]{2})-[a-z]{2}/", $l, $mat))
+			if (preg_match('@([a-z]{2})-[a-z]{2}@', $l, $mat))
 				$langs[] = $mat[1];
 				
 		return $langs;
@@ -94,33 +94,33 @@ class I18n{
 	* @return	void
 	*/
 	public static function start($module = '_base'){
-		$av_lang = self::load_lang(root . "app/i18n", "_base");
-		define("av_lang", implode(", ", $av_lang));
+		$av_lang = self::load_lang(root . 'app/i18n', '_base');
+		define('av_lang', implode(', ', $av_lang));
 		if (count($av_lang) > 1){
 			$langs = $av_lang;		
 			if (is_array(self::get_lang()) && is_array($av_lang))
 				$langs = array_unique(array_intersect(self::get_lang(), $av_lang));
 			if (count($langs) > 0){
 				$tmp = array_shift($langs);
-				if ($tmp!=default_lang && Session::get("defined_lang")==''){
-					Session::set("defined_lang", $tmp);
-					header("Location: " . virtualroot . "$tmp/" . uri , true, 301) and exit();
+				if ($tmp!=default_lang && Session::get('defined_lang')==''){
+					Session::set('defined_lang', $tmp);
+					header('Location: ' . virtualroot . $tmp . '/' . uri , true, 301) and exit();
 				}
 			}
 		}else return;
 
 		if (!in_array(request_lang, $av_lang)) throw (new TranslationNotFoundException(request_lang));
 		$active = request_lang;
-		if (strstr($active, "-")){
-			$tmp = explode("-", $active);
-			self::load_conf("app/i18n/{$tmp[0]}.conf");
-			if ($module != "_base")
-				self::load_conf("app/modules/$module/i18n/{$tmp[0]}.conf");
+		if (strstr($active, '-')){
+			$tmp = explode('-', $active);
+			self::load_conf('app/i18n/' . $tmp[0] . '.conf');
+			if ($module != '_base')
+				self::load_conf('app/modules/ ' . $module . '/i18n/' . $tmp[0] . '.conf');
 		}
 		
-		self::load_conf("app/i18n/{$active}.conf");
-		if ($module != "_base")
-			self::load_conf("app/modules/$module/i18n/{$active}.conf");
+		self::load_conf('app/i18n/' . $active . '.conf');
+		if ($module != '_base')
+			self::load_conf('app/modules/' . $module . '/i18n/' . $active . '.conf');
 	}
 	
 	/**
@@ -140,7 +140,7 @@ class I18n{
 		$str = isset(self::$dic[md5($str)]) ? self::$dic[md5($str)] : $str; 
 		
 		foreach ($args as $k => $v)
-			$str = str_replace("%$k", $v, $str);
+			$str = str_replace('%'.$k, $v, $str);
 		return $str;
 	}
 	
@@ -151,7 +151,7 @@ class I18n{
 	* @return	string
 	*/
 	public static function translate(&$content){
-		preg_match_all("|\{{([^\}]+)\}}|", $content, $mat, PREG_SET_ORDER);
+		preg_match_all('|\{{([^\}]+)\}}|', $content, $mat, PREG_SET_ORDER);
 		foreach($mat as $mat)
 			$content = str_replace($mat[0], self::e($mat[1]), $content);
 		return $content;

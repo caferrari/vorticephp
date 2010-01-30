@@ -38,10 +38,10 @@ class Json{
 	*/
 	private function __construct(){
 		$this->json = array(
-			"status" => 1,
-			"message" => "",
-			"errors" => array(),
-			"packages" => array()
+			'status' => 1,
+			'message' => '',
+			'errors' => array(),
+			'packages' => array()
 		);
 	}
 	
@@ -62,12 +62,12 @@ class Json{
 	* @param	string	$mensagem	Status message
 	* @return	bool
 	*/
-	public function set($status, $message="", $errors=""){
-		if ($errors == "") $errors = array();
+	public function set($status, $message='', $errors=''){
+		if ($errors === '') $errors = array();
 		$this->getInstance();
-		$this->json["status"] = $status;
-		$this->json["errors"] = $errors;
-		if ($message!="") $this->json["message"] = $message;
+		$this->json['status'] = $status;
+		$this->json['errors'] = $errors;
+		if ($message!=='') $this->json['message'] = $message;
 		return true;	
 	}
 	
@@ -79,7 +79,7 @@ class Json{
 	* @return	void
 	*/
 	public function addPackage($name, $values){
-		if (!preg_match("@^_.*@", $name)) $this->json["packages"][$name] = $values;
+		if (!preg_match('@^_.*@', $name)) $this->json['packages'][$name] = $values;
 	}
 	
 	/**

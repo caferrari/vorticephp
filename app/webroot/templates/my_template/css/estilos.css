@@ -123,7 +123,7 @@ table tr td, table tr th {
 	padding: 15px;
 }
 
-#message.erro {
+#message.error {
 	background-color: #fcc;
 	border: 1px solid #f55;
 }

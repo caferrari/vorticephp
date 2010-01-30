@@ -58,7 +58,7 @@ class Post
 	* @return	void
 	*/
 	private function __construct(){
-		throw (new Exception("Don't do that!!"));
+		throw (new Exception('Don\'t do that!!'));
 	}
 
 	/**
@@ -67,16 +67,16 @@ class Post
 	* @return	void
 	*/
 	public static function start(){
-		define ("POST_ERROR", 0);
-		define ("POST_OK", 1);
+		define ('POST_ERROR', 0);
+		define ('POST_OK', 1);
 		global $_PAR;
 		if (!is_array($_PAR)) $_PAR = array();
 		foreach (array_merge($_POST, $_GET, $_PAR) as $k => $v)
-			if ($v!='' && ($k=="id" || preg_match("@^id[_\-]@", $k)) && !is_numeric($v)) throw new VorticeException("Integer Required", "Any parameter started with 'id' must be an Integer", '403');
+			if ($v!='' && ($k=='id' || preg_match('@^id[_\-]@', $k)) && !is_numeric($v)) throw new VorticeException('Integer Required', 'Any parameter started with \'id\' must be an Integer', '403');
 
 		self::$form = array();
 		
-		$tmp = unserialize(Session::get("form_val"));
+		$tmp = unserialize(Session::get('form_val'));
 		self::$form = is_array($tmp) ? $tmp : array();
 		if (count($tmp) != '')
 			self::$hasData = true;
@@ -84,7 +84,7 @@ class Post
 		$tmp = @unserialize(Session::get('form_errors'));
 		self::$errors = (is_array($tmp) && count($tmp) > 0) ? $tmp : "";
 		
-		if (Session::get("form_message"))
+		if (Session::get('form_message'))
 		{
 			self::$message = Session::get('form_message');
 			self::$type = Session::get('form_type');
@@ -93,10 +93,10 @@ class Post
 		foreach ($_POST as $k => $v) self::setVal($k, $v);
 		
 		Session::del('form_errors');
-		Session::del("form_val");
+		Session::del('form_val');
 		Session::del('form_type');
 		Session::del('form_message');
-		Session::set("form_val", serialize($_POST));
+		Session::set('form_val', serialize($_POST));
 	}
 	
 	/**
@@ -136,8 +136,8 @@ class Post
 	public static function getVal($c){
 		$v = stripslashes((isset(self::$form[$c])) ? self::$form[$c] : '');
 		return str_replace(
-			array("\""),
-			array("&quot;"),
+			array('"'),
+			array('&quot;'),
 			$v			
 		);
 	}
@@ -211,20 +211,20 @@ class Post
 		$tmp = '';
 		switch (self::$type){
 			case POST_OK:
-					$tmp = "<div id=\"message\" class=\"ok\">";
-					$tmp .= "<p>" . self::$message . "</p>";
-					$tmp .= "</div>";
+					$tmp = '<div id="message" class="ok">';
+					$tmp .='<p>' . self::$message . '</p>';
+					$tmp .= '</div>';
 				break;
 			case POST_ERROR:
-					if (strlen(self::$message)==0) return;
+					if (strlen(self::$message)===0) return;
 					if (!is_array(self::$errors)) self::$errors = array();
-					$tmp = "<div id=\"message\" class=\"error\">";
-					$tmp .= "<p>" . self::$message . "</p>";
-					$tmp .= "<ul>";
+					$tmp = '<div id="message" class="error">';
+					$tmp .= '<p>' . self::$message . '</p>';
+					$tmp .= '<ul>';
 					foreach (self::$errors as $error)
-						$tmp .= is_array($error) ? "<li>{$error[1]}" : "<li>$error</li>";
-					$tmp .= "</ul>";
-					$tmp .= "</div>";
+						$tmp .= is_array($error) ? '<li>' . $error[1] . '</li>' : '<li>' . $error . '</li>';
+					$tmp .= '</ul>';
+					$tmp .= '</div>';
 				break;
 			default:
 				return '';
@@ -239,7 +239,7 @@ class Post
 	*/
 	public static function autoRender()
 	{
-		Vortice::setVar("message", self::render());
+		Vortice::setVar('message', self::render());
 	}
 	
 	/**
@@ -259,7 +259,7 @@ class Post
 		if (ajax || !isset($_SERVER['HTTP_REFERER']) || Vortice::$rendermode == 'json'){
 			$tmp = array();
 			foreach ($errors as $k => $v)
-				$tmp[] = array("key" => $k, "value" => $v);
+				$tmp[] = array('key' => $k, 'value' => $v);
 			$json = Json::getInstance();
 			$json->set(0, $message, $tmp);
 			foreach(DAO::getAll() as $k => $d)
@@ -270,7 +270,7 @@ class Post
 			Session::set('form_errors', serialize($errors));
 			Session::set('form_type', POST_ERROR);
 			Session::set('form_message' , $message);
-			exit ("<html><head><meta http-equiv=\"refresh\" content=\"0;URL=" . $_SERVER['HTTP_REFERER'] . "\"></head><body></body></html>");
+			exit ('<html><head><meta http-equiv="refresh" content="0;URL=' . $_SERVER['HTTP_REFERER'] . '"></head><body></body></html>');
 		}
 	}
 	

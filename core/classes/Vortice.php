@@ -67,14 +67,14 @@ class Vortice{
 	* @staticvar	string
 	* @access		private
 	*/
-	private static $rootsite = "/";
+	private static $rootsite = '/';
 	
 	/**
 	* Aplication title
 	* @vstaticar	array
 	* @access		private
 	*/
-	private static $title = "";
+	private static $title = '';
 	
 	/**
 	* Forget the template renderization?
@@ -102,7 +102,7 @@ class Vortice{
 	* @return	void
 	*/
 	private function __construct(){
-		throw (new Exception("Don't do that!!"));
+		throw (new Exception('Don\'t do that!!'));
 	}
 
 	/**
@@ -114,10 +114,10 @@ class Vortice{
 			self::$started = true;
 			self::$title = apphash;
 			self::$rootsite = virtualroot;
-			self::setVar("title", self::$title);
-			self::setView(controller . ":" . action);
+			self::setVar('title', self::$title);
+			self::setView(controller . ':' . action);
 			self::loadTemplates();
-			if (!defined("module")) define ("module", false);
+			if (!defined('module')) define ('module', false);
 			ob_start();
 		}
 	}
@@ -128,10 +128,10 @@ class Vortice{
 	* @access	private
 	*/
 	private static function loadTemplates(){
-		$dir = root . "app/webroot/templates";
+		$dir = root . 'app/webroot/templates';
 		if (is_dir($dir) && $dh = opendir($dir))
 			while (($file = readdir($dh)) !== false)
-				if (preg_match("/^[0-9a-z\_]+$/", $file) && is_dir("$dir/$file") && file_exists("$dir/$file/template.php")) self::addTemplate($file);
+				if (preg_match('@^[0-9a-z\_]+$@', $file) && is_dir($dir . '/' . $file) && file_exists($dir . '/' . $file . '/template.php')) self::addTemplate($file);
 	}
 
 	/**
@@ -157,7 +157,7 @@ class Vortice{
 	* @return	void
 	*/
 	public static function addTemplate($nome){
-		if (!file_exists(root . "app/webroot/templates/$nome/template.php")) throw(new TemplateNotFoundException($nome));
+		if (!file_exists(root . 'app/webroot/templates/' . $nome . '/template.php')) throw(new TemplateNotFoundException($nome));
 		self::$templates[$nome] = $nome;
 		if (self::$tpl == '') self::$tpl = $nome;
 	}
@@ -214,11 +214,11 @@ class Vortice{
 	* @return	string
 	*/
 	public static function getView($prefix=''){
-		if (strstr(self::$view, ":") !== false){
-			list($c, $v) = explode(":", self::$view);
-			return "$c/{$prefix}{$v}";
+		if (strstr(self::$view, ':') !== false){
+			list($c, $v) = explode(':', self::$view);
+			return $c . '/' . $prefix . $v;
 		}
-		return controller . "/{$prefix}" . self::$view;
+		return controller . '/' . $prefix . self::$view;
 	}
 	
 	/**
@@ -237,31 +237,31 @@ class Vortice{
 	* @return	string
 	*/	
 	protected static function loadCssDir($dir){
-		$tmp = array("mobile" => array(), "screen" => array(), "print" => array());
-		if (is_dir(root . "app/webroot/$dir")){
-			if ($handle = opendir(root . "app/webroot/$dir")) {
+		$tmp = array('mobile' => array(), 'screen' => array(), 'print' => array());
+		if (is_dir(root . 'app/webroot/' . $dir)){
+			if ($handle = opendir(root . 'app/webroot/' . $dir)) {
 				while (false !== ($file = readdir($handle))) {
-					$nome = explode(".", $file);
+					$nome = explode('.', $file);
 					if (count($nome) > 1 && $nome[count($nome)-1] == 'css'){
-						$mtime = filemtime(root . "app/webroot/$dir/$file");
-						if (strstr($nome[0], "mobile"))
-							$tmp["mobile"][] = "<link href=\"" . virtualroot . "$dir/$file?$mtime\" rel=\"stylesheet\" media=\"all\" />";
+						$mtime = filemtime(root . 'app/webroot/' . $dir . '/' . $file);
+						if (strstr($nome[0], 'mobile'))
+							$tmp['mobile'][] = '<link href="' . virtualroot . $dir . '/' . $file . '?' . $mtime . '" rel="stylesheet" media="all" />';
 						else
-							if (strstr($nome[0], "print"))
-								$tmp["print"][] = "<link href=\"" . virtualroot . "$dir/$file?$mtime\" rel=\"stylesheet\" media=\"print\" />";
+							if (strstr($nome[0], 'print'))
+								$tmp['print'][] = '<link href="' . virtualroot . $dir . '/' . $file . '?' . $mtime . '" rel="stylesheet" media="print" />';
 							else
-								$tmp["screen"][] = "<link href=\"" . virtualroot . "$dir/$file?$mtime\" rel=\"stylesheet\" media=\"screen\" />";
+								$tmp['screen'][] = '<link href="' . virtualroot . $dir . '/' . $file . '?' . $mtime . '" rel="stylesheet" media="screen" />';
 					}
 				}
 				closedir($handle);
 			}
 		}
-		if (mobile && count($tmp["mobile"]) > 0){
-			sort($tmp["mobile"]);
-			return implode("\r\n\t", $tmp["mobile"]);
+		if (mobile && count($tmp['mobile']) > 0){
+			sort($tmp['mobile']);
+			return implode("\r\n\t", $tmp['mobile']);
 		}
-		sort($tmp["screen"]);
-		return implode("\r\n\t", array_merge($tmp["screen"], $tmp["print"]));
+		sort($tmp['screen']);
+		return implode("\r\n\t", array_merge($tmp['screen'], $tmp['print']));
 	}
 	
 	/**
@@ -278,8 +278,8 @@ class Vortice{
 	*/
 	protected static function geraCss(){
 		$pasta = self::$tpl;
-		$tmp = self::loadCssDir("css");
-		$tmp .= self::loadCssDir("templates/$pasta/css");
+		$tmp = self::loadCssDir('css');
+		$tmp .= self::loadCssDir('templates/' . $pasta . '/css');
 		return $tmp;
 	}
 	
@@ -298,11 +298,11 @@ class Vortice{
 	*/	
 	protected static function loadJsDir($dir){
 		$tmp = array();
-		if (is_dir(root . "app/webroot/$dir"))
-			if ($handle = opendir(root . "app/webroot/$dir")){
+		if (is_dir(root . 'app/webroot/' . $dir))
+			if ($handle = opendir(root . 'app/webroot/' . $dir)){
 				while (false !== ($file = readdir($handle))) {
-					$mtime = filemtime(root . "app/webroot/$dir/$file");
-					if (preg_match("/\.js$/", $file)) $tmp[] = "<script type=\"text/javascript\" src=\"" . self::$rootsite . "$dir/$file?$mtime\"></script>";
+					$mtime = filemtime(root . 'app/webroot/' . $dir . '/' . $file);
+					if (preg_match('@\.js$@', $file)) $tmp[] = '<script type="text/javascript" src="' . self::$rootsite . $dir . '/' . $file . '?' . $mtime . '"></script>';
 				}
 				closedir($handle);
 			}
@@ -316,8 +316,8 @@ class Vortice{
 	*/
 	protected static function geraJs(){
 		$pasta = self::$tpl;
-		$tmp = self::loadJsDir("js");
-		$tmp .= self::loadJsDir("templates/$pasta/js");
+		$tmp = self::loadJsDir('js');
+		$tmp .= self::loadJsDir('templates/' . $pasta . '/js');
 		return $tmp;
 	}
 	
@@ -327,7 +327,7 @@ class Vortice{
 	*/
 	protected static function mergeVars(){
 		foreach (self::$vars as $k => $v){
-			self::$contents = str_replace("<!--{$k}-->", $v, self::$contents);
+			self::$contents = str_replace('<!--' . $k . '-->', $v, self::$contents);
 			unset(self::$vars[$k]);
 		}
 	}
@@ -350,47 +350,47 @@ class Vortice{
 				$json = Json::getInstance();
 				return ($json->render());
 			}
-			self::$rendermode = "content";
+			self::$rendermode = 'content';
 		}elseif (!self::$notemplate){
-			if (mobile && file_exists(root . "app/webroot/templates/{$pasta}/mobile.php"))
-				include root . "app/webroot/templates/{$pasta}/mobile.php";
+			if (mobile && file_exists(root . 'app/webroot/templates/' . $pasta . '/mobile.php'))
+				include root . 'app/webroot/templates/' . $pasta . '/mobile.php';
 			else 
-				include root . "app/webroot/templates/{$pasta}/template.php";
-			self::setVar("csstags", self::geraCss());
-			self::setVar("jstags", self::geraJs());
+				include root . 'app/webroot/templates/' . $pasta . '/template.php';
+			self::setVar('csstags', self::geraCss());
+			self::setVar('jstags', self::geraJs());
 		}
 		
 		I18n::translate($middle);
 		
 		self::$contents = ob_get_clean();
-		self::$contents = self::$notemplate ? $middle : preg_replace("@<!--conte(udo|nt)-->@", $middle, self::$contents);
-		self::setVar("rootsite", self::$rootsite);		
+		self::$contents = self::$notemplate ? $middle : preg_replace('@<!--conte(udo|nt)-->@', $middle, self::$contents);
+		self::setVar('rootsite', self::$rootsite);		
 		
 		self::mergeVars();
 		
 		I18n::translate(self::$contents);
 		
 		if (self::$clean){
-			self::$contents = preg_replace("/[[:space:]]{1,}/", " ", self::$contents);
-			self::$contents = preg_replace("/[ ]+<\//", "</", self::$contents);
+			self::$contents = preg_replace('@[[:space:]]{1,}@', ' ', self::$contents);
+			self::$contents = preg_replace('@[ ]+<\/@', '</', self::$contents);
 		}
 
 		switch (self::$rendermode){
-			case "html":
+			case 'html':
 				return self::$contents;
-			case "json":
+			case 'json':
 				//header('Content-type: application/json');
 				header('Content-type: text/plain');
 				return json_encode(DAO::getAll());
-			case "serial":
+			case 'serial':
 				header('Content-type: text/plain');
 				return serialize(DAO::getAll());
-			case "content":
+			case 'content':
 				return $middle;
 			default:
-				$tmp_render = "render_" . self::$rendermode;
+				$tmp_render = 'render_' . self::$rendermode;
 				if (function_exists($tmp_render)) return $tmp_render();
-				throw (new ResponseTypeNotFoundException("Formato de retorno inválido: " . self::$rendermode));
+				throw (new ResponseTypeNotFoundException('Formato de retorno inválido: ' . self::$rendermode));
 		}
 	}
 	
@@ -417,18 +417,18 @@ class Vortice{
 	public static function execute($view, $action, $controller, $module=false){
 		ob_start();
 		
-		if (!self::$masterload && class_exists("MasterController")){
+		if (!self::$masterload && class_exists('MasterController')){
 			$obj = new MasterController();
 			self::$masterload = true;
 		}
 		
 		$c = $controller;
-		$controller = camelize($controller)."Controller";
+		$controller = camelize($controller).'Controller';
 		if (class_exists($controller)){
 			$obj = new $controller();
 			$action = lcfirst(camelize($action));
 			if (method_exists($obj, $action)) $obj->$action();
-			else throw (new ActionNotFoundException("$controller->$action()"));
+			else throw (new ActionNotFoundException($controller . '->' . $action . '()'));
 		}else{
 			// if its a static view
 			$vpath = array(
@@ -451,15 +451,15 @@ class Vortice{
 		unset($_ref);
 				
 		if (mobile){
-			$v = $view ? "$c/mobile.$view" : self::getView("mobile.");
-			if (file_exists(root . "app/view/$v.php")){
-				include root . "app/view/$v.php";
+			$v = $view ? $c . '/mobile.' . $view : self::getView('mobile.');
+			if (file_exists(root . 'app/view/' . $v . '.php')){
+				include root . 'app/view/' . $v . '.php';
 				return ob_get_clean();
 			}
 		}
 		
-		$v = $view ? "$c/$view" : self::getView();
-		$vpath = root . (module ? "app/modules/" . module . "/view/$v.php" : "app/view/$v.php");
+		$v = $view ? $c . '/' . $view : self::getView();
+		$vpath = root . (module ? 'app/modules/' . module . '/view/' . $v . '.php' : 'app/view/' . $v . '.php');
 		
 		if (file_exists($vpath)){
 			include $vpath;

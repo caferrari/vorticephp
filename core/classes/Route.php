@@ -30,8 +30,8 @@ class Route{
 	* @static
 	*/
 	public static function add($er, $ac, $pars=''){
-		$er = "/" . addcslashes($er, "/") . "/";
-		self::$routes[] = array("er" => $er, "ac" => $ac, "pars" => $pars);
+		$er = "/" . addcslashes($er, '/') . '/';
+		self::$routes[] = array('er' => $er, 'ac' => $ac, 'pars' => $pars);
 	}
 	
 	/**
@@ -44,17 +44,17 @@ class Route{
 		foreach (self::$routes as $r){
 			if (preg_match($r['er'], uri, $match)){
 				$p = $r['pars'];
-				for ($x=1; $x<count($match); $x++) $p = str_replace("%$x", $match[$x], $p);
-				$p = preg_replace("/%[0-9]+/", "", $p);				
+				for ($x=1; $x<count($match); $x++) $p = str_replace('%' . $x, $match[$x], $p);
+				$p = preg_replace('@%[0-9]+@', '', $p);				
 				parse_str($p, $pars);
-				define ("routed", true);
+				define ('routed', true);
 				return array(
-					"url" => $r['ac'],
-					"pars" => $pars
+					'url' => $r['ac'],
+					'pars' => $pars
 				);
 			}
 		}
-		define ("routed", false);
+		define ('routed', false);
 		return false;
 	}
 }

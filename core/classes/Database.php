@@ -81,7 +81,7 @@ class Database
 	* Return a database class instance
 	* @return	Database
 	*/
-	public static function getInstance($name="default", $env = environment)
+	public static function getInstance($name='default', $env = environment)
 	{
 		if (!isset(self::$instances[$name . '_' . $env]))
 			self::$instances[$name . '_' . $env] = new Database();
@@ -118,7 +118,7 @@ class Database
 	*/
 	public function connect(){
 		if ($this->connected) return;
-		if ($this->pars == false) throw new Exception("Database not inicialized!");
+		if ($this->pars == false) throw new Exception('Database not inicialized!');
 		
 		$dsn = $this->bd_str[$this->pars['type']];
 		foreach ($this->pars as $k => $v)
@@ -177,7 +177,7 @@ class Database
 	* Execute a SQL query
 	* @return	Array
 	*/
-	public function query($sql, $object="DTO")
+	public function query($sql, $object='DTO')
 	{
 		$this->connect();
 		$rs = $this->pdo->query($sql);
@@ -189,7 +189,7 @@ class Database
 	* Prepare a SQL Query with one result
 	* @return	Object
 	*/
-	public function queryOne($sql, $object="DTO")
+	public function queryOne($sql, $object='DTO')
 	{
 		$this->connect();
 		$rs = $this->pdo->query($sql);
@@ -201,7 +201,7 @@ class Database
 	* @return	Integer
 	*/
 	public function max($table='', $field='id'){
-		$sql = "SELECT max($field) as n FROM $table";
+		$sql = 'SELECT max(' . $field . ') as n FROM ' . $table;
 		return $this->queryOne($sql)->n;
 	}
 	

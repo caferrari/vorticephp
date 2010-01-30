@@ -12,8 +12,8 @@
 // Enable error reporting
 error_reporting(E_ALL);
 
-include_once "classes/Core.php";
-include_once "functions.php";
+include_once 'classes/Core.php';
+include_once 'functions.php';
 try{
 	print (new Core());
 }catch (Exception $e){

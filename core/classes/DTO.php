@@ -24,7 +24,7 @@ class DTO
 	*/
 	public function __set($name, $value){
 		if (method_exists($this, $name)){
-			$metodo = "set" . ucfirst($name);
+			$metodo = 'set' . ucfirst($name);
 			$this->$metodo($value);
 		}else
 			$this->$name = $value;
@@ -50,7 +50,7 @@ class DTO
 	* @return	void
 	*/
 	public static function escape(){
-		if(function_exists("get_magic_quotes_gpc") && get_magic_quotes_gpc()) return;
+		if(function_exists('get_magic_quotes_gpc') && get_magic_quotes_gpc()) return;
 		foreach (get_object_vars($this) as $p) $this->$p = addslashes($this->$p);
 	}
 	
@@ -69,7 +69,7 @@ class DTO
 	* @return 	array
 	*/
 	public function toArray($fields=null){
-		$fields = explode(",", preg_replace("/[ ]+/", "", $fields));
+		$fields = explode(',', preg_replace('@[ ]+@', '', $fields));
 		
 		$tmp = array();
 		foreach ($fields as $f){
@@ -88,7 +88,7 @@ class DTO
 	public function insert($fields, $table=null, $instance='default'){
 		$table = uncamelize(($table == null) ? (isset($this->_table) ? $this->_table : get_class($this)) : $table);
 		$values = substr(str_repeat("?,", count(explode(",", $fields))), 0, -1);
-		$sql = "INSERT INTO $table ($fields) VALUES ($values);";
+		$sql = 'INSERT INTO ' . $table . ' (' . $fields . ') VALUES (' . $values . ');';
 		$id = Database::getInstance($instance)->exec($sql, $this->toArray($fields));
 		return $id;
 	}
@@ -107,8 +107,8 @@ class DTO
 		$values[] = $this->id = $id;
 		$tmp = array();
 		$fields = explode(",", $fields);
-		foreach ($fields as $k=>$f) $tmp[] = $fields[$k] . "=?";
-		$sql = "UPDATE $table SET " . implode($tmp, ', ') . " WHERE id=?";
+		foreach ($fields as $k=>$f) $tmp[] = $fields[$k] . '=?';
+		$sql = 'UPDATE ' . $table . ' SET ' . implode($tmp, ', ') . ' WHERE id=?';
 		Database::getInstance($instance)->exec($sql, $values);
 		return $this;
 	}
@@ -121,7 +121,7 @@ class DTO
 	public function delete($table=null, $instance='default'){
 		$table = uncamelize(($table == null) ? (isset($this->_table) ? $this->_table : get_class($this)) : $table);
 		if (!isset($this->id) || !is_numeric($this->id)) return false;
-		return Database::getInstance($instance)->exec("DELETE FROM $table WHERE id=?", array($this->id));
+		return Database::getInstance($instance)->exec('DELETE FROM ' . $table . ' WHERE id=?', array($this->id));
 	}
 	
 	/**
@@ -132,7 +132,7 @@ class DTO
 	public function all($table=null, $instance='default'){
 		$table = uncamelize(($table == null) ? (isset($this->_table) ? $this->_table : preg_replace('@Controller$@', '', get_class($this))) : $table);
 		$class = camelize($table);
-		return Database::getInstance($instance)->query("SELECT * FROM $table", $class);
+		return Database::getInstance($instance)->query('SELECT * FROM ' . $table, $class);
 	}
 
 	/**
@@ -141,9 +141,9 @@ class DTO
 	* @return 	dto
 	*/
 	public function load($id, $table=null, $instance='default'){
-		if (!is_numeric($id)) throw new IntegerRequiredException("id must be an integer");
+		if (!is_numeric($id)) throw new IntegerRequiredException('id must be an integer');
 		$table = uncamelize(($table == null) ? (isset($this->_table) ? $this->_table : preg_replace('@Controller$@', '', get_class($this))) : $table);
 		$class = camelize($table);
-		return Database::getInstance($instance)->queryOne("SELECT * FROM $table WHERE id='$id'", $class);
+		return Database::getInstance($instance)->queryOne('SELECT * FROM ' . $table . ' WHERE id=' . $id, $class);
 	}
 }
