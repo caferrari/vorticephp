@@ -79,7 +79,7 @@
 					<span class="box-titulo">Comentários</span>
 					<ul>
 						<li>
-							<p>O Vôrtice ainda é pequeno e precisa de ajuda, principalmente na parte de documentação. me adicione no gtalk e vamos conversar.</p>
+							<p>O Vórtice ainda é pequeno e precisa de ajuda, principalmente na parte de documentação. me adicione no gtalk e vamos conversar.</p>
 							<p class="autor"><a href="http://ferrari.eti.br">Carlos André Ferrari</a><span>desenvolvedor da SECOM/TO</span></p>
 						</li>
 					</ul>
