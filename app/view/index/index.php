@@ -10,7 +10,7 @@
 					</li>
 					<li class="grid_3 alpha">
 						<h2>URL's Amigáveis</h2>
-						<p>Padrão de url que, além de almentar a seguranca por filtrar os dados, fica muito mais legivel e o google adora!</p>
+						<p>Padrão de url que, além de aumentar a seguranca por filtrar os dados, a url fica muito mais legível e o google adora!</p>
 					</li>
 					<li class="grid_3">
 						<h2>Internacionalização</h2>
