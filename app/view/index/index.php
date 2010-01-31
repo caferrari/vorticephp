@@ -1,48 +1,47 @@
 	
-			<p class="intro">Um <strong>framework PHP</strong> que Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam ut faucibus eros. Suspendisse vitae tellus ut quam malesuada condimentum. Aliquam pharetra convallis dolor sit amet aliquam. Integer euismod sagittis nisi, vitae suscipit est posuere sit amet.</p>
+			<p class="intro">Um <strong>framework PHP</strong> feito pensando-se em performance e liberdade para o programador, tem tudo para o desenvolvimento de aplicaçoes seguindo todos os padrões existentes, porém, se o desenvolvedor quiser criar um código <em>spaghetti</em>, ele pode!.</p>
 	
 			<div id="box-recursos" class="m20">
 				<span class="box-titulo">Recursos</span>
 				<ul class="container">
+					<li class="grid_3 omega">
+						<h2>Velocidade</h2>
+						<p>O Vórtice é extremamente veloz, e tudo é opcional, se algo não existe em sua pasta de app, ele simplesmente ignora!</p>
+					</li>
 					<li class="grid_3 alpha">
-						<h2>Título do Recurso1</h2>
-						<p>Aliquam hendrerit, sapien viverra mollis pulvinar, nisi sem laoreet risus, tempus aliquam risus elit sed nulla. Proin auctor orci nec...</p>
+						<h2>URL's Amigáveis</h2>
+						<p>Padrão de url que, além de almentar a seguranca por filtrar os dados, fica muito mais legivel e o google adora!</p>
 					</li>
 					<li class="grid_3">
-						<h2>Título do Recurso2</h2>
-						<p>Aliquam hendrerit, sapien viverra mollis pulvinar, nisi sem laoreet risus, tempus aliquam risus elit sed nulla. Proin auctor orci nec...</p>
+						<h2>Internacionalização</h2>
+						<p>Seu site em várias linguas sem dificuldades, e o google indexa todas as traduçoes individualmente</p>
 					</li>
 					<li class="grid_3 omega">
-						<h2>Título do Recurso3</h2>
-						<p>Aliquam hendrerit, sapien viverra mollis pulvinar, nisi sem laoreet risus, tempus aliquam risus elit sed nulla. Proin auctor orci nec...</p>
+						<h2>Suporte a Ajax!</h2>
+						<p>O Vórtice foi feito pensando-se em Ajax, ele consegue identificar internamente se a requisição é por ajax e já devolve no formato correto</p>
 					</li>
 			
 					<li class="grid_3 alpha">
-						<h2>Título do Recurso 4</h2>
-						<p>Aliquam hendrerit, sapien viverra mollis pulvinar, nisi sem laoreet risus, tempus aliquam risus elit sed nulla. Proin auctor orci nec...</p>
+						<h2>Utilitários para Post</h2>
+						<p>O Vórtice possúi mecanismos que auxiliam muito na parte de criação, validacao e retornos de formulários</p>
 					</li>
 					<li class="grid_3">
-						<h2>Título do Recurso 5</h2>
-						<p>Aliquam hendrerit, sapien viverra mollis pulvinar, nisi sem laoreet risus, tempus aliquam risus elit sed nulla. Proin auctor orci nec...</p>
+						<h2>Sessões Encriptadas</h2>
+						<p>As sessões dos visitantes são encriptados através de chaves aleatórias por visita</p>
 					</li>
 					<li class="grid_3 omega">
-						<h2>Título do Recurso 6</h2>
-						<p>Aliquam hendrerit, sapien viverra mollis pulvinar, nisi sem laoreet risus, tempus aliquam risus elit sed nulla. Proin auctor orci nec...</p>
+						<h2>Views Estáticas</h2>
+						<p>Se uma página específica não acessa banco de dados ou não precisa de nenhum processamento no servidor, isso é a solução</p>
 					</li>
 			
 					<li class="grid_3 alpha">
-						<h2>Título do Recurso 7</h2>
-						<p>Aliquam hendrerit, sapien viverra mollis pulvinar, nisi sem laoreet risus, tempus aliquam risus elit sed nulla. Proin auctor orci nec...</p>
+						<h2>Snippets</h2>
+						<p>Para trechos de código muito comuns, você pode criar snippets!</p>
 					</li>
 					<li class="grid_3">
-						<h2>Título do Recurso 8</h2>
-						<p>Aliquam hendrerit, sapien viverra mollis pulvinar, nisi sem laoreet risus, tempus aliquam risus elit sed nulla. Proin auctor orci nec...</p>
+						<h2>Camada Facade (MVCF)</h2>
+						<p>Com essa camada você pode encapsular mais o seu código, agrupando varias açoes em um facade.</p>
 					</li>
-					<li class="grid_3 omega">
-						<h2>Título do Recurso 9</h2>
-						<p>Aliquam hendrerit, sapien viverra mollis pulvinar, nisi sem laoreet risus, tempus aliquam risus elit sed nulla. Proin auctor orci nec...</p>
-					</li>
-			
 				</ul>
 		
 				<!--p class="btn1">Botão 1</p>
@@ -80,8 +79,8 @@
 					<span class="box-titulo">Comentários</span>
 					<ul>
 						<li>
-							<p>Ut at pretium tellus. Etiam massa mauris, blandit sit amet hendrerit nec, pretium vitae massa. Duis accumsan, felis at semper consequat, felis mauris consequat ligula, eu placerat justo justo vel odio. Pellentesque quam nibh, convallis vitae porttitor sed.</p>
-							<p class="autor">Carlos André <span>desenvolvedor da SECOM</span></p>
+							<p>O Vôrtice ainda é pequeno e precisa de ajuda, principalmente na parte de documentação. me adicione no gtalk e vamos conversar.</p>
+							<p class="autor"><a href="http://ferrari.eti.br">Carlos André Ferrari</a><span>desenvolvedor da SECOM/TO</span></p>
 						</li>
 					</ul>
 				</div>
