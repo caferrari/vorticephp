@@ -1,0 +1,75 @@
+body{ font:13px Arial; color:#999; background:url('imagens/bg-site2.gif') no-repeat center top;}
+p{ line-height:18px;}
+
+#geral{ margin-top:5px;}
+
+#topo{ height:300px;}
+
+#menu{ }
+
+#conteudo{ }
+
+
+/* Logo */
+#logo{ float:left; width:240px; border-bottom:5px solid #ddd;}
+#logo h1{ width:220px; height:280px; background:url('imagens/vortice-php-logo.gif') no-repeat; overflow:hidden; text-indent:-10000px; margin-bottom:5px;}
+
+/* Download */
+#download{ float:right; width:700px; height:285px; border-bottom:5px solid #fc0; }
+#download span.txt{ display:block; width:100%; height:280px; background:url('imagens/bg-download.gif'); margin-bottom:5px;}
+#download a{ position:absolute; display:block; margin-bottom:5px; font:bold 50px Georgia; color:#333; letter-spacing:-2px; margin-top:200px; margin-left:360px; background: url('imagens/bg-download-link.gif') no-repeat right top; padding-right:45px;}
+#download a:hover{ color:#000; background-position:right bottom;}
+#download span.txt span{ position:absolute; display:block; margin-top:248px; margin-left:360px; font:26px Georgia; color:#555;}
+#download span.txt span strong{ color:#444;}
+
+/* Menu */
+#menu ul{ margin-top:90px; padding:10px; background:url('imagens/bg-menu.gif'); min-height:120px;}
+#menu li{ margin:3px; text-align:right; }
+#menu li a{ padding-right:15px; font:23px Georgia; color:#888; letter-spacing:-1px; background:url('imagens/bg-itens-menu.gif') no-repeat bottom right; }
+#menu li a:hover{ color:#000; font-weight:bold; background-position:top right; text-decoration:none;}
+
+/* Conteúdo */
+.intro{ font:16px Georgia; color:#555; line-height:26px; text-align:right; margin-bottom:20px;}
+.intro strong{ color:#000;}
+
+/* Boxes */
+.box-titulo{ display:block; font:24px Georgia; color:#999; margin-bottom:10px;}
+
+/*Box Recursos*/
+#box-recursos ul{ display:table; background:url('imagens/bg-box-recursos.gif') repeat-y;}
+#box-recursos h2{ font:18px Georgia; color:#333; margin-bottom:10px; }
+#box-recursos .container{ overflow:hidden;}
+#box-recursos .ativo{ filter: alpha(opacity = 100); }
+
+#r-menu{ clear:both; height:20px; margin-top:15px; margin-bottom:20px; }
+#r-menu span{ display:block; float:left; width:16px; height:6px; background:#ddd; margin-right:5px; overflow:hidden; text-indent:-1000px; cursor:pointer;}
+#r-menu span.clicado{ background:#fc0;}
+
+/* Twitter */
+/*#twitter li{ display:block; margin-bottom:10px; padding-top:10px; border-top:1px dotted #ddd; }
+#twitter li:first-child{ border:0;}*/
+#twitter li{ display:block; margin-bottom:10px; }
+#twitter h3 a{ display:block; margin:0; font:14px Arial; color:#999; line-height:20px; padding:10px 3px; border:1px solid transparent; border-top-color: #ddd; }
+#twitter span.data{ display:block; margin:0; font:normal 12px Georgia, Arial; color:#777; background:url('imagens/bg-menu.gif'); padding:2px 3px; border:1px solid #ddd; border-bottom:0;} 
+#twitter h3 a:hover{ color:#000; border-color:#ddd; border-top-color:transparent; background:url('imagens/bg-menu.gif');}
+
+/* Comentários */
+#comentarios{ margin-bottom:20px;}
+#comentarios .container{ position:absolute; margin:0; margin-left:-10px; padding:5px 0 0 10px; background:url('imagens/bg-menu.gif'); *width:220px; overflow:hidden;}
+#comentarios li{ text-align:right; padding:5px 10px 0 0; background:url('imagens/bg-comentarios.gif') no-repeat top left; color:#555;}
+#comentarios p{ line-height:20px; margin-bottom:10px;}
+#comentarios p.autor{ font:18px Georgia, Arial; color:#333; }
+#comentarios p span{ display:block; font-size:12px; color:#777;}
+
+/* Barra Final */
+#barra-final{ margin-bottom:20px; border-top:5px solid #ddd; padding-top:10px; font-size:11px; color:#999;}
+#barra-final a{ font-weight:bold; color:#555;}
+
+
+/* Espaços */
+m10{ margin-top:10px;}
+m20{ margin-top:20px;}
+
+
+
+
