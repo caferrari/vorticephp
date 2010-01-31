@@ -1,5 +1,5 @@
 	
-			<p class="intro">Um <strong>framework PHP</strong> feito pensando-se em performance e liberdade para o programador, tem tudo para o desenvolvimento de aplicaçoes seguindo todos os padrões existentes, porém, se o desenvolvedor quiser criar um código <em>spaghetti</em>, ele pode!.</p>
+			<p class="intro">Um <strong>framework PHP</strong> feito pensando-se em performance e liberdade para o programador, tem tudo para o desenvolvimento de aplicações seguindo os padrões mais requisitados do mercado, porém, se o desenvolvedor quiser criar um código <em>spaghetti</em>, ele pode!.</p>
 	
 			<div id="box-recursos" class="m20">
 				<span class="box-titulo">Recursos</span>
