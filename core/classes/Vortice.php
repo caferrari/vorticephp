@@ -117,7 +117,6 @@ class Vortice{
 			self::setVar('title', self::$title);
 			self::setView(controller . ':' . action);
 			self::loadTemplates();
-			if (!defined('module')) define ('module', false);
 			ob_start();
 		}
 	}
@@ -337,7 +336,7 @@ class Vortice{
 	* @return	string
 	*/
 	public static function render(){
-		$middle = self::execute(false, action, controller, module);
+		$middle = self::execute(false, action, controller);
 
 		if (!self::$tpl)  self::$notemplate = true;
 		else $pasta = self::$tpl;
@@ -395,26 +394,13 @@ class Vortice{
 	}
 	
 	/**
-	* Alias for execute method
-	* @param	string	$view
-	* @param	string	$action
-	* @param	string	$controller	
-	* @param	string	$module
-	* @return	string
-	*/
-	public static function executar($view, $action, $controller, $module=false){
-		return self::execute($view, $action, $controller, $module);
-	}
-	
-	/**
 	* Execute a request
 	* @param	string	$view
 	* @param	string	$action
 	* @param	string	$controller	
-	* @param	string	$module
 	* @return	string
 	*/
-	public static function execute($view, $action, $controller, $module=false){
+	public static function execute($view, $action, $controller){
 		ob_start();
 		
 		if (!self::$masterload && class_exists('MasterController')){
@@ -459,7 +445,7 @@ class Vortice{
 		}
 		
 		$v = $view ? $c . '/' . $view : self::getView();
-		$vpath = root . (module ? 'app/modules/' . module . '/view/' . $v . '.php' : 'app/view/' . $v . '.php');
+		$vpath = root . 'app/view/' . $v . '.php';
 		
 		if (file_exists($vpath)){
 			include $vpath;
