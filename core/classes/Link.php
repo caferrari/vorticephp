@@ -98,24 +98,16 @@ class Link{
 	* @static
 	*/
 	static function createLink($page='', $pars=''){
-		if (!preg_match('@^([a-z\-]+\+)?([a-z\-]+)(:[a-z\-]+)?$@', $page))
+		if (!preg_match('@^([a-z\-]+)(:[a-z\-]+)?$@', $page))
 			return preg_replace('@\/+@', '/', virtualroot . ((request_lang !== default_lang) ? request_lang : '') . '/' . $page . '/');
-		$page = preg_split('@[:\+]@', $page);
-
-		if (count($page)===3){
-			if ($page[2]===default_action) $page[2] = '';
-			if ($page[1]===default_controller && $page[2]=='') unset($page[2]);
-			reset_keys($page);
-		}
-		if (count($page)===2){
-			if ($page[0]===default_controller && $page[1]===default_action) $page=array();
-			else if ($page[1]===default_action) unset($page[1]);
-			reset_keys($page);
-		}
-		if (count($page)===1){
+		$page = explode(':', $page);
+		if (count($page) === 2){
+			if ($page[0] === default_controller && $page[1]===default_action) $page=array();
+			else if ($page[1] === default_action) unset($page[1]);
+		}else{
 			if ($page[0] === default_controller) $page = array();
-			reset_keys($page);
 		}
+		$page = array_values($page);
 
 		parse_str(is_array($pars) ? http_build_query($pars) : $pars, $p);
 		if (count($page) === 0 || $page[0] === '') $page='';
@@ -183,32 +175,19 @@ class Link{
 				$q = unserialize(Link::default_decode($q));
 		}
 		
-		$module = false;
-		$controller = '';
-		$action = '';
+		$controller = $action = '';
 
 		$q['url'] = isset($q['url']) ? $q['url'] : '';
+		if (isset($q['pars'])) $_PAR = (array)$q['pars'];
 
 		if ($q['url'] !== ''){
-			$url = explode('+', $q['url']);
-			if (count($url)===2){
-				$module = $url[0];
-				$url = $url[1];
-			}else $url = $url[0];
-		
-			$url = explode(':', $url);
-			
+			$url = explode(':', $q['url']);
 			if (count($url)==2){
 				$controller = $url[0];
 				$action = $url[1];
-			}else{
-				if (is_dir(root . 'app/modules/' . $url[0]))
-					$module = $url[0];
-				elseif ($url[0]{0} === '.')
-					$action = $url[0];
-				else
-					$controller = $url[0];
-			}
+			}else
+				if ($url[0]{0} === '.') $action = $url[0];
+				else $controller = $url[0];
 		}
 
 		$tmp = explode('.', $action);
@@ -221,19 +200,16 @@ class Link{
 			if (count($tmp) > 1){
 				$controller = ($tmp[0] === '') ? '' : $tmp[0];
 				Vortice::setRenderMode($tmp[1]);
-			}else
-				$controller = $tmp[0];
+			}else $controller = $tmp[0];
 		}
 		
 		if (!routed && Vortice::$rendermode==='html'){
-			$tmpmod = '';
-			if ($module != false) $tmpmod = "$module+";
 			if ($controller===default_controller && ($action===default_action || $action==='')){
-				header('Location: ' . new Link($tmpmod . default_controller . ':' . default_action, $_PAR), true, 301);
+				header('Location: ' . new Link(default_controller . ':' . default_action, $_PAR), true, 301);
 				exit();
 			}
 			if ($controller!==default_controller && $action===default_action){
-				header('Location: ' . new Link($tmpmod . $controller . ':' . default_action, $_PAR), true, 301);
+				header('Location: ' . new Link($controller . ':' . default_action, $_PAR), true, 301);
 				exit();
 			}
 		}
@@ -241,12 +217,8 @@ class Link{
 		if ($action==='') $action = default_action;
 		if ($controller==='') $controller = default_controller;
 
-		define ('module', $module);
 		define ('controller', $controller);
 		define ('action', $action);
-		
-		if (isset($q['pars']))
-			if (is_object($q['pars']) || is_array($q['pars'])) foreach ($q['pars'] as $k => $p) $_PAR[$k] = $p;
 	}
 	
 	/**
