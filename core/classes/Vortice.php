@@ -330,7 +330,7 @@ class Vortice{
 			unset(self::$vars[$k]);
 		}
 	}
-	
+
 	/**
 	* Execute everything and render the response
 	* @return	string
@@ -351,6 +351,10 @@ class Vortice{
 			}
 			self::$rendermode = 'content';
 		}elseif (!self::$notemplate){
+			$_ref = DAO::getAll();
+			foreach ($_ref as $k => &$v)
+				$$k = $v;
+			unset($_ref);
 			if (mobile && file_exists(root . 'app/webroot/templates/' . $pasta . '/mobile.php'))
 				include root . 'app/webroot/templates/' . $pasta . '/mobile.php';
 			else 
