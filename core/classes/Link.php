@@ -88,7 +88,28 @@ class Link{
 		$json = serialize(array('url' => $page, 'pars' => $pars));
 		return $json;
 	}
-	
+
+	/**
+	* Create, Replace or remove parameters from alread defined uri's
+	*
+	* @param	string	$page		/some/uri/with:pars/
+	* @param	string	$pars	    link new params
+	* @return	string
+	* @static
+	*/
+	private function replacePars($page, $pars=''){
+		$uri = preg_replace("@\/+@", "/", virtualroot . ((request_lang != default_lang) ? request_lang : "") . "/$page/");
+
+		if ($pars==='') return $uri;
+		parse_str($pars, $pars);
+
+		foreach ($pars as $p => $v)
+			if (preg_match("@/$p:@", $uri))
+				$uri = preg_replace("@/$p:[^/]*/@", $v=='' ? '/' : "/$p:$v/", $uri);
+			elseif ($v!='') $uri .= "$p:$v/";
+		return $uri;
+	}
+
 	/**
 	* Create a URI
 	*
@@ -98,27 +119,38 @@ class Link{
 	* @static
 	*/
 	static function createLink($page='', $pars=''){
-		if (!preg_match('@^([a-z\-]+)(:[a-z\-]+)?$@', $page))
-			return preg_replace('@\/+@', '/', virtualroot . ((request_lang !== default_lang) ? request_lang : '') . '/' . $page . '/');
-		$page = explode(':', $page);
-		if (count($page) === 2){
-			if ($page[0] === default_controller && $page[1]===default_action) $page=array();
-			else if ($page[1] === default_action) unset($page[1]);
-		}else{
-			if ($page[0] === default_controller) $page = array();
+		if (!preg_match("/^([a-z\-]+\+)?([a-z\-]+)(:[a-z\-]+)?$/", $page))
+			return self::replacePars($page, $pars);
+		$page = preg_split("/[:\+]/", $page);
+
+		if (count($page)==3){
+			if ($page[2]==default_action) $page[2] = '';
+			if ($page[1]==default_controller && $page[2]=='') unset($page[2]);
+			reset_keys($page);
 		}
-		$page = array_values($page);
+		if (count($page)==2){
+			if ($page[0]==default_controller && $page[1]==default_action) $page=array();
+			else if ($page[1]==default_action) unset($page[1]);
+			reset_keys($page);
+		}
+		if (count($page)==1){
+			if ($page[0] == default_controller) $page = array();
+			reset_keys($page);
+		}
 
 		parse_str(is_array($pars) ? http_build_query($pars) : $pars, $p);
-		if (count($page) === 0 || $page[0] === '') $page='';
-		else $page = implode(':', $page);
-		$url = $pars ? serialize(array('url' => $page, 'pars' => $p)) : serialize(array('url' => $page));
-		$link = (function_exists('link_encode')) ? link_encode($url) : Link::default_encode($url);
+		if (count($page)==0 || $page[0] == '') $page="";
+		else $page = implode(":", $page);
+		foreach ($p as $k=>$v)
+			if ($v==='') unset($p[$k]);
+		$url = $pars ? serialize(array("url" => $page, "pars" => $p)) : serialize(array("url" => $page));
+		$link = (function_exists("link_encode")) ? link_encode($url) : Link::default_encode($url);
 		if (request_lang != default_lang)
-			return virtualroot . request_lang . '/' . $link;
-		
-		return virtualroot . $link;
+			return virtualroot . request_lang . "/$link";
+
+		return virtualroot . "$link";
 	}
+
 	
 	/**
 	* Translate the requested URI, check for internationalization request and create the uri constant
