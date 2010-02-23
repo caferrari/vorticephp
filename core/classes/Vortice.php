@@ -127,10 +127,10 @@ class Vortice{
 	* @access	private
 	*/
 	private static function loadTemplates(){
-		$dir = root . 'app/webroot/templates';
+		$dir = root . 'app/templates';
 		if (is_dir($dir) && $dh = opendir($dir))
 			while (($file = readdir($dh)) !== false)
-				if (preg_match('@^[0-9a-z\_]+$@', $file) && is_dir($dir . '/' . $file) && file_exists($dir . '/' . $file . '/template.php')) self::addTemplate($file);
+				if (is_file($dir . '/' . $file)) self::addTemplate(str_replace(".php", "", $file));
 	}
 
 	/**
@@ -156,7 +156,7 @@ class Vortice{
 	* @return	void
 	*/
 	public static function addTemplate($nome){
-		if (!file_exists(root . 'app/webroot/templates/' . $nome . '/template.php')) throw(new TemplateNotFoundException($nome));
+		if (!file_exists(root . 'app/templates/' . $nome . '.php')) throw(new TemplateNotFoundException($nome));
 		self::$templates[$nome] = $nome;
 		if (self::$tpl == '') self::$tpl = $nome;
 	}
@@ -339,7 +339,6 @@ class Vortice{
 		$middle = self::execute(false, action, controller);
 
 		if (!self::$tpl)  self::$notemplate = true;
-		else $pasta = self::$tpl;
 		
 		ob_start();	
 		
@@ -355,10 +354,10 @@ class Vortice{
 			foreach ($_ref as $k => &$v)
 				$$k = $v;
 			unset($_ref);
-			if (mobile && file_exists(root . 'app/webroot/templates/' . $pasta . '/mobile.php'))
-				include root . 'app/webroot/templates/' . $pasta . '/mobile.php';
+			if (mobile && file_exists(root . 'app/templates/' . self::$tpl . '.mobile.php'))
+				include root . 'app/templates/' . self::$tpl . '.mobile.php';
 			else 
-				include root . 'app/webroot/templates/' . $pasta . '/template.php';
+				include root . 'app/templates/' . self::$tpl . '.php';
 			self::setVar('csstags', self::geraCss());
 			self::setVar('jstags', self::geraJs());
 		}
