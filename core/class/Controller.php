@@ -21,9 +21,8 @@ class Controller {
 	* @access	public
 	*/
 	public function __set($met, $val){
-		if ($met == '_view') 		Vortice::setView($val);
-		if ($met == '_template') 	Vortice::setTemplate($val);
-		DAO::add($val, $met);
+		if (!preg_match ('@^(pars|_view|_template|_format)$@', $met))
+			Response::add($val, $met);
 		$this->$met = $val;
 	}
 	
@@ -35,6 +34,11 @@ class Controller {
 	*/
 	public function __get($met){
 		if (isset($this->$met)) return $this->$met;
-		return DAO::get("$met");	
+		return Response::get("$met");	
+	}
+	
+	public function _setvar ($met, $val){
+		$this->$met = '';
+		$this->$met = &$val;
 	}
 }
