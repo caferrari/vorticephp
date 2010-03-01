@@ -29,7 +29,6 @@ class Vortice{
 		require_once 'Dispatcher.php';
 		$this->dispatcher = new Dispatcher($this);
 		$this->dispatcher->execute_uri($this->env->uri);
-		
 	}
 
 	private function load_method(){
@@ -79,7 +78,7 @@ class Vortice{
 	}
 	
 	public static function setView ($view){
-		self::$fw->view = $view;
+		self::$fw->dispatcher->set_view($view);
 	}
 	
 	public static function setTemplate($name){

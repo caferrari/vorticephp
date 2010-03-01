@@ -1,10 +1,11 @@
 <?php
 
-class IndexController {
+class IndexController extends Controller {
 
 	public function index_GET(){
 		Vortice::setTemplate('ha');
-		d();
+		$this->nome = 'andre';
+		$this->_format = 'json';
 	}
 
 }
