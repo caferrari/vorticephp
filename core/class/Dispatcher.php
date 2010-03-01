@@ -57,6 +57,7 @@ class Dispatcher{
 	}
 	
 	public function execute_uri($uri){
+		require_once ('Link.php');
 		return $this->execute($this->decompose_request($uri));
 	}
 	

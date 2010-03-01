@@ -15,10 +15,15 @@ class Template {
 	}
 	
 	private function auto_load(){
-		return 'my_template';
+		$path = Vortice::get_fw()->env->approot . 'templates/';
+		if (file_exists($path . 'default.php')) return 'default';
+		
+		return '';
 	}
 	
 	public function execute(){
+		if ($this->template == '') return $this->content;
+	
 		$path = Vortice::get_fw()->env->approot . 'templates/' . $this->template . '.php';
 		if (!file_exists($path)) 
 			throw new Exception ('Template "' . $this->template . '" not found');
