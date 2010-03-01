@@ -29,7 +29,8 @@ class Dispatcher{
 			'module' => $this->fw->env->modulepath,
 			'controller' => 'index',
 			'action' => 'index',
-			'view' => '',
+			'view' => 'index:index',
+			'template' => '',
 			'format' => 'html',
 			'pars' => array()
 		);
@@ -50,16 +51,17 @@ class Dispatcher{
 		
 		$request['view'] = $request['controller'] . ':' . $request['action'];
 		$this->view = &$request['view'];
-		
+				
 		$request['pars'] = $this->load_pars($uri);
 		return $request;
 	}
 	
 	public function execute_uri($uri){
-		$this->execute($this->decompose_request($uri));
+		return $this->execute($this->decompose_request($uri));
 	}
 	
 	public function execute($request){
+		ob_start();
 		extract($request);
 		$class = camelize($controller) . 'Controller';
 		$path = "{$module}controller/";
@@ -68,8 +70,14 @@ class Dispatcher{
 			$this->master_loaded = true;
 		}
 		$this->exec_controller($path, $class, $request);
-
-		return new Response($request);
+		new Response($request);
+		$content = ob_get_clean();
+		
+		if ($request['format'] == 'html'){
+			require_once 'Template.php';
+			$template = new Template($content, $request['template']);
+		}
+		return $template->execute();
 	}
 	
 	private function exec_master($path, $pars){

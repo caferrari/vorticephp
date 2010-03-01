@@ -55,18 +55,34 @@ class Response
 	
 	public function __construct($request){
 		$function = 'render_' . $request['format'];
-		if (method_exists($this, $function)){
-			return $this->$function($request);
-		}elseif (function_exists($function)){
+		if (function_exists($function))
 			return $function($request);
-		}else throw new Exception ('No support for ' . $request['format'] . ' format yet');
+		elseif (method_exists($this, $function))
+			return $this->$function($request);
+		else throw new Exception ('No support for ' . $request['format'] . ' format yet');
 	}
 	
 	private function render_html($request){
-		die ('html response!');
+		header('Content-Type: text/html; charset=utf-8'); 
+		if (strstr($request['view'], ':'))
+			$path = Vortice::get_fw()->env->modulepath . 'view/' . str_replace(':', '/', $request['view'])  . '.php';
+		else
+			$path = Vortice::get_fw()->env->modulepath . 'view/' . $request['controller'] . '/' . $request['view'] . '.php';
+		
+		if (!file_exists($path)) throw new Exception('view "' . $request['view'] . '" not found');
+		
+		extract (self::$rs);
+
+		include $path;		
+	}
+	
+	private function render_text($request){
+		$this->render_html($request);
+		header('Content-Type: text/plain; charset=utf-8');
 	}
 	
 	private function render_json($request){
+		header('Content-Type: application/json; charset=utf-8'); 
 		exit (json_encode(self::getAll()));
 	}
 }

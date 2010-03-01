@@ -3,10 +3,8 @@
 class Vortice{
 
 	private static $fw;
-
 	private $template = false;
-	private $view = '';
-	
+	private $content = '';
 
 	public function __construct(){
 		$this->load_method();
@@ -26,9 +24,14 @@ class Vortice{
 		$this->load_patch($_SERVER);
 		$this->load_module_and_lang($this->env->uri);
 		
+		define ('virtualroot', $this->env->vroot);
+		define ('root', $this->env->vroot);
+		define ('uri', preg_replace('@^/@', '', $this->env->uri));
+		define ('request_lang', $this->env->lang);
+		
 		require_once 'Dispatcher.php';
 		$this->dispatcher = new Dispatcher($this);
-		$this->dispatcher->execute_uri($this->env->uri);
+		$this->content = $this->dispatcher->execute_uri($this->env->uri);
 	}
 
 	private function load_method(){
@@ -77,12 +80,20 @@ class Vortice{
 		$this->env->set('uri', compose_uri($parts));
 	}
 	
+	public static function &get_fw(){
+		return self::$fw;
+	}
+	
 	public static function setView ($view){
 		self::$fw->dispatcher->set_view($view);
 	}
 	
 	public static function setTemplate($name){
 		self::$fw->template = $name;
+	}
+	
+	public function __toString(){
+		return $this->content;
 	}
 
 }
