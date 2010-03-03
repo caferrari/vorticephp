@@ -48,3 +48,7 @@ function camelize($str='') {
 function uncamelize($str=''){
 	return preg_replace('@^_+|_+$@', '', strtolower(preg_replace("/([A-Z])/", "_$1", $str)));
 }
+
+function p($var){
+	return (isset($_POST[$var])) ? $_POST[$var] : '';
+}

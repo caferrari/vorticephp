@@ -69,10 +69,9 @@ class Response
 		else
 			$path = Vortice::get_fw()->env->modulepath . 'view/' . $request['controller'] . '/' . $request['view'] . '.php';
 		
-		if (!file_exists($path)) throw new Exception('view "' . $request['view'] . '" not found');
+		if (!file_exists($path)) return;
 		
 		extract (self::$rs);
-
 		include $path;		
 	}
 	

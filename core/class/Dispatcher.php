@@ -36,7 +36,6 @@ class Dispatcher{
 		);
 		
 		if ($uri === '/'){
-			$request['pars'] = $_POST;
 			return $request;
 		}
 		
@@ -62,6 +61,8 @@ class Dispatcher{
 	}
 	
 	public function execute($request){
+		$request['pars'] = array_merge($_POST, $request['pars']);
+		$_POST = & $request['pars'];
 		ob_start();
 		extract($request);
 		$class = camelize($controller) . 'Controller';
