@@ -9,37 +9,52 @@ class Vortice {
 	public function __construct() {
 		require_once('Error.php');
 		Error::setup();
-
-		$this->load_method();
-
-		require_once 'functions.php';
-		$this->validate_uri();
-
-		self::$fw = $this;
-
-		require_once 'Env.php';
-		$this->env = new Env();
-
-		require_once 'I18n.php';
-		$this->i18n = new I18n($this);
-		$this->env->set('default_lang', 'pt-br');
-		$this->env->set('i18n_format', 'conf');
-		$this->load_patch($_SERVER);
-		$this->load_module_and_lang($this->env->uri);
-
-		$this->env->set('routed', false);
-		define ('virtualroot', $this->env->vroot);
-		define ('root', $this->env->vroot);
-		define ('uri', preg_replace('@^/@', '', $this->env->uri));
-		define ('request_lang', $this->env->lang);
-
-		require_once 'Dispatcher.php';
-		$this->dispatcher = new Dispatcher($this);
 		try{
-			$this->content = $this->dispatcher->execute_uri($this->env->uri);
+			$this->load_method();
+
+			require_once 'functions.php';
+			self::$fw = $this;
+
+			require_once 'Env.php';
+			$this->env = new Env();
+
+			require_once 'I18n.php';
+			$this->i18n = new I18n($this);
+			$this->env->set('default_lang', 'pt-br');
+			$this->env->set('i18n_format', 'conf');
+			$this->load_patch($_SERVER);
+			$this->load_module_and_lang('/' . $this->env->uri);
+
+			define ('virtualroot', $this->env->vroot);
+			define ('root', $this->env->vroot);
+			define ('uri', preg_replace('@^/@', '', $this->env->uri));
+			define ('request_lang', $this->env->lang);
+			
+			require_once ('Route.php');
+			$route = Route::exec($this->env->uri);
+			
+			$this->env->set('routed', routed);
+
+			require_once 'Dispatcher.php';
+			$this->dispatcher = new Dispatcher($this);
+			require_once ('Link.php');
+			
+			if (!$route){
+				$this->validate_uri();
+				$this->content = $this->dispatcher->execute_uri($this->env->uri);
+			}else
+				$this->content = $this->dispatcher->execute($route);
 		}catch (Error $e){
 			$this->content = $e->find_controller();
 		}
+	}
+
+	private function validate_uri() {
+		if (!valid_uri($_SERVER['REQUEST_URI']))
+			if ($_SERVER['REQUEST_METHOD'] === 'GET')
+				redirect($_SERVER['REQUEST_URI'] . '/');
+			else
+				throw new Exception ('The uri must end with a slash (/)');
 	}
 
 	private function load_method() {
@@ -50,14 +65,6 @@ class Vortice {
 			else
 				throw new Exception ('No support to "' . $_POST['REQUEST_METHOD'] . '" HTTP Method');
 		}
-	}
-
-	private function validate_uri() {
-		if (!valid_uri($_SERVER['REQUEST_URI']))
-			if ($_SERVER['REQUEST_METHOD'] == 'GET')
-				redirect($_SERVER['REQUEST_URI'] . '/');
-			else
-				throw new Exception ('The uri must end with a slash (/)');
 	}
 
 	private function load_patch(&$server) {
@@ -72,7 +79,8 @@ class Vortice {
 			$this->env->set('module', $parts[0]);
 			$this->env->set('modulepath', $this->env->root . 'app/modules/' . $parts[0] . '/');
 			$this->env->set('approot', $this->env->root . $parts[0] . '/');
-			array_shift($parts);
+			$r = array_shift($parts);
+			$uri = preg_replace("@/($r)\b@", '', $uri, 1);
 		}else {
 			$this->env->set('module', 'default');
 			$this->env->set('modulepath', $this->env->root . 'app/');
@@ -81,11 +89,14 @@ class Vortice {
 
 		if (isset($parts[0]) && $this->i18n->check_lang($parts[0])) {
 			$this->env->set('lang', $parts[0]);
-			array_shift($parts);
+			$r = array_shift($parts);
+			$uri = preg_replace("@/($r)\b@", '', $uri, 1);
 		}else
 			$this->env->set('lang', 'pt-br');
 
-		$this->env->set('uri', compose_uri($parts));
+		$uri = preg_replace('@/+@', '/', $uri);
+
+		$this->env->set('uri', $uri);
 	}
 
 	public static function &get_fw() {
