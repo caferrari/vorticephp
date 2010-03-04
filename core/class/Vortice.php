@@ -9,6 +9,9 @@ class Vortice {
 	public function __construct() {
 		require_once('Error.php');
 		Error::setup();
+		require_once 'Dispatcher.php';
+		$this->dispatcher = new Dispatcher($this);
+
 		try{
 			$this->load_method();
 
@@ -35,8 +38,6 @@ class Vortice {
 			
 			$this->env->set('routed', routed);
 
-			require_once 'Dispatcher.php';
-			$this->dispatcher = new Dispatcher($this);
 			require_once ('Link.php');
 			
 			if (!$route){

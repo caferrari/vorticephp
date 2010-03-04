@@ -14,7 +14,12 @@ class Route{
 		$env = Vortice::get_fw()->env;
 
 		$routes = $env->modulepath . 'route.php';
-		if (!file_exists($routes)) return false;
+
+		if (!file_exists($routes)){
+			define ('routed', false);
+			return false;
+		} 
+		
 		include_once($routes);
 		$uri = preg_replace('@^/@', '', $uri);
 		foreach (self::$routes as $r){
@@ -44,7 +49,7 @@ class Route{
 			}
 		
 		}
-		
+		define ('routed', false);
 		return false;
 		
 	}
