@@ -27,6 +27,7 @@ class Vortice {
 		$this->load_patch($_SERVER);
 		$this->load_module_and_lang($this->env->uri);
 
+		$this->env->set('routed', false);
 		define ('virtualroot', $this->env->vroot);
 		define ('root', $this->env->vroot);
 		define ('uri', preg_replace('@^/@', '', $this->env->uri));

@@ -5,7 +5,7 @@ class Error extends Exception{
 		$e = new self($string, $code);
 		$e->line = $line;
 		$e->file = $file;
-		ob_end_clean();
+		//ob_end_clean();
 		throw $e;
 	}
 

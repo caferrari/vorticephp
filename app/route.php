@@ -1,3 +1,3 @@
 <?php
 
-$route->add('^test$');
+Route::add('^teste/$', 'index:index');

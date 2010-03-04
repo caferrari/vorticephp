@@ -56,8 +56,15 @@ class Dispatcher{
 	}
 	
 	public function execute_uri($uri){
+		require_once ('Route.php');
+		
+		$request = Route::exec($uri);
+		
 		require_once ('Link.php');
-		return $this->execute($this->decompose_request($uri));
+		if (!$request)
+			return $this->execute($this->decompose_request($uri));
+		else
+			return $this->execute($request);
 	}
 	
 	public function execute($request){
