@@ -55,14 +55,17 @@ class Link{
 		}
 		
 		$page = implode($page, '/');
-		
-		if (isset($url->pars)){
+
+		if (isset($url['pars'])){
 			$pars = http_build_query($url['pars']);
 			$pars = str_replace('=', ':', $pars);
 			$pars = str_replace('&', '/', $pars);
 		}
 		
 		$l = $page . '/' . $pars . '/';
+		
+		
+		
 		return preg_replace('@\/+@', '/', $l);
 	}
 	
@@ -160,12 +163,6 @@ class Link{
 	*/
 	static function translateUri(){
 		$q = $_SERVER['REQUEST_URI'];
-		
-		if (!ajax && !post && !preg_match('@\/$@', $q)){
-			header ('HTTP/1.1 301 Moved Permanently');
-			header ('Location: ' . $q . '/');
-			exit();
-		}
 		
 		if (virtualroot !== '/') $q = preg_replace('/^'.addcslashes(virtualroot, '/').'/', '', $q);
 		$q = preg_replace('@^\/|\/$@', '', $q);
