@@ -405,11 +405,11 @@ class Vortice{
 	*/
 	public static function execute($view, $action, $controller){
 		ob_start();
-		
 		if (!self::$masterload && class_exists('MasterController')){
-			$obj = new MasterController();
-			self::$masterload = true;
+			self::$masterload = new MasterController();
 		}
+
+		if (self::$masterload && method_exists(self::$masterload, 'beforeController')) self::$masterload->beforeController();
 		
 		$c = $controller;
 		$controller = camelize($controller).'Controller';
@@ -433,7 +433,9 @@ class Vortice{
 				}
 			throw (new ControllerNotFoundException($controller));
 		} 
-		
+
+		if (self::$masterload && method_exists(self::$masterload, 'afterController')) self::$masterload->afterController();
+
 		$_ref = DAO::getAll();
 		foreach ($_ref as $k => &$v)
 			$$k = $v;
