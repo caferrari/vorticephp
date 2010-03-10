@@ -52,9 +52,9 @@ class Core{
 
 		if (file_exists(root . 'app/functions.php')) include root . 'app/functions.php';
 
-		Link::translateUri();
-
 		if (file_exists(root . 'app/route.php')) include root . 'app/route.php';
+
+		Link::translateUri();
 
 		I18n::start();
 
