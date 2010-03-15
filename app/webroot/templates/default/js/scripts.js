@@ -45,7 +45,19 @@ $(document).ready(function(){
 		$(this).addClass("clicado").siblings().removeClass("clicado");
 		atotal($(this));		
 	});
-	
+	$.Juitter.start({
+		searchType:"fromUser",
+		searchObject:"vorticephp", 
+		live:"live-15",
+		placeHolder:"twitter", 
+		loadMSG: "Carregando Mensagens...",
+		imgName: "loader.gif", 
+		total: 4, 
+		readMore: "Read it on Twitter", 
+		nameUser:"text", 
+		openExternalLinks:"newWindow", 
+                filter:"sex->*BAD word*,porn->*BAD word*,fuck->*BAD word*,shit->*BAD word*" 
+	});
 	/*
 	// Apresentação automática
 	var auto = function(){ 

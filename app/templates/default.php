@@ -6,7 +6,8 @@
 	<link href="<?php echo virtualroot ?>templates/default/css/grid.css?1264907226" rel="stylesheet" media="screen" />
 	<link href="<?php echo virtualroot ?>templates/default/css/layout.css?1264907226" rel="stylesheet" media="screen" />
 	<script type="text/javascript" src="<?php echo virtualroot ?>templates/default/js/jquery-1.3.2.min.js?1264907226"></script>
-	<script type="text/javascript" src="<?php echo virtualroot ?>templates/default/js/scripts.js?1264907226"></script>
+	<script type="text/javascript" src="<?php echo virtualroot ?>templates/default/js/jquery.juitter.js?1264907226"></script>
+		<script type="text/javascript" src="<?php echo virtualroot ?>templates/default/js/scripts.js?1264907226"></script>
 </head>
 
 <body>
@@ -101,28 +102,11 @@
 			</div>
 
 	
-			<div id="twitter" class="grid_6 alpha m20">
+			<div id="twitter-container" class="grid_6 alpha m20">
 				<span class="box-titulo">Twitter</span>
-				<ul>
-					<li>
-						<span class="data">29 Dez / 2010</span>
-						<h3><a href="#">In a orci purus. Morbi massa dolor, luctus at auctor non, varius pulvinar nunc. Etiam at mi id nisi egestas convallis eu.</a></h3>
-					</li>
-
-					<li>
-						<span class="data">29 Dez / 2010</span>
-						<h3><a href="#">In a orci purus. Morbi massa dolor, luctus at auctor non, varius pulvinar nunc. Etiam at mi id nisi egestas convallis eu.</a></h3>
-					</li>
-					<li>
-						<span class="data">29 Dez / 2010</span>
-						<h3><a href="#">In a orci purus. Morbi massa dolor, luctus at auctor non, varius pulvinar nunc. Etiam at mi id nisi egestas convallis eu.</a></h3>
-
-					</li>
-					<li>
-						<span class="data">29 Dez / 2010</span>
-						<h3><a href="#">In a orci purus. Morbi massa dolor, luctus at auctor non, varius pulvinar nunc. Etiam at mi id nisi egestas convallis eu.</a></h3>
-					</li>
-				</ul>
+				<div id="twitter">
+					<p>Carregando..</p>
+				</div>
 			</div>
 	
 			<div id="comentarios" class="grid_3 omega m20">

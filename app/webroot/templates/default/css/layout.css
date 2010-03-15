@@ -10,6 +10,7 @@ p{ line-height:18px;}
 #conteudo{ }
 
 
+
 /* Logo */
 #logo{ float:left; width:240px; border-bottom:5px solid #ddd;}
 #logo h1{ width:220px; height:280px; background:url('imagens/vortice-php-logo.gif') no-repeat; overflow:hidden; text-indent:-10000px; margin-bottom:5px;}
@@ -28,7 +29,7 @@ p{ line-height:18px;}
 #menu li a{ padding-right:15px; font:23px Georgia; color:#888; letter-spacing:-1px; background:url('imagens/bg-itens-menu.gif') no-repeat bottom right; }
 #menu li a:hover{ color:#000; font-weight:bold; background-position:top right; text-decoration:none;}
 
-/* Conteúdo */
+/* Conteï¿½do */
 .intro{ font:16px Georgia; color:#555; line-height:26px; text-align:right; margin-bottom:20px;}
 .intro strong{ color:#000;}
 
@@ -49,11 +50,12 @@ p{ line-height:18px;}
 /*#twitter li{ display:block; margin-bottom:10px; padding-top:10px; border-top:1px dotted #ddd; }
 #twitter li:first-child{ border:0;}*/
 #twitter li{ display:block; margin-bottom:10px; }
-#twitter h3 a{ display:block; margin:0; font:14px Arial; color:#999; line-height:20px; padding:10px 3px; border:1px solid transparent; border-top-color: #ddd; }
+#twitter h3 a.tweet{ display:block; margin:0; font:14px Arial; color:#999; line-height:20px; padding:10px 3px; border:1px solid transparent; border-top-color: #ddd; }
 #twitter span.data{ display:block; margin:0; font:normal 12px Georgia, Arial; color:#777; background:url('imagens/bg-menu.gif'); padding:2px 3px; border:1px solid #ddd; border-bottom:0;} 
-#twitter h3 a:hover{ color:#000; border-color:#ddd; border-top-color:transparent; background:url('imagens/bg-menu.gif');}
+#twitter h3 a.tweet:hover{ color:#000; border-color:#ddd; border-top-color:transparent; background:url('imagens/bg-menu.gif');}
 
-/* Comentários */
+
+/* Comentï¿½rios */
 #comentarios{ margin-bottom:20px;}
 #comentarios .container{ position:absolute; margin:0; margin-left:-10px; padding:5px 0 0 10px; background:url('imagens/bg-menu.gif'); *width:220px; overflow:hidden;}
 #comentarios li{ text-align:right; padding:5px 10px 0 0; background:url('imagens/bg-comentarios.gif') no-repeat top left; color:#555;}
@@ -66,7 +68,7 @@ p{ line-height:18px;}
 #barra-final a{ font-weight:bold; color:#555;}
 
 
-/* Espaços */
+/* Espaï¿½os */
 m10{ margin-top:10px;}
 m20{ margin-top:20px;}
 
