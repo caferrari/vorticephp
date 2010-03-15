@@ -100,9 +100,9 @@ class Dispatcher{
 			if (class_exists($class)){
 				$action = &$request['action'];
 				$obj = new $class();
-				$obj->_setvar('pars', &$request['pars']);
-				$obj->_setvar('_view', &$request['view']);
-				$obj->_setvar('_format', &$request['format']);
+				$obj->_setvar('pars', $request['pars']);
+				$obj->_setvar('_view', $request['view']);
+				$obj->_setvar('_format', $request['format']);
 				$action2 = $action . '_' . $_SERVER['REQUEST_METHOD'];
 				if (!method_exists($obj, $action) &&  !method_exists($obj, $action2)) throw new Exception ($class . '->' . $action . ' not found in the class ' . $class);
 				if (method_exists($obj, $action)) $obj->$action();
