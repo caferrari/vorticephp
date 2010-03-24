@@ -3,24 +3,20 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>Vórtice PHP Framework</title>
-	<link href="<?php echo virtualroot ?>templates/default/css/grid.css?1264907226" rel="stylesheet" media="screen" />
-	<link href="<?php echo virtualroot ?>templates/default/css/layout.css?1264907226" rel="stylesheet" media="screen" />
-	<script type="text/javascript" src="<?php echo virtualroot ?>templates/default/js/jquery-1.3.2.min.js?1264907226"></script>
-	<script type="text/javascript" src="<?php echo virtualroot ?>templates/default/js/jquery.juitter.js?1264907226"></script>
-		<script type="text/javascript" src="<?php echo virtualroot ?>templates/default/js/scripts.js?1264907226"></script>
+	<!--csstags-->
+	<!--jstags-->
 </head>
 
 <body>
 	<div id="geral" class="container_12">
 		<div id="topo" class="grid_12">
 			<div id="logo">
-				<h1>Vórtice</h1>
+				<h1>Vórtice PHP Framework</h1>
 			</div>
 		
 			<div id="download">
 				<span class="txt">
 					<a href="http://github.com/caferrari/vorticephp/archives/master">Download</a>
-
 					<!--span><strong>2.700</strong> já baixaram</span-->
 				</span>
 			</div>
