@@ -7,8 +7,8 @@ class Vortice {
 	private $content = '';
 
 	public function __construct() {
-		require_once('Error.php');
-		Error::setup();
+		require_once('VorticeException.php');
+		VorticeException::setup();
 		require_once 'Dispatcher.php';
 		$this->dispatcher = new Dispatcher($this);
 
@@ -29,9 +29,10 @@ class Vortice {
 			$this->load_module_and_lang('/' . $this->env->uri);
 
 			define ('virtualroot', $this->env->vroot);
-			define ('root', $this->env->vroot);
+			define ('root', $this->env->root);
 			define ('uri', preg_replace('@^/@', '', $this->env->uri));
 			define ('request_lang', $this->env->lang);
+			//define ('environment', $this->env->environment);
 			
 			require_once ('Route.php');
 			$route = Route::exec($this->env->uri);
@@ -39,15 +40,28 @@ class Vortice {
 			$this->env->set('routed', routed);
 
 			require_once ('Link.php');
-			
+
 			if (!$route){
 				$this->validate_uri();
 				$this->content = $this->dispatcher->execute_uri($this->env->uri);
 			}else
 				$this->content = $this->dispatcher->execute($route);
-		}catch (Error $e){
+		}catch (VorticeException $e){
 			$this->content = $e->find_controller();
 		}
+
+		$this->etag();
+	}
+
+	private function etag(){
+		/*
+		$hash = 'Vortice-' . md5($this->content);
+		header('Etag: ' . $hash);
+		if (isset($_SERVER['HTTP_IF_NONE_MATCH']) && $_SERVER['HTTP_IF_NONE_MATCH']==$hash){
+			$this->content = '';
+			set_header(304);
+		}
+		*/
 	}
 
 	private function validate_uri() {
@@ -55,16 +69,16 @@ class Vortice {
 			if ($_SERVER['REQUEST_METHOD'] === 'GET')
 				redirect($_SERVER['REQUEST_URI'] . '/');
 			else
-				throw new Exception ('The uri must end with a slash (/)');
+				throw new VorticeException ('The uri must end with a slash (/)', 403);
 	}
 
 	private function load_method() {
-		if ($_SERVER['REQUEST_METHOD'] === 'POST' && is_set($_POST['REQUEST_METHOD'])) {
+		if (isset($_POST['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] === 'POST') {
 			$server = strtoupper($_SERVER['REQUEST_METHOD']);
 			if (preg_match('@(HEAD|POST|PUT|DELETE)@', strtoupper($_POST['REQUEST_METHOD'])))
 				$_SERVER['REQUEST_METHOD'] = $_POST['REQUEST_METHOD'];
 			else
-				throw new Exception ('No support to "' . $_POST['REQUEST_METHOD'] . '" HTTP Method');
+				throw new VorticeException ('No support to "' . $_POST['REQUEST_METHOD'] . '" HTTP Method');
 		}
 	}
 
@@ -104,7 +118,7 @@ class Vortice {
 		return self::$fw;
 	}
 
-	public static function setView ($view) {
+	public static function setView($view) {
 		self::$fw->dispatcher->set_view($view);
 	}
 
