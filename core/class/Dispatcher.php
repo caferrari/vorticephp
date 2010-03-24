@@ -32,6 +32,7 @@ class Dispatcher{
 			'view' => 'index:index',
 			'template' => '',
 			'format' => 'html',
+			'code' => 200,
 			'pars' => array()
 		);
 		
@@ -40,7 +41,7 @@ class Dispatcher{
 		}
 		
 		if (!preg_match('@^/([a-z0-9\-_]+/)?([a-z0-9\-_]+/)?([a-z0-9\-_]+:[^/]+/)*$@', $uri))
-			throw new Exception ('Invalid URI format!');
+			throw new VorticeException ('Invalid URI format!', 404);
 		
 		if (preg_match('@^/([a-z0-9_\-]+)/([a-z0-9_\-]+)/@', $uri, $match)){
 			$request['controller'] = $match[1];
@@ -73,7 +74,10 @@ class Dispatcher{
 		$this->exec_controller($path, $class, $request);
 		new Response($request);
 		$content = ob_get_clean();
-		
+
+		if (isset($request['code']))
+			set_header($request['code']);
+				
 		if ($request['format'] == 'html'){
 			require_once 'Template.php';
 			$template = new Template($content, $request['template']);
@@ -89,7 +93,7 @@ class Dispatcher{
 				$obj = new MasterController();
 				$obj->pars = $pars;
 				if (method_exists($obj, 'app')) $obj->app();
-			}else throw new Exception ('MasterController not found in the MasterController file: '. $file);
+			}else throw new VorticeException ('MasterController not found in the MasterController file: '. $file, 500);
 		}
 	}
 	
@@ -104,13 +108,13 @@ class Dispatcher{
 				$obj->_setvar('_view', $request['view']);
 				$obj->_setvar('_format', $request['format']);
 				$action2 = $action . '_' . $_SERVER['REQUEST_METHOD'];
-				if (!method_exists($obj, $action) &&  !method_exists($obj, $action2)) throw new Exception ($class . '->' . $action . ' not found in the class ' . $class);
+				if (!method_exists($obj, $action) &&  !method_exists($obj, $action2)) throw new VorticeException ($class . '->' . $action . ' not found in the class ' . $class, 404);
 				if (method_exists($obj, $action)) $obj->$action();
 				if (method_exists($obj, $action2)) $obj->$action2();
 			}else
-				throw new Exception ('Class ' . $class . ' not found in the file: '. $file);
+				throw new VorticeException ('Class ' . $class . ' not found in the file: '. $file, 500);
 		}else 
-			if ($class !== 'MasterController') throw new Exception ('Controller file not found: '. $file);
+			if ($class !== 'MasterController') throw new VorticeException ('Controller file not found: '. $file, 404);
 	}
 	
 	public function set_view($view){

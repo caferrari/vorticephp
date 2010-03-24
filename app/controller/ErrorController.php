@@ -3,7 +3,8 @@
 class ErrorController extends Controller {
 
 	public function handler(){
-		echo p('exception');
+		echo "<p>Este é o controller de erro</p>";
+		echo "<pre>" . p('exception') . "</pre>";
 	}
 
 }
