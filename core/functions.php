@@ -19,7 +19,7 @@ function decompose_uri($uri){
 }
 
 function redirect($url, $post_safe = false, $code = 301){
-	header('HTTP/1.1 301 Moved Permanently'); 
+	set_header(301);
 	header('location: ' . $url);
 	if ($post_safe)
 		exit ('codigo html de redirect');
@@ -33,6 +33,7 @@ function compose_uri($parts){
 function set_header($code){
 	$headers = array(
 		200 => 'HTTP/1.1 200 OK',
+		301	=> 'HTTP/1.1 301 Moved Permanently',
 		304 => 'HTTP/1.1 304 Not Modified',
 		403 => 'HTTP/1.1 403 Forbidden',
 		404 => 'HTTP/1.1 404 Not Found',
