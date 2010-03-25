@@ -27,12 +27,13 @@ class Vortice {
 			$this->env->set('i18n_format', 'conf');
 			$this->load_patch($_SERVER);
 			$this->load_module_and_lang('/' . $this->env->uri);
+			$this->load_environment();
 
 			define ('virtualroot', $this->env->vroot);
 			define ('root', $this->env->root);
+			define ('apphash', md5($this->env->root));
 			define ('uri', preg_replace('@^/@', '', $this->env->uri));
 			define ('request_lang', $this->env->lang);
-			//define ('environment', $this->env->environment);
 			
 			require_once ('Route.php');
 			$route = Route::exec($this->env->uri);
@@ -54,14 +55,13 @@ class Vortice {
 	}
 
 	private function etag(){
-		/*
+		if (environment !== 'production') return;
 		$hash = 'Vortice-' . md5($this->content);
 		header('Etag: ' . $hash);
 		if (isset($_SERVER['HTTP_IF_NONE_MATCH']) && $_SERVER['HTTP_IF_NONE_MATCH']==$hash){
 			$this->content = '';
 			set_header(304);
 		}
-		*/
 	}
 
 	private function validate_uri() {
@@ -112,6 +112,18 @@ class Vortice {
 		$uri = preg_replace('@/+@', '/', $uri);
 
 		$this->env->set('uri', $uri);
+	}
+
+	private function load_environment(){
+		$file = $this->env->root . 'environment';
+		$env = 'production';
+		if (file_exists($file)){
+			$c = trim(file_get_contents($file));
+			if ($c==='') $env = 'development';
+			else $env = $c;
+		}
+		$this->env->set('environment', $env);
+		define ('environment', $env);
 	}
 
 	public static function &get_fw() {

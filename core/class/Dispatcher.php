@@ -11,9 +11,11 @@ class Dispatcher{
 		$this->master_loaded = false;
 		
 		require_once 'Controller.php';
+		require_once 'Crypt.php';
 		require_once 'Session.php';
 		require_once 'Response.php';
 		require_once 'DTO.php';
+		require_once 'Database.php';
 	}
 	
 	private function &load_pars($uri){
@@ -51,7 +53,7 @@ class Dispatcher{
 		
 		$request['view'] = $request['controller'] . ':' . $request['action'];
 		$this->view = &$request['view'];
-				
+			
 		$request['pars'] = $this->load_pars($uri);
 		return $request;
 	}
@@ -61,6 +63,9 @@ class Dispatcher{
 	}
 	
 	public function execute($request){
+		define ('action', $request['action']);
+		define ('controller', $request['controller']);		
+	
 		$request['pars'] = array_merge($_POST, $request['pars']);
 		$_POST = & $request['pars'];
 		ob_start();
