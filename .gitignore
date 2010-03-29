@@ -1,4 +1,7 @@
 nbproject
 app/logs/*
 *~
-*.project
+.project
+.buildpath
+.settings
+

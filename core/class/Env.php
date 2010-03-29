@@ -9,7 +9,6 @@ class Env{
 	 */
 	private $vars;
 
-	
 	public function __construct(){
 		$this->vars = array();
 	}

@@ -36,7 +36,7 @@ class Session {
 	/**
 	* Encrypt the session
 	*
-	* TODO: add this @param    datatype  $arr description
+	* @param	array	$arr	Session array
 	* @return	boolean
 	* @access	private
 	* @static

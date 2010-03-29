@@ -25,19 +25,27 @@ class Controller {
 			Response::add($val, $met);
 		$this->$met = $val;
 	}
-	//TODO:I do not know exactly what will the robin of the method, if they know put in @return
+
 	/**
 	* Retrieve the object property or a DAO data
 	*
 	* @param	string	$met method that will be retrieved	
 	* @access	public
-	* @return   datatype description
+	* @return   string
 	*/
 	public function __get($met){
 		if (isset($this->$met)) return $this->$met;
-		return Response::get("$met");	
+		return Response::get($met);	
 	}
-	
+
+	/**
+	* Set controler propertyes
+	*
+	* @param	string	$met property that will be created
+	* @param	string	$val value of the property
+	* @access	public
+	* @return   void
+	*/
 	public function _setvar ($met, $val){
 		$this->$met = '';
 		$this->$met = &$val;
