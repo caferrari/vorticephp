@@ -1,5 +1,5 @@
 <?php
-
+//TODO: Description of Class Dispatcher and description of methods
 class Dispatcher{
 
 	private $fw;
@@ -7,6 +7,7 @@ class Dispatcher{
 	private $view = '';
 	
 	public function __construct($fw){
+		
 		$this->fw = $fw;
 		$this->master_loaded = false;
 		
@@ -16,6 +17,7 @@ class Dispatcher{
 		require_once 'Response.php';
 		require_once 'DTO.php';
 		require_once 'Database.php';
+		
 	}
 	
 	private function &load_pars($uri){

@@ -1,0 +1,5 @@
+#Sun Mar 28 23:30:03 BRT 2010
+eclipse.preferences.version=1
+include_path=0;/vorticephp.app/core\u00050;/vorticephp.app/app
+phpVersion=php5.3
+use_asp_tags_as_php=false

@@ -1,5 +1,8 @@
 <?php
-
+/**
+ * 
+ * 
+ */
 class Vortice {
 
 	private static $fw;
@@ -52,6 +55,7 @@ class Vortice {
 		}
 
 		$this->etag();
+		
 	}
 
 	private function etag(){

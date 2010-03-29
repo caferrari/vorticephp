@@ -3,7 +3,7 @@
  * Copyright (c) 2009, Carlos André Ferrari <[carlos@]ferrari.eti.br>
  * All rights reserved. 
  */
-
+//TODO: Descrições dos metodos e parametros assim como seu tipo de dado
 define("BD_MYSQL", 0);
 define("BD_PGSQL", 1);
 define("BD_MSSQL", 2);
@@ -79,10 +79,13 @@ class Database
 
 	/**
 	* Return a database class instance
-	* @return	Database
+	* @param    string   $name  description TODO: add description
+	* @param    datetype $env   description TODO: add datetype and description
+	* @return	Database TODO: add description
 	*/
 	public static function getInstance($name='default', $env = environment)
 	{
+		
 		if (!isset(self::$instances[$name . '_' . $env]))
 			self::$instances[$name . '_' . $env] = new Database();
 		return self::$instances[$name . '_' . $env];
@@ -90,17 +93,24 @@ class Database
 	
 	/**
 	* Create a new database instance for a specific environment
+	* @param    datetype    $env       description TODO: add datetype and description
+	* @param    datetype    $instance  description TODO: add datetype and description
 	* @return	void
 	*/
 	public static function load($env, $instance='default')
 	{
 		return Database::getInstance($instance, $env);
 	}
-
 	/**
-	* Initialize a Database instance
-	* @return	void
-	*/
+	 * Initialize a Database instance
+	 * 
+	 * @param $host 
+	 * @param $user
+	 * @param $pass
+	 * @param $database
+	 * @param $type
+	 * @return	void
+	 */
 	public function init($host='', $user=null, $pass=null, $database='', $type=0)
 	{
 		$this->pars = array(
@@ -146,6 +156,7 @@ class Database
 
 	/**
 	* Prepare a SQL Statement
+	* @param    $sql
 	* @return	PDOStatement
 	*/
 	public function &prepare($sql)
