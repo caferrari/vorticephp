@@ -16,8 +16,8 @@ class Controller {
 	/**
 	* Store data to be used in the view
 	*
-	* @var		string
-	* @var		string
+	* @param	string	$met method that will be stored
+	* @param	string 	$val
 	* @access	public
 	*/
 	public function __set($met, $val){
@@ -25,12 +25,13 @@ class Controller {
 			Response::add($val, $met);
 		$this->$met = $val;
 	}
-	
+	//TODO:I do not know exactly what will the robin of the method, if they know put in @return
 	/**
-	* Retrive the object property or a DAO data
+	* Retrieve the object property or a DAO data
 	*
-	* @var		string
+	* @param	string	$met method that will be retrieved	
 	* @access	public
+	* @return   datatype description
 	*/
 	public function __get($met){
 		if (isset($this->$met)) return $this->$met;
