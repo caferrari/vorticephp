@@ -1,3 +1,7 @@
 nbproject
 app/logs/*
 *~
+.project
+.buildpath
+.settings
+

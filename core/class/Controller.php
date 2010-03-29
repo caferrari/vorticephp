@@ -16,8 +16,8 @@ class Controller {
 	/**
 	* Store data to be used in the view
 	*
-	* @var		string
-	* @var		string
+	* @param	string	$met method that will be stored
+	* @param	string 	$val
 	* @access	public
 	*/
 	public function __set($met, $val){
@@ -25,18 +25,27 @@ class Controller {
 			Response::add($val, $met);
 		$this->$met = $val;
 	}
-	
+
 	/**
-	* Retrive the object property or a DAO data
+	* Retrieve the object property or a DAO data
 	*
-	* @var		string
+	* @param	string	$met method that will be retrieved	
 	* @access	public
+	* @return   string
 	*/
 	public function __get($met){
 		if (isset($this->$met)) return $this->$met;
-		return Response::get("$met");	
+		return Response::get($met);	
 	}
-	
+
+	/**
+	* Set controler propertyes
+	*
+	* @param	string	$met property that will be created
+	* @param	string	$val value of the property
+	* @access	public
+	* @return   void
+	*/
 	public function _setvar ($met, $val){
 		$this->$met = '';
 		$this->$met = &$val;

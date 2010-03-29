@@ -27,18 +27,21 @@ class Session {
 	* @private
 	*/
 	private static function start(){
+		try {
+			session_start();
+		}catch (Exception $e){ }
 		self::$key = md5(apphash . session_id());
 	}
 
 	/**
 	* Encrypt the session
 	*
+	* @param	array	$arr	Session array
 	* @return	boolean
 	* @access	private
 	* @static
 	*/
 	private static function encryptSession($arr){
-		@session_start();
 		self::start();
 		$_SESSION[self::$key] = Crypt::Encrypt(serialize($arr), self::$key);
 		return true;
@@ -52,10 +55,10 @@ class Session {
 	* @static
 	*/
 	private static function decryptSession(){
-		@session_start();
 		self::start();
-		$arr = @unserialize(Crypt::Decrypt(@$_SESSION[self::$key], self::$key));
-		return $arr;
+		if (isset($_SESSION[self::$key]))
+			return unserialize(Crypt::Decrypt($_SESSION[self::$key], self::$key));
+		return array();
 	}
 
 
@@ -94,7 +97,7 @@ class Session {
 	*/
 	public static function clear(){
 		self::start();
-		@$_SESSION[self::$key] = false;
+		$_SESSION[self::$key] = false;
 	}
 	
 	/**
@@ -105,7 +108,7 @@ class Session {
 	* @static
 	*/
 	public static function get($name){
-		@session_start();
+		self::start();
 		$arr = self::decryptSession();
 		return isset($arr[$name]) ? @unserialize($arr[$name]) : '';
 	}
