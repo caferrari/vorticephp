@@ -56,7 +56,7 @@ class Link{
 		
 		$pagina = implode($pagina, "/");
 		
-		if (isset($url->pars)){
+		if (isset($url['pars'])){
 			$pars = http_build_query($url["pars"]);
 			$pars = str_replace("=", ":", $pars);
 			$pars = str_replace("&", "/", $pars);
