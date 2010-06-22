@@ -72,7 +72,7 @@ class Post
 		global $_PAR;
 		if (!is_array($_PAR)) $_PAR = array();
 		foreach (array_merge($_POST, $_GET, $_PAR) as $k => $v)
-			if ($v!='' && ($k=='id' || preg_match('@^id[_\-]@', $k)) && !is_numeric($v)) throw new VorticeException('Integer Required', 'Any parameter started with \'id\' must be an Integer', '403');
+			if ($v!='' && ($k=='id' || preg_match('@^id[^_\-]@', $k)) && !is_numeric($v)) throw new VorticeException('Integer Required', 'Any parameter started with \'id\' must be an Integer', '403');
 
 		self::$form = array();
 		
@@ -249,14 +249,14 @@ class Post
 	* @param	array	$erros		Errors array
 	* @return	void
 	*/
-	public static function error($message, $errors='', $allowJson=true){
+	public static function error($message, $errors=''){
 		if ($errors=='') $errors = array();
 		if (!is_array($errors)) throw (new ArrayRequiredException($errors));
 		
 		foreach($errors as $k => $v) is_array($errors[$k]) ? $errors[$k][1] = e($v[1]) : $errors[$k] = e($v);
 		$message = e($message);
 		
-		if ($allowJson && (ajax || !isset($_SERVER['HTTP_REFERER']) || Vortice::$rendermode == 'json')){
+		if (ajax || !isset($_SERVER['HTTP_REFERER']) || Vortice::$rendermode == 'json'){
 			$tmp = array();
 			foreach ($errors as $k => $v)
 				$tmp[] = array('key' => $k, 'value' => $v);
@@ -270,13 +270,7 @@ class Post
 			Session::set('form_errors', serialize($errors));
 			Session::set('form_type', POST_ERROR);
 			Session::set('form_message' , $message);
-			if (isset($_SERVER['HTTP_REFERER']))
-				$redirectTo = $_SERVER['HTTP_REFERER'];
-			else
-				$redirectTo = new Link();
-
-			exit ('<html><head><meta http-equiv="refresh" content="0;URL=' . $redirectTo . '"></head><body></body></html>');
-			
+			exit ('<html><head><meta http-equiv="refresh" content="0;URL=' . $_SERVER['HTTP_REFERER'] . '"></head><body></body></html>');
 		}
 	}
 	
