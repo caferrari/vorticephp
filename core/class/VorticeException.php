@@ -17,8 +17,8 @@ class VorticeException extends Exception {
 		throw $e;
 	}
 
-	public function find_controller(){
-		$fw = Vortice::get_fw();
+	public function findController(){
+		$fw = Vortice::getFw();
 		$file = false;
 		if (file_exists($fw->env->modulepath . 'controller/ErrorController.php')) $file = $fw->env->modulepath . 'controller/ErrorController.php';
 		elseif(file_exists($fw->env->apppath . 'controller/ErrorController.php')) $file = $fw->env->apppath . 'controller/ErrorController.php';

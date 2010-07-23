@@ -54,7 +54,7 @@ class Response
 	}
 	
 	public function __construct($request){
-		$function = 'render_' . $request['format'];
+		$function = 'render' . ucfirst($request['format']);
 		if (function_exists($function))
 			return $function($request);
 		elseif (method_exists($this, $function))
@@ -62,12 +62,12 @@ class Response
 		else throw new Exception ('No support for ' . $request['format'] . ' format yet');
 	}
 	
-	private function render_html($request){
+	private function renderHtml($request){
 		header('Content-Type: text/html; charset=utf-8'); 
 		if (strstr($request['view'], ':'))
-			$path = Vortice::get_fw()->env->modulepath . 'view/' . str_replace(':', '/', $request['view'])  . '.php';
+			$path = Vortice::getFw()->env->modulepath . 'view/' . str_replace(':', '/', $request['view'])  . '.php';
 		else
-			$path = Vortice::get_fw()->env->modulepath . 'view/' . $request['controller'] . '/' . $request['view'] . '.php';
+			$path = Vortice::getFw()->env->modulepath . 'view/' . $request['controller'] . '/' . $request['view'] . '.php';
 		
 		if (!file_exists($path)) return;
 		
@@ -75,12 +75,12 @@ class Response
 		include $path;		
 	}
 	
-	private function render_text($request){
-		$this->render_html($request);
+	private function renderText($request){
+		$this->renderHtml($request);
 		header('Content-Type: text/plain; charset=utf-8');
 	}
 	
-	private function render_json($request){
+	private function renderJson($request){
 		header('Content-Type: application/json; charset=utf-8'); 
 		exit (json_encode(self::getAll()));
 	}

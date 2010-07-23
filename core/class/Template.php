@@ -8,23 +8,23 @@ class Template {
 		$this->content = $content;
 		$this->template = $template;
 		if ($template === ''){
-			$this->template = $this->auto_load();
+			$this->template = $this->autoLoad();
 		}
 	}
 	
-	private function auto_load(){
-		$path = Vortice::get_fw()->env->approot . 'templates/';
+	private function autoLoad(){
+		$path = Vortice::getFw()->env->approot . 'templates/';
 		if (file_exists($path . 'default.php')) return 'default';
 		return '';
 	}
 
-	private function merge_env(&$tpl){
-		$env = Vortice::get_fw()->env;
+	private function mergeEnv(&$tpl){
+		$env = Vortice::getFw()->env;
 		$tpl = str_replace("<!--content-->", $this->content, $tpl);
 		$tpl = str_replace("<!--lang-->", $env->lang, $tpl);
 	}
 
-	private function load_files($dir, $ext){
+	private function loadFiles($dir, $ext){
 		$itens = array();
 		try {
 			$d = new DirectoryIterator($dir);
@@ -39,10 +39,10 @@ class Template {
 		return $itens;
 	}
 	
-	private function load_css(){
+	private function loadCss(){
 		if ($this->template){
-			$global_css = $this->load_files(Vortice::get_fw()->env->approot . 'webroot/css/' , 'css');
-			$tpl_css = $this->load_files(Vortice::get_fw()->env->approot . 'webroot/templates/' . $this->template . '/css/' , 'css');
+			$global_css = $this->loadFiles(Vortice::getFw()->env->approot . 'webroot/css/' , 'css');
+			$tpl_css = $this->loadFiles(Vortice::getFw()->env->approot . 'webroot/templates/' . $this->template . '/css/' , 'css');
 			$css = array_merge($global_css, $tpl_css);
 			foreach ($css as &$c)
 				$c = '<link href="' . $c . '" rel="stylesheet" media="screen" />';
@@ -50,10 +50,10 @@ class Template {
 		}
 	}
 
-	private function load_js(){
+	private function loadJs(){
 		if ($this->template){
-			$global = $this->load_files(Vortice::get_fw()->env->approot . 'webroot/js/' , 'js');
-			$tpl = $this->load_files(Vortice::get_fw()->env->approot . 'webroot/templates/' . $this->template . '/js/' , 'js');
+			$global = $this->loadFiles(Vortice::getFw()->env->approot . 'webroot/js/' , 'js');
+			$tpl = $this->loadFiles(Vortice::getFw()->env->approot . 'webroot/templates/' . $this->template . '/js/' , 'js');
 			$js = array_merge($global, $tpl);
 			foreach ($js as &$j)
 				$j = '<script type="text/javascript" src="' . $j . '"></script>';
@@ -64,7 +64,7 @@ class Template {
 	public function execute(){
 		if ($this->template == '') return $this->content;
 	
-		$path = Vortice::get_fw()->env->approot . 'templates/' . $this->template . '.php';
+		$path = Vortice::getFw()->env->approot . 'templates/' . $this->template . '.php';
 		if (!file_exists($path)) 
 			throw new VorticeException ('Template "' . $this->template . '" not found', 500);
 			
@@ -74,10 +74,10 @@ class Template {
 		include $path;
 		$tpl = ob_get_clean();
 
-		$this->merge_env($tpl);
+		$this->mergeEnv($tpl);
 
-		$tpl = str_replace("<!--csstags-->", $this->load_css(), $tpl);
-		$tpl = str_replace("<!--jstags-->", $this->load_js(), $tpl);
+		$tpl = str_replace("<!--csstags-->", $this->loadCss(), $tpl);
+		$tpl = str_replace("<!--jstags-->", $this->loadJs(), $tpl);
 
 		return $tpl;
 	}

@@ -11,7 +11,7 @@ class Route{
 	}
 	
 	public static function exec($uri){
-		$env = Vortice::get_fw()->env;
+		$env = Vortice::getFw()->env;
 
 		$routes = $env->modulepath . 'route.php';
 

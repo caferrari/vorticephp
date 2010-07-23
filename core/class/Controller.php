@@ -13,6 +13,10 @@
  * @author	Carlos André Ferrari <carlos@ferrari.eti.br>
  */
 class Controller {
+	
+	
+	public $_request;
+	
 	/**
 	* Store data to be used in the view
 	*
@@ -21,8 +25,13 @@ class Controller {
 	* @access	public
 	*/
 	public function __set($met, $val){
-		if (!preg_match ('@^(pars|_view|_template|_format)$@', $met))
+		if (!preg_match ('@^(pars|_view|_template|_format)$@', $met, $match))
 			Response::add($val, $met);
+		else{
+			$met = preg_replace('@^_@', '', $met);
+			$this->_request[$met] = $val;
+			return;
+		}
 		$this->$met = $val;
 	}
 

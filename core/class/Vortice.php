@@ -16,7 +16,7 @@ class Vortice {
 		$this->dispatcher = new Dispatcher($this);
 
 		try{
-			$this->load_method();
+			$this->loadMethod();
 
 			require_once 'functions.php';
 			self::$fw = $this;
@@ -28,9 +28,9 @@ class Vortice {
 			$this->i18n = new I18n($this);
 			$this->env->set('default_lang', 'pt-br');
 			$this->env->set('i18n_format', 'conf');
-			$this->load_patch($_SERVER);
-			$this->load_module_and_lang('/' . $this->env->uri);
-			$this->load_environment();
+			$this->loadPatch($_SERVER);
+			$this->loadModuleAndLang('/' . $this->env->uri);
+			$this->loadEnvironment();
 
 			define ('virtualroot', $this->env->vroot);
 			define ('root', $this->env->root);
@@ -46,12 +46,12 @@ class Vortice {
 			require_once ('Link.php');
 
 			if (!$route){
-				$this->validate_uri();
-				$this->content = $this->dispatcher->execute_uri($this->env->uri);
+				$this->validateUri();
+				$this->content = $this->dispatcher->executeUri($this->env->uri);
 			}else
 				$this->content = $this->dispatcher->execute($route);
 		}catch (VorticeException $e){
-			$this->content = $e->find_controller();
+			$this->content = $e->findController();
 		}
 
 		$this->etag();
@@ -68,7 +68,7 @@ class Vortice {
 		}
 	}
 
-	private function validate_uri() {
+	private function validateUri() {
 		if (!valid_uri($_SERVER['REQUEST_URI']))
 			if ($_SERVER['REQUEST_METHOD'] === 'GET')
 				redirect($_SERVER['REQUEST_URI'] . '/');
@@ -76,7 +76,7 @@ class Vortice {
 				throw new VorticeException ('The uri must end with a slash (/)', 403);
 	}
 
-	private function load_method() {
+	private function loadMethod() {
 		if (isset($_POST['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] === 'POST') {
 			$server = strtoupper($_SERVER['REQUEST_METHOD']);
 			if (preg_match('@(HEAD|POST|PUT|DELETE)@', strtoupper($_POST['REQUEST_METHOD'])))
@@ -86,13 +86,13 @@ class Vortice {
 		}
 	}
 
-	private function load_patch(&$server) {
+	private function loadPatch(&$server) {
 		$this->env->set('vroot', str_replace('core/handler.php', '', $server['SCRIPT_NAME']));
 		$this->env->set('root', str_replace('core/handler.php', '', $server['SCRIPT_FILENAME']));
 		$this->env->set('uri', str_replace($this->env->vroot, '', $server['REQUEST_URI']));
 	}
 
-	private function load_module_and_lang($uri) {
+	private function loadModuleAndLang($uri) {
 		$parts = decompose_uri($uri);
 		if (isset($parts[0]) && is_dir($this->env->root . 'app/modules/' . $parts[0])) {
 			$this->env->set('module', $parts[0]);
@@ -106,7 +106,7 @@ class Vortice {
 			$this->env->set('approot', $this->env->root . 'app/');
 		}
 
-		if (isset($parts[0]) && $this->i18n->check_lang($parts[0])) {
+		if (isset($parts[0]) && $this->i18n->checkLang($parts[0])) {
 			$this->env->set('lang', $parts[0]);
 			$r = array_shift($parts);
 			$uri = preg_replace("@/($r)\b@", '', $uri, 1);
@@ -118,7 +118,7 @@ class Vortice {
 		$this->env->set('uri', $uri);
 	}
 
-	private function load_environment(){
+	private function loadEnvironment(){
 		$file = $this->env->root . 'environment';
 		$env = 'production';
 		if (file_exists($file)){
@@ -130,12 +130,12 @@ class Vortice {
 		define ('environment', $env);
 	}
 
-	public static function &get_fw() {
+	public static function &getFw() {
 		return self::$fw;
 	}
 
 	public static function setView($view) {
-		self::$fw->dispatcher->set_view($view);
+		self::$fw->dispatcher->setView($view);
 	}
 
 	public static function setTemplate($name) {

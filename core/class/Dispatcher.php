@@ -3,13 +3,13 @@
 class Dispatcher{
 
 	private $fw;
-	private $master_loaded;
+	private $masterLoaded;
 	private $view = '';
 	
 	public function __construct($fw){
 		
 		$this->fw = $fw;
-		$this->master_loaded = false;
+		$this->masterLoaded = false;
 		
 		require_once 'Controller.php';
 		require_once 'Crypt.php';
@@ -20,7 +20,7 @@ class Dispatcher{
 		
 	}
 	
-	private function &load_pars($uri){
+	private function &loadPars($uri){
 		preg_match_all('@(([a-z0-9\-\_]+):([^/]*))@', $uri, $match, PREG_SET_ORDER);
 		$pars = array();
 		foreach ($match as $m) $pars[$m[2]] = $m[3];
@@ -28,7 +28,7 @@ class Dispatcher{
 		return $_POST;
 	}
 	
-	private function decompose_request($uri){
+	private function decomposeRequest($uri){
 		$request = array(
 			'module' => $this->fw->env->modulepath,
 			'controller' => 'index',
@@ -54,19 +54,22 @@ class Dispatcher{
 			$request['controller'] = $match[1];
 		
 		$request['view'] = $request['controller'] . ':' . $request['action'];
-		$this->view = &$request['view'];
+		$this->view = $request['view'];
 			
 		$request['pars'] = $this->load_pars($uri);
 		return $request;
 	}
 	
-	public function execute_uri($uri){
-		return $this->execute($this->decompose_request($uri));
+	public function executeUri($uri){
+		return $this->execute($this->decomposeRequest($uri));
 	}
 	
 	public function execute($request){
-		define ('action', $request['action']);
-		define ('controller', $request['controller']);		
+		
+		if (!defined('action')){
+			define ('action', $request['action']);
+			define ('controller', $request['controller']);		
+		}	
 	
 		$request['pars'] = array_merge($_POST, $request['pars']);
 		$_POST = & $request['pars'];
@@ -74,11 +77,12 @@ class Dispatcher{
 		extract($request);
 		$class = camelize($controller) . 'Controller';
 		$path = "{$module}controller/";
-		if (!$this->master_loaded){
-			$this->exec_master($path, $pars);
-			$this->master_loaded = true;
+		if (!$this->masterLoaded){
+			$this->execMaster($path, $pars);
+			$this->masterLoaded = true;
 		}
-		$this->exec_controller($path, $class, $request);
+		$request = $this->execController($path, $class, $request);
+		
 		new Response($request);
 		$content = ob_get_clean();
 
@@ -92,7 +96,7 @@ class Dispatcher{
 		return $template->execute();
 	}
 	
-	private function exec_master($path, $pars){
+	private function execMaster($path, $pars){
 		$file = $path . 'MasterController.php';
 		if (file_exists($file)){
 			require_once ($file);
@@ -104,27 +108,26 @@ class Dispatcher{
 		}
 	}
 	
-	private function exec_controller($path, $class, &$request){
+	private function execController($path, $class, &$request){
 		$file = $path . $class . '.php';
 		if (file_exists($file)){
 			require_once ($file);
 			if (class_exists($class)){
 				$action = &$request['action'];
 				$obj = new $class();
-				$obj->_setvar('pars', $request['pars']);
-				$obj->_setvar('_view', $request['view']);
-				$obj->_setvar('_format', $request['format']);
-				$action2 = $action . '_' . $_SERVER['REQUEST_METHOD'];
-				if (!method_exists($obj, $action) &&  !method_exists($obj, $action2)) throw new VorticeException ($class . '->' . $action . ' not found in the class ' . $class, 404);
+				$obj->pars = $request['pars'];
+				$obj->_request = &$request;
+				if (!method_exists($obj, $action)) throw new VorticeException ($class . '->' . $action . ' not found in the class ' . $class, 404);
 				if (method_exists($obj, $action)) $obj->$action();
-				if (method_exists($obj, $action2)) $obj->$action2();
+				$request = $obj->_request;
+				return $request;
 			}else
 				throw new VorticeException ('Class ' . $class . ' not found in the file: '. $file, 500);
 		}else 
 			if ($class !== 'MasterController') throw new VorticeException ('Controller file not found: '. $file, 404);
 	}
 	
-	public function set_view($view){
+	public function setView($view){
 		$this->view = $view;
 	}
 
