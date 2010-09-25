@@ -12,5 +12,6 @@ $loader->register();
 
 require_once 'functions.php';
 
-echo new Vortice\Vortice;
+$v = new Vortice\Vortice;
+echo $v->render();
 

@@ -31,4 +31,8 @@ abstract class Controller implements Controllable {
             $this->request->view = preg_replace("@:[a-zA-Z0-9]+$@", ":$v", $this->request->view);
     }
 
+    private function _setRenderFormat($v){
+         $this->request->format = $v;
+    }
+
 }

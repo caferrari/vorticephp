@@ -7,7 +7,7 @@ class Request {
     public $controller  = 'index';
     public $action      = 'index';
     public $view        = 'index:index';
-    public $template    = '';
+    public $layout      = '';
     public $format      = 'html';
     public $code        = '200';
     public $pars        = array();

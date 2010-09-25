@@ -5,6 +5,7 @@ namespace Vortice;
 use Vortice\Env;
 use Vortice\Exception;
 use Vortice\Dispatcher;
+use Vortice\Layout;
 
 use Vortice\Exception\MalformatedUriException;
 
@@ -44,7 +45,8 @@ class Vortice {
     }
 
     public function render(){
-        return (string)$this->request;
+        $l = new Layout;
+        return $l->render($this->request);
     }
 
     public function __toString(){
