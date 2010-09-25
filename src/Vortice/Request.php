@@ -3,18 +3,32 @@
 namespace Vortice;
 
 class Request {
+    public $code        = 200;
     public $module      = 'default';
     public $controller  = 'index';
     public $action      = 'index';
     public $view        = 'index:index';
     public $layout      = '';
     public $format      = 'html';
-    public $code        = '200';
     public $pars        = array();
     public $vars        = array();
     public $contents    = '';
 
+    public function __construct(){
+        if ($_SERVER['REQUEST_METHOD'] == 'POST' && $this->isJsonRequst()){
+            $this->format = 'json';
+        }
+    }
+
     public function __toString(){
         return $this->contents;
+    }
+
+    private function isJsonRequest(){
+        return
+            isset($_SERVER['HTTP_X_REQUESTED_WITH']) &&
+            $_SERVER['HTTP_X_REQUESTED_WITH']  == 'XMLHttpRequest' &&
+            isset($_SERVER['HTTP_ACCEPT']) &&
+            $_SERVER['HTTP_ACCEPT'] == 'application/json';
     }
 }

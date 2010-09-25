@@ -32,7 +32,7 @@ class Layout {
     }
 
     public function render(Request $r){
-
+        $r->contents = trim($r->contents);
         if ($r->format == 'html' && $r->layout !== false){
             if ($r->layout !== ''){
                 if (!in_array($r->layout, $this->getLayouts())){
@@ -41,7 +41,7 @@ class Layout {
                 $this->selected = $r->layout;
             }
             $layout = file_get_contents($this->layouts[$this->selected]);
-            return str_replace('<!--content-->', $r->contents, $layout);
+            $r->contents = trim(str_replace('<!--content-->', $r->contents, $layout));
         }
 
         return $this->renderByFormat($r);
@@ -50,11 +50,15 @@ class Layout {
     public function renderByFormat(Request $r){
 
         switch ($r->format){
-
             case 'html':
+                header('Content-Type: text/html; charset=utf-8');
                 return $r->contents;
             case 'json':
-                return json_encode($r);
+                header('Content-type: application/json; charset=utf-8');
+                return json_encode(array(
+                    'status'    => $r->code,
+                    'data'      => $r->vars
+                ));
             default:
                 throw new UnknowRenderFormatException($r->format);
         }
