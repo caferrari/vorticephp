@@ -1,8 +1,0 @@
-VorticePHP master branch
-- Created the Env class to store environment variables and remove constants in the future
-
-VorticePHP 0.2
-- Changed the directory structure, now we have a webroot folder inside the app folder to isolate the application from the public content
-
-VorticePHP 0.1
-- Initial tag
