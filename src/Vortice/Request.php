@@ -4,6 +4,7 @@ namespace Vortice;
 
 class Request {
     public $code        = 200;
+    public $method      = '';
     public $module      = 'default';
     public $controller  = 'index';
     public $action      = 'index';
@@ -15,7 +16,8 @@ class Request {
     public $contents    = '';
 
     public function __construct(){
-        if ($_SERVER['REQUEST_METHOD'] == 'POST' && $this->isJsonRequst()){
+        $this->method = $_SERVER['REQUEST_METHOD'];
+        if ($this->method == 'POST' && $this->isJsonRequst()){
             $this->format = 'json';
         }
     }

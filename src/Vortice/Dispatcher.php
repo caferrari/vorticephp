@@ -8,6 +8,7 @@ use Vortice\Exception\MalformatedUriException;
 use Vortice\Exception\ModuleNotFoundException;
 use Vortice\Exception\ControllerNotFoundException;
 use Vortice\Exception\ActionNotFoundException;
+use Vortice\Link;
 
 class Dispatcher {
 
@@ -39,20 +40,41 @@ class Dispatcher {
         if (!preg_match('@^/([a-z0-9\-_]+/){0,3}([a-z0-9\-_]+:[^/]+/)*$@', $uri))
             throw new MalformatedUriException('Invalid URI format!', 404);
 
+        $module = $controller = $action = '';
+
         if (preg_match('@^/([a-z0-9_\-]+)/([a-z0-9_\-]+)/([a-z0-9_\-]+)/@', $uri, $match)) {
-            $request->module        = $match[1];
-            $request->controller    = $match[2];
-            $request->action        = $match[3];
+            $module        = $match[1];
+            $controller    = $match[2];
+            $action        = $match[3];
         } elseif (preg_match('@^/([a-z0-9_\-]+)/([a-z0-9_\-]+)/@', $uri, $match)) {
-            $request->controller    = $match[1];
-            $request->action        = $match[2];
+            $controller    = $match[1];
+            $action        = $match[2];
         } elseif (preg_match('@^/([a-z0-9_\-]+)/@', $uri, $match))
-            $request->controller    = $match[1];
+            $controller    = $match[1];
+
+        if ($request->method == 'GET'){
+            $uri = $this->checkDefaults($controller, $action, $request->pars);
+            if ($uri) redirect($uri);
+        }
+                
+        $request->module     = $module ?: 'default';
+        $request->controller = $controller ?: 'index';
+        $request->action     = $action ?: 'index';
 
         $request->view = $request->controller . ':' . $request->action;
         $this->view = $request->view;
 
         return $request;
+    }
+
+    public function checkDefaults($controller, $action, $pars){
+        if ($action == 'index' || $action == ''){
+            if ($controller == 'index'){
+                return (string)new Link('', $pars);
+            }
+            return (string)new Link($controller, $pars);
+        }
+        return false;
     }
 
     public function executeUri($uri){
@@ -62,7 +84,7 @@ class Dispatcher {
     public function checkModule(Request $r){
         $this->moduleDir = APP_DIR . 'modules/' . $r->module;
         if (!is_dir($this->moduleDir)){
-            throw new ModuleNotFoundException("Module: {$r->module} not found!");
+            throw new ModuleNotFoundException("Module: \"{$r->module}\" not found!");
         }
     }
 
@@ -70,7 +92,7 @@ class Dispatcher {
         $controller = camelize($r->controller) . 'Controller';
         $controllerPath = $this->moduleDir . '/' . $r->controller . '/controller/' . $controller . '.php' ;
         if (!file_exists($controllerPath)){
-            throw new ControllerNotFoundException();
+            throw new ControllerNotFoundException("Controller \"{$r->module}/{$r->controller}\" not found!");
         }
         require_once $controllerPath;
 
@@ -99,7 +121,7 @@ class Dispatcher {
         $action = camelize($r->action);
         
         if (!method_exists($controller, $action)){
-            throw new ActionNotFoundException();
+            throw new ActionNotFoundException("Action \"{$r->module}/{$r->controller}:{$r->action}\" not found!");
         }
 
         ob_start();
