@@ -149,7 +149,10 @@ class Post
 	*/
 	public static function toObject($class = '')
 	{
-		if ($class == '') $class = ucfirst(controller);
+		if ($class == '') 
+		    $class = controller;
+	  $class = camelize($class);
+		
 		if (!class_exists($class)) $class = 'DTO';		
 		$obj = new $class();
 		if (!is_array($_POST)) return false;
@@ -177,7 +180,9 @@ class Post
 	public static function load($obj, $prefix='')
 	{
 		if (self::$hasData) return;
-		if (is_object($obj)) foreach (get_object_vars($obj) as $c => $v) self::setVal((isset($prefix[$c]) ? $prefix[$c] : '') . $c, stripslashes($v));
+		if (is_object($obj)) 
+          foreach (get_object_vars($obj) as $c => $v) 
+             self::setVal((isset($prefix[$c]) ? $prefix[$c] : '') . $c, stripslashes($v));
 	}
 	
 	/**

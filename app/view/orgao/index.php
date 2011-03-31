@@ -26,7 +26,11 @@
 	<tr class="item">
 		<td><?php echo $o->sigla ?></a></td>
 		<td><?php echo $o->nome ?></td>
-		<td><a href="<?php echo new Link('orgao:alterar', "id={$o->id}") ?>">{{Alterar}}</a> | <a class="confirm" title="{{Excluir item}}: <?php echo $o->nome ?>" href="<?php echo new Link('orgao:excluir', "id={$o->id}") ?>">{{Excluir}}</a></td>
+		<td>
+     <a href="<?php echo new Link('orgao:alterar', "id={$o->id}") ?>">{{Alterar}}</a> | 
+     <a class="confirm" title="{{Excluir item}}: <?php echo $o->nome ?>" href="<?php echo new Link('orgao:excluir', "id={$o->id}") ?>">{{Excluir}}</a> |
+     <a href="<?php echo new Link('alternativa:index', "id_pergunta={$o->id}") ?>">{{Alternativas}}</a> |  
+    </td>
 	</tr>
 	<?php endforeach; ?>
 </table>
