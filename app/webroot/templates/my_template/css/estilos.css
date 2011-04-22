@@ -35,6 +35,10 @@ h3 {
 	font-size: 14px;
 }
 
+#menu-principal {
+	display: inline;
+}
+
 .submenu {
 	margin-bottom: 4px;
 }
@@ -56,6 +60,12 @@ fieldset textarea {
 
 fieldset p {
 	padding: 5px 0;
+}
+
+select {
+  font-color: #000000; 
+  color: #000000; 
+  background-color: #FFFFFF;
 }
 
 fieldset p input, fieldset p textarea {
@@ -93,6 +103,24 @@ table tr th {
 	padding: 3px;
 }
 
+table caption {
+  font-size: 140%;
+	font-weight: bold;
+	text-align: center;
+	padding: 3px;
+}
+
+table thead th {
+	background-color: #E1EFF6;
+}
+
+table tfoot td {
+  font-size: 70%;
+	text-align: center;
+	padding: 3px;
+  background-color: #E1EFF6;
+}
+
 table tr.hover td {
 	background-color: #E1EFF6;
 }
@@ -107,6 +135,16 @@ table tr td, table tr th {
 	float: right;
 	margin-top: 5px;
 }
+
+
+ul {
+ list-style-type: circle;
+}
+
+li {
+  display: block;
+}
+
 
 #lang li {
 	display: inline;

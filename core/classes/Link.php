@@ -12,7 +12,6 @@
  * @author	Carlos André Ferrari <carlos@ferrari.eti.br>
  */
 class Link{
-
 	/**
 	* Temporary link encoded
 	*
@@ -122,7 +121,9 @@ class Link{
 	* @static
 	*/
 	static function createLink($page='', $pars=''){
-		if (!preg_match("/^([a-z\-]+\+)?([a-z\-]+)(:[a-z\-]+)?$/", $page))
+		//if (!preg_match("/^([a-z\-]+\+)?([a-z\-]+)(:[a-z\-]+)?$/", $page))
+    //Adicionado suporte a links para páginas (views) com _ (só era permitido usar -)
+    if (!preg_match("/^([_a-z\-]+\+)?([_a-z\-]+)(:[_a-z\-]+)?$/", $page))
 			return self::replacePars($page, $pars);
 		$page = preg_split("/[:\+]/", $page);
 
