@@ -166,6 +166,7 @@ class Link{
 		$q = $_SERVER['REQUEST_URI'];
 		
 		if (virtualroot !== '/') $q = preg_replace('/^'.addcslashes(virtualroot, '/').'/', '', $q);
+		list ($q) = explode('?', $q);
 		$q = preg_replace('@^\/|\/$@', '', $q);
 		$tmp = explode('/', $q);
 		if ($tmp[0] !== ''){
