@@ -56,11 +56,13 @@ class Route{
 		}
 		define ('routed', false);
 
+		/*
 		if (!ajax && !post && !preg_match('@\/$@', $_SERVER['REQUEST_URI'])){
 			header ('HTTP/1.1 301 Moved Permanently');
 			header ('Location: ' . uri . '/');
 			exit();
 		}
+		*/
 
 		return false;
 	}
