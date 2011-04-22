@@ -43,7 +43,7 @@ class Route{
 	public static function exec(){
 		list ($uri) = explode('?', uri);
 		foreach (self::$routes as $r){
-			$tmp_uri = (strstr($r['er'], '\?') === false) ? $uri : uri;
+			//$tmp_uri = (strstr($r['er'], '\?') === false) ? $uri : uri;
 			if (preg_match($r['er'], $tmp_uri, $match)){
 				$p = $r['pars'];
 				for ($x=1; $x<count($match); $x++) $p = str_replace('%' . $x, $match[$x], $p);
