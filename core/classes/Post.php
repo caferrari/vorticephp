@@ -149,13 +149,15 @@ class Post
 	*/
 	public static function toObject($class = '')
 	{
-		if ($class == '') 
-		    $class = controller;
-	  $class = camelize($class);
-		
-		if (!class_exists($class)) $class = 'DTO';		
-		$obj = new $class();
 		if (!is_array($_POST)) return false;
+		
+		if ($class == '') 
+			$class = controller;
+		$class = camelize($class);
+
+		if (!class_exists($class)) $class = 'DTO';
+		$obj = new $class();
+		
 		foreach ($_POST as $k => $v) $obj->$k = p($k);
 		return $obj;
 	}
