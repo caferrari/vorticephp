@@ -87,7 +87,7 @@ class DTO
 	*/
 	public function insert($fields, $table=null, $instance='default'){
 		//$table = uncamelize(($table == null) ? (isset($this->_table) ? $this->_table : get_class($this)) : $table);
-    $table = uncamelize(($table ? $table : get_called_class()));
+		$table = uncamelize(($table ? $table : get_called_class()));
 		$values = substr(str_repeat("?,", count(explode(",", $fields))), 0, -1);
 		$sql = 'INSERT INTO ' . $table . ' (' . $fields . ') VALUES (' . $values . ');';
 		$id = Database::getInstance($instance)->exec($sql, $this->toArray($fields));
@@ -102,7 +102,7 @@ class DTO
 	public function save($fields, $table=null, $instance='default'){
 		if (!isset($this->id) || !is_numeric($this->id)) return $this->insert($fields, $table, $instance);
 		//$table = uncamelize(($table == null) ? (isset($this->_table) ? $this->_table : get_class($this)) : $table);
-    $table = uncamelize(($table ? $table : get_called_class()));
+		$table = uncamelize(($table ? $table : get_called_class()));
 		$id = $this->id;
 		unset($this->id);
 		$values = $this->toArray($fields);
@@ -122,7 +122,7 @@ class DTO
 	*/
 	public function delete($table=null, $instance='default'){
 		//$table = uncamelize(($table == null) ? (isset($this->_table) ? $this->_table : get_class($this)) : $table);
-    $table = uncamelize(($table ? $table : get_called_class()));
+		$table = uncamelize(($table ? $table : get_called_class()));
 		if (!isset($this->id) || !is_numeric($this->id)) return false;
 		return Database::getInstance($instance)->exec('DELETE FROM ' . $table . ' WHERE id=?', array($this->id));
 	}
@@ -134,7 +134,7 @@ class DTO
 	*/
 	public static function all($table=null, $instance='default'){
 		//$table = uncamelize(($table == null) ? (isset($this->_table) ? $this->_table : preg_replace('@Controller$@', '', get_class($this))) : $table);
-    $table = uncamelize(($table ? $table : get_called_class()));
+		$table = uncamelize(($table ? $table : get_called_class()));
 		$class = camelize($table);
 		return Database::getInstance($instance)->query('SELECT * FROM ' . $table, $class);
 	}
@@ -147,9 +147,9 @@ class DTO
 	public static function load($id, $table=null, $instance='default'){
 		if (!is_numeric($id)) throw new IntegerRequiredException('id must be an integer');
 		//$table = uncamelize(($table == null) ? (isset($this->_table) ? $this->_table : preg_replace('@Controller$@', '', get_class($this))) : $table);
-    $table = uncamelize(($table ? $table : get_called_class()));
+		$table = uncamelize(($table ? $table : get_called_class()));
 		$class = camelize($table);
-    $sql = "SELECT * FROM $table WHERE id=$id";
+		$sql = "SELECT * FROM $table WHERE id=$id";
 		return Database::getInstance($instance)->queryOne($sql, $class);
 	}
 }

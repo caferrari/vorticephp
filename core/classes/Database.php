@@ -165,7 +165,7 @@ class Database
 		$this->connect();
 		$query = $this->prepare($sql);
 		$rows_afected = $query->execute($pars); 
-    $query->closeCursor(); //MANOEL: O cursor não estava sendo fechado, o que causava problemas ao tentar executar várias queries consecutivas
+		$query->closeCursor();
 		
 		if(preg_match('/^insert into ([a-zA-Z0-9\-_]+)/', strtolower($sql), $match)){
 			try{
@@ -183,10 +183,11 @@ class Database
 	{
 		$this->connect();
 		$rs = $this->pdo->query($sql);
+		if (!class_exists($object)) $object = 'DTO';
 		$rs->setFetchMode(PDO::FETCH_CLASS, $object);
 		$array = $rs->fetchAll();
-    $rs->closeCursor(); //MANOEL: O cursor não estava sendo fechado, o que causava problemas ao tentar executar várias queries consecutivas
-    return $array;
+		$rs->closeCursor();
+		return $array;
 	}
 	
 	/**
@@ -197,9 +198,10 @@ class Database
 	{
 		$this->connect();
 		$rs = $this->pdo->query($sql);
+		if (!class_exists($object)) $object = 'DTO';
 		$o = $rs->fetchObject($object);
-    $rs->closeCursor(); //MANOEL: O cursor não estava sendo fechado, o que causava problemas ao tentar executar várias queries consecutivas
-    return $o;
+		$rs->closeCursor();
+		return $o;
 	}
 	
 	/**

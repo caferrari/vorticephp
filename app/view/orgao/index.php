@@ -20,7 +20,7 @@
 	<tr>
 		<th width="100">{{Sigla}}</th>
 		<th>{{Nome}}</th>
-		<th width="100">{{Ações}}</th>
+		<th width="120">{{Ações}}</th>
 	</tr>
 	<?php foreach($itens as $o): ?>
 	<tr class="item">
@@ -28,8 +28,7 @@
 		<td><?php echo $o->nome ?></td>
 		<td>
      <a href="<?php echo new Link('orgao:alterar', "id={$o->id}") ?>">{{Alterar}}</a> | 
-     <a class="confirm" title="{{Excluir item}}: <?php echo $o->nome ?>" href="<?php echo new Link('orgao:excluir', "id={$o->id}") ?>">{{Excluir}}</a> |
-     <a href="<?php echo new Link('alternativa:index', "id_pergunta={$o->id}") ?>">{{Alternativas}}</a> |  
+     <a class="confirm" title="{{Excluir item}}: <?php echo $o->nome ?>" href="<?php echo new Link('orgao:excluir', "id={$o->id}") ?>">{{Excluir}}</a>
     </td>
 	</tr>
 	<?php endforeach; ?>

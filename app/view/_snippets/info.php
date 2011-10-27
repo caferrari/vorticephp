@@ -25,6 +25,9 @@
 		<td>Site Virtual Root:</td><td><?php echo virtualroot ?></td>
 	</tr>
 	<tr>
+		<td>uri:</td><td><?php echo uri ?></td>
+	</tr>
+	<tr>
 		<td>Lang:</td><td><?php echo request_lang ?></td>
 	</tr>
 	<tr>
